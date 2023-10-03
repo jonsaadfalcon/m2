@@ -264,10 +264,10 @@ def run_job_worker(config: om.DictConfig,
     concatenated_output = nn.Embedding(num_embeddings=512, embedding_dim=768)
     
     # Copy the weights from the original embedding to the expanded one
-    concatenated_output.weight[:128] = positional_embeddings.weight.data
-    concatenated_output.weight[128:256] = positional_embeddings.weight.data
-    concatenated_output.weight[256:384] = positional_embeddings.weight.data
-    concatenated_output.weight[384:512] = positional_embeddings.weight.data
+    concatenated_output.weight.data[:128] = positional_embeddings.weight.data
+    concatenated_output.weight.data[128:256] = positional_embeddings.weight.data
+    concatenated_output.weight.data[256:384] = positional_embeddings.weight.data
+    concatenated_output.weight.data[384:512] = positional_embeddings.weight.data
 
     print("concatenated_output shape")
     print(concatenated_output)
