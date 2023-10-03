@@ -35,6 +35,8 @@ from composer.utils.file_helpers import get_file
 from composer.utils.object_store import S3ObjectStore
 from omegaconf import DictConfig
 
+import torch.nn as nn
+
 TASK_NAME_TO_CLASS = {
     'mnli': finetuning_jobs_module.MNLIJob,
     'rte': finetuning_jobs_module.RTEJob,
@@ -258,9 +260,18 @@ def run_job_worker(config: om.DictConfig,
     #print(type(model.model.bert.embeddings.position_embeddings))
 
     positional_embeddings = model.model.bert.embeddings.position_embeddings
-    concatenated_output = torch.cat((positional_embeddings, positional_embeddings, positional_embeddings, positional_embeddings), dim=0)
+
+    concatenated_output = nn.Embedding(num_embeddings=512, embedding_dim=768)
+    
+    # Copy the weights from the original embedding to the expanded one
+    concatenated_output.weight[:128] = positional_embeddings.weight
+    concatenated_output.weight[128:256] = positional_embeddings.weight
+    concatenated_output.weight[256:384] = positional_embeddings.weight
+    concatenated_output.weight[384:512] = positional_embeddings.weight
+
     print("concatenated_output shape")
     print(concatenated_output)
+
     model.model.bert.embeddings.position_embeddings = concatenated_output
 
     assert False
