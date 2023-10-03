@@ -260,7 +260,6 @@ def run_job_worker(config: om.DictConfig,
     #print(type(model.model.bert.embeddings.position_embeddings))
 
     positional_embeddings = model.model.bert.embeddings.position_embeddings
-
     concatenated_output = nn.Embedding(num_embeddings=512, embedding_dim=768)
     
     # Copy the weights from the original embedding to the expanded one
@@ -269,10 +268,12 @@ def run_job_worker(config: om.DictConfig,
     concatenated_output.weight.data[256:384] = positional_embeddings.weight.data
     concatenated_output.weight.data[384:512] = positional_embeddings.weight.data
 
-    print("concatenated_output shape")
-    print(concatenated_output)
-
+    #print("concatenated_output shape")
+    #print(concatenated_output)
     model.model.bert.embeddings.position_embeddings = concatenated_output
+
+    print("Print modified model")
+    print(model.model)
 
     assert False
 
