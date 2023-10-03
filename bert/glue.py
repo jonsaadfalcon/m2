@@ -250,6 +250,10 @@ def run_job_worker(config: om.DictConfig,
     model = build_model(
             config.model,
             finetuning_jobs_module.TASK_NAME_TO_NUM_LABELS[config.task])
+
+    print("Found the model!")
+    print(model)
+
     n_params = sum(p.numel() for p in model.parameters())
     print(f'{n_params=:.4e}')
     instantiated_job = TASK_NAME_TO_CLASS[config.task](
