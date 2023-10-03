@@ -251,7 +251,7 @@ def run_job_worker(config: om.DictConfig,
             config.model,
             finetuning_jobs_module.TASK_NAME_TO_NUM_LABELS[config.task])
 
-    print("Found the model!")
+    print("Found the model! Printing structure")
     print(model)
 
     n_params = sum(p.numel() for p in model.parameters())
