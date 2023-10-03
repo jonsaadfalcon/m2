@@ -252,10 +252,10 @@ def run_job_worker(config: om.DictConfig,
             finetuning_jobs_module.TASK_NAME_TO_NUM_LABELS[config.task])
 
     print("Found the model! Printing structure")
-    print(model.model)
+    #print(model.model)
     print("positional embeddings")
-    print(model.bert.embeddings.position_embeddings)
-    print(type(model.bert.embeddings.position_embeddings))
+    print(model.model.bert.embeddings.position_embeddings)
+    print(type(model.model.bert.embeddings.position_embeddings))
 
     assert False
 
