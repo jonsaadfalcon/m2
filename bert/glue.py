@@ -254,6 +254,8 @@ def run_job_worker(config: om.DictConfig,
     print("Found the model! Printing structure")
     print(model)
 
+    assert False
+
     n_params = sum(p.numel() for p in model.parameters())
     print(f'{n_params=:.4e}')
     instantiated_job = TASK_NAME_TO_CLASS[config.task](
