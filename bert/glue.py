@@ -251,11 +251,17 @@ def run_job_worker(config: om.DictConfig,
             config.model,
             finetuning_jobs_module.TASK_NAME_TO_NUM_LABELS[config.task])
 
-    print("Found the model! Printing structure")
+    #print("Found the model! Printing structure")
     #print(model.model)
-    print("positional embeddings")
-    print(model.model.bert.embeddings.position_embeddings)
-    print(type(model.model.bert.embeddings.position_embeddings))
+    #print("positional embeddings")
+    #print(model.model.bert.embeddings.position_embeddings)
+    #print(type(model.model.bert.embeddings.position_embeddings))
+
+    positional_embeddings = model.model.bert.embeddings.position_embeddings
+    concatenated_output = torch.cat((positional_embeddings, positional_embeddings, positional_embeddings, positional_embeddings), dim=0)
+    print("concatenated_output shape")
+    print(concatenated_output)
+    model.model.bert.embeddings.position_embeddings = concatenated_output
 
     assert False
 
