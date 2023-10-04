@@ -1,3 +1,4 @@
+
 '''
 Script to download and preprocess the 20 News dataset, following the recipe from here: https://github.com/coastalcph/trldc
 
@@ -18,7 +19,7 @@ import os
 import random
 import json, numpy
 
-INPUT_DIR = '/data/20news'
+INPUT_DIR = 'datasets/20news/'
 OUTPUT_DIR = '/data/20news/splits'
 
 examples = []
