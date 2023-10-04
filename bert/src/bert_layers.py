@@ -65,7 +65,7 @@ class BertEmbeddings(nn.Module):
         if config.use_positional_encodings:
             self.position_embeddings = nn.Embedding(config.max_position_embeddings, config.hidden_size)
 
-            concat_positional_embeddings = True
+            """ concat_positional_embeddings = True
             if concat_positional_embeddings:
 
                 positional_embeddings = self.position_embeddings
@@ -77,7 +77,7 @@ class BertEmbeddings(nn.Module):
                 concatenated_output.weight.data[256:384] = positional_embeddings.weight.data
                 concatenated_output.weight.data[384:512] = positional_embeddings.weight.data
 
-                self.position_embeddings = concatenated_output
+                self.position_embeddings = concatenated_output """
 
 
         self.use_positional_encodings = config.use_positional_encodings
