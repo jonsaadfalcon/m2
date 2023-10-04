@@ -978,9 +978,87 @@ class STSBJob(GlueClassificationJob):
 
 
 
+######################################################################
+
+import os
+import json
+import datasets
+from datasets import load_dataset
+import transformers
+
+_task_column_names = {
+    '20news': ('text', None),
+    'contract_nli': ('input', None),
+}
+
+def create_news20_dataset(split, max_retries=10):
+    pass
+
+def create_mimic_dataset(split, max_retries=10):
+    pass
+
+def create_contract_nli_dataset(split, max_retries=10):
+    download_config = datasets.DownloadConfig(max_retries=max_retries)
+    dataset = datasets.load_dataset(
+        "tau/scrolls", "contract_nli",
+        split=split,
+        download_config=download_config,
+    )
+
+    # remap 'id' to 'idx'
+    dataset = dataset.rename_column('id', 'idx')
+
+    # remap the labels 
+    mapping = {
+        'Not mentioned': 0, 
+        'Entailment': 1, 
+        'Contradiction': 2
+    }
+    def map_labels(example):
+        example['output'] = mapping[example['output']]
+        return example
+    dataset = dataset.map(map_labels)
+    dataset = dataset.rename_column('output', 'label')
+    return dataset
 
 
+def create_long_context_dataset(task_name, split, tokenizer_name, max_seq_length, num_workers=8):
+    
+    if task_name == '20news':
+        dataset = create_news20_dataset(split)
+    elif task_name == 'mimic':
+        dataset = create_mimic_dataset(split)
+    elif task_name == 'contract_nli':
+        dataset = create_contract_nli_dataset(split)
 
+    text_column_names = _task_column_names[task_name]
+    tokenizer = transformers.AutoTokenizer.from_pretrained(tokenizer_name) 
+
+    def tokenize_function(inp):
+        # truncates sentences to max_length or pads them to max_length
+
+        first_half = inp[text_column_names[0]]
+        #second_half = inp[
+        #    text_column_names[1]] if text_column_names[1] in inp else None
+        return tokenizer(
+            text=first_half,
+            #text_pair=second_half,
+            padding='max_length',
+            max_length=max_seq_length,
+            truncation=True,
+        )
+    
+    assert isinstance(dataset, datasets.Dataset)
+    dataset = dataset.map(
+        tokenize_function,
+        batched=True,
+        num_proc=None if num_workers == 0 else num_workers,
+        batch_size=1000,
+        new_fingerprint=f'{task_name}-tok-2-{split}-{max_seq_length}',
+        load_from_cache_file=True,
+    )
+
+    return dataset
 
 class ContractNLIJob(GlueClassificationJob):
     """ContractNLIJob."""
@@ -1023,30 +1101,6 @@ class ContractNLIJob(GlueClassificationJob):
                          callbacks=callbacks,
                          precision=precision,
                          **kwargs)
-        
-        def create_contract_nli_dataset(split, max_retries=10):
-            download_config = datasets.DownloadConfig(max_retries=max_retries)
-            dataset = datasets.load_dataset(
-                "tau/scrolls", "contract_nli",
-                split=split,
-                download_config=download_config,
-            )
-
-            # remap 'id' to 'idx'
-            dataset = dataset.rename_column('id', 'idx')
-
-            # remap the labels 
-            mapping = {
-                'Not mentioned': 0, 
-                'Entailment': 1, 
-                'Contradiction': 2
-            }
-            def map_labels(example):
-                example['output'] = mapping[example['output']]
-                return example
-            dataset = dataset.map(map_labels)
-            dataset = dataset.rename_column('output', 'label')
-            return dataset
 
         print(f"\nGLUE task {self.task_name} Details:")
         print('-- lr:', lr)
@@ -1085,7 +1139,7 @@ class ContractNLIJob(GlueClassificationJob):
         #                                          **dataloader_kwargs)
         #qnli_eval_dataset = create_glue_dataset(split='validation',
         #                                        **dataset_kwargs)
-        contract_nli_eval_dataset = create_contract_nli_dataset("train")
+        contract_nli_eval_dataset = create_long_context_dataset("contract_nli", "train", self.tokenizer_name, self.max_sequence_length, num_workers=8)
 
         print("contract_nli_eval_dataset generated")
         print(contract_nli_eval_dataset)
