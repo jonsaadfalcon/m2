@@ -38,6 +38,7 @@ from omegaconf import DictConfig
 import torch.nn as nn
 
 TASK_NAME_TO_CLASS = {
+    'contract_nli': finetuning_jobs_module.ContractNLIJob,
     'mnli': finetuning_jobs_module.MNLIJob,
     'rte': finetuning_jobs_module.RTEJob,
     'mrpc': finetuning_jobs_module.MRPCJob,

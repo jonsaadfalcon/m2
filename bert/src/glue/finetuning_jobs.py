@@ -30,6 +30,7 @@ from data import create_glue_dataset
 from torch.utils.data import DataLoader
 
 import torch.nn as nn
+from datasets import load_dataset
 
 def _build_dataloader(dataset, **kwargs):
     import transformers
@@ -374,11 +375,11 @@ class MNLIJob(GlueClassificationJob):
                                    dataloader=_build_dataloader(
                                        mnli_eval_dataset, **dataloader_kwargs),
                                    metric_names=['MulticlassAccuracy'])
-        dataloader = _build_dataloader(mnli_eval_dataset, **dataloader_kwargs)
-        print("MNLI Evaluator Found")
-        print(type(mnli_eval_dataset))
-        print(mnli_eval_dataset)
-        assert False
+        
+        #print("MNLI Evaluator Found")
+        #print(type(mnli_eval_dataset))
+        #print(mnli_eval_dataset)
+        #assert False
         
         mnli_evaluator_mismatched = Evaluator(
             label='glue_mnli_mismatched',
@@ -979,8 +980,8 @@ class STSBJob(GlueClassificationJob):
 
 
 
-class News20Job(GlueClassificationJob):
-    """News20."""
+class ContractNLIJob(GlueClassificationJob):
+    """ContractNLIJob."""
 
     def __init__(
         self,
@@ -1007,7 +1008,7 @@ class News20Job(GlueClassificationJob):
                          tokenizer_name=tokenizer_name,
                          job_name=job_name,
                          seed=seed,
-                         task_name='qnli',
+                         task_name='contract_nli',
                          num_labels=2,
                          eval_interval=eval_interval,
                          scheduler=scheduler,
@@ -1020,6 +1021,30 @@ class News20Job(GlueClassificationJob):
                          callbacks=callbacks,
                          precision=precision,
                          **kwargs)
+        
+        def create_contract_nli_dataset(split, max_retries=10):
+            download_config = datasets.DownloadConfig(max_retries=max_retries)
+            dataset = datasets.load_dataset(
+                "tau/scrolls", "contract_nli",
+                split=split,
+                download_config=download_config,
+            )
+
+            # remap 'id' to 'idx'
+            dataset = dataset.rename_column('id', 'idx')
+
+            # remap the labels 
+            mapping = {
+                'Not mentioned': 0, 
+                'Entailment': 1, 
+                'Contradiction': 2
+            }
+            def map_labels(example):
+                example['output'] = mapping[example['output']]
+                return example
+            dataset = dataset.map(map_labels)
+            dataset = dataset.rename_column('output', 'label')
+            return dataset
 
         print(f"\nGLUE task {self.task_name} Details:")
         print('-- lr:', lr)
@@ -1053,13 +1078,19 @@ class News20Job(GlueClassificationJob):
             'shuffle': False,
             'drop_last': False,
         }
-        train_dataset = create_glue_dataset(split='train', **dataset_kwargs)
-        self.train_dataloader = _build_dataloader(train_dataset,
-                                                  **dataloader_kwargs)
-        qnli_eval_dataset = create_glue_dataset(split='validation',
-                                                **dataset_kwargs)
-        qnli_evaluator = Evaluator(label='glue_qnli',
+        #train_dataset = create_glue_dataset(split='train', **dataset_kwargs)
+        #self.train_dataloader = _build_dataloader(train_dataset,
+        #                                          **dataloader_kwargs)
+        #qnli_eval_dataset = create_glue_dataset(split='validation',
+        #                                        **dataset_kwargs)
+        contract_nli_eval_dataset = create_contract_nli_dataset("train")
+
+        print("contract_nli_eval_dataset generated")
+        print(contract_nli_eval_dataset)
+        assert False
+
+        qnli_evaluator = Evaluator(label='contract_nli',
                                    dataloader=_build_dataloader(
-                                       qnli_eval_dataset, **dataloader_kwargs),
+                                       contract_nli_eval_dataset, **dataloader_kwargs),
                                    metric_names=['MulticlassAccuracy'])
         self.evaluators = [qnli_evaluator]

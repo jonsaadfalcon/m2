@@ -45,14 +45,14 @@ model:
 
 # Loading
 starting_checkpoint_load_path: model.pt    # Fill this in with the checkpoint from the end of pretraining
-local_pretrain_checkpoint_folder: ./local-bert-checkpoints_v2/
+local_pretrain_checkpoint_folder: ./local-bert-checkpoints_v3/
 
 # When starting from mnli
 # local_pretrain_checkpoint_folder: ./local-finetune-checkpoints/{base_run_name}/task=mnli/seed=19/
 # starting_checkpoint_load_path: ${local_pretrain_checkpoint_folder}/ep3-ba24546-rank0.pt
 
 # Saving
-save_finetune_checkpoint_prefix: ./local-bert-checkpoints_v2/ # (local)
+save_finetune_checkpoint_prefix: ./local-bert-checkpoints_v3/ # (local)
 # save_finetune_checkpoint_prefix: s3://<bucket>/remote-finetune-checkpoints # (remote)
 save_finetune_checkpoint_folder: ${save_finetune_checkpoint_prefix}/${base_run_name}
 
@@ -75,6 +75,15 @@ scheduler:
 
 # Task configuration
 tasks:
+  mnli:
+    # Specify any extra task-specific arguments for the trainer here
+    trainer_kwargs:
+      # We keep one MNLI checkpoint locally so that we can start finetuning of
+      # RTE, MRPC and STS-B from the MNLI checkpoint
+      save_num_checkpoints_to_keep: 1
+      max_sequence_length: 512
+      wd: 5e-6
+      lr: 5e-5
   mnli:
     # Specify any extra task-specific arguments for the trainer here
     trainer_kwargs:
