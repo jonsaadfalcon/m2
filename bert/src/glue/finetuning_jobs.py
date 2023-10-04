@@ -29,6 +29,7 @@ from composer.utils import dist, reproducibility
 from data import create_glue_dataset
 from torch.utils.data import DataLoader
 
+import torch.nn as nn
 
 def _build_dataloader(dataset, **kwargs):
     import transformers
@@ -233,6 +234,31 @@ class GlueClassificationJob(FineTuneJob):
         self.optimizer = None
 
     def get_trainer(self, device: Optional[Union[Device, str]] = None):
+
+        concat_positional_embeddings = True
+        if concat_positional_embeddings:
+
+            positional_embeddings = self.model.model.bert.embeddings.position_embeddings
+            concatenated_output = nn.Embedding(num_embeddings=512, embedding_dim=768)
+            
+            # Copy the weights from the original embedding to the expanded one
+            concatenated_output.weight.data[:128] = positional_embeddings.weight.data
+            concatenated_output.weight.data[128:256] = positional_embeddings.weight.data
+            concatenated_output.weight.data[256:384] = positional_embeddings.weight.data
+            concatenated_output.weight.data[384:512] = positional_embeddings.weight.data
+
+            #print("concatenated_output shape")
+            #print(concatenated_output)
+            self.model.model.bert.embeddings.position_embeddings = concatenated_output
+
+            
+            print("Print modified model")
+            print(self.model.model)
+
+            #assert False
+
+        ############################################################
+
         return Trainer(model=self.model,
                        optimizers=self.optimizer,
                        schedulers=self.scheduler,
