@@ -161,10 +161,13 @@ class FineTuneJob:
 
         trainer = self.get_trainer(device=device)
 
+        print("Found the trainer!")
+        print(trainer.__dict__)
+
         concat_positional_embeddings = True
         if concat_positional_embeddings:
 
-            positional_embeddings = trainer['model'].model.bert.embeddings.position_embeddings
+            positional_embeddings = trainer.model.model.bert.embeddings.position_embeddings
             concatenated_output = nn.Embedding(num_embeddings=512, embedding_dim=768)
             
             # Copy the weights from the original embedding to the expanded one
@@ -175,11 +178,11 @@ class FineTuneJob:
 
             #print("concatenated_output shape")
             #print(concatenated_output)
-            trainer['model'].model.bert.embeddings.position_embeddings = concatenated_output
+            trainer.model.model.bert.embeddings.position_embeddings = concatenated_output
 
             
             print("Print modified model")
-            print(trainer['model'].model)
+            print(trainer.model.model)
 
             #assert False
 
