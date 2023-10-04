@@ -44,8 +44,8 @@ model:
 
 
 # Loading
-starting_checkpoint_load_path: model_v2.pt    # Fill this in with the checkpoint from the end of pretraining
-local_pretrain_checkpoint_folder: ./local-bert-checkpoints/
+starting_checkpoint_load_path: model.pt    # Fill this in with the checkpoint from the end of pretraining
+local_pretrain_checkpoint_folder: ./local-bert-checkpoints_v2/
 
 # When starting from mnli
 # local_pretrain_checkpoint_folder: ./local-finetune-checkpoints/{base_run_name}/task=mnli/seed=19/
