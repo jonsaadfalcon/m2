@@ -1058,7 +1058,9 @@ def create_long_context_dataset(task_name, split, tokenizer_name, max_seq_length
         load_from_cache_file=True,
     )
 
-    dataset = dataset.remove_columns(['idx', 'pid', 'input'])
+    for column in dataset.columns:
+        if column not in ['label', 'input_ids', 'token_type_ids', 'attention_mask']:
+            dataset = dataset.remove_columns([column])
 
     return dataset
 
@@ -1146,6 +1148,7 @@ class ContractNLIJob(GlueClassificationJob):
         print("contract_nli_eval_dataset generated")
         print(contract_nli_eval_dataset)
         assert False
+        
 
         qnli_evaluator = Evaluator(label='contract_nli',
                                    dataloader=_build_dataloader(
