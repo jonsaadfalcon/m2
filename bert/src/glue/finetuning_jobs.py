@@ -1147,7 +1147,7 @@ class ContractNLIJob(GlueClassificationJob):
 
         print("contract_nli_eval_dataset generated")
         print(contract_nli_eval_dataset)
-        assert False
+        #assert False
         
 
         qnli_evaluator = Evaluator(label='contract_nli',
