@@ -989,6 +989,7 @@ import transformers
 _task_column_names = {
     '20news': ('text', None),
     'contract_nli': ('input', None),
+    'mimic': ('text', None),
 }
 
 def create_news20_dataset(split):
