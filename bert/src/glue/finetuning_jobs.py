@@ -1058,7 +1058,7 @@ def create_long_context_dataset(task_name, split, tokenizer_name, max_seq_length
         load_from_cache_file=True,
     )
 
-    for column in dataset.columns:
+    for column in dataset.features:
         if column not in ['label', 'input_ids', 'token_type_ids', 'attention_mask']:
             dataset = dataset.remove_columns([column])
 
