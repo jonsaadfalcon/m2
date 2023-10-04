@@ -33,7 +33,7 @@ ALL_ICD.to_csv("ALL_ICD.csv", index=False,
                columns=["ROW_ID", "SUBJECT_ID", "HADM_ID", "SEQ_NUM", "absolute_code"],
                header=["ROW_ID", "SUBJECT_ID", "HADM_ID", "SEQ_NUM", "ICD9_CODE"])
 ALL_ICD = pd.read_csv("ALL_ICD.csv", dtype={"ICD9_CODE": str})
-len(ALL_ICD["ICD9_CODE"].unique())
+#len(ALL_ICD["ICD9_CODE"].unique())
 
 tokenizer = RegexpTokenizer(r"\w+")
 with open(os.path.join(INPUT_DIR, "NOTEEVENTS.csv"), "r") as in_f:
