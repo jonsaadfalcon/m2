@@ -126,6 +126,9 @@ class BertEmbeddings(nn.Module):
         embeddings = inputs_embeds + token_type_embeddings
         if self.use_positional_encodings:
             position_embeddings = self.position_embeddings(position_ids)
+            print("position_embeddings")
+            print(position_embeddings.shape)
+            split_count = int(int(position_embeddings.shape[0]) / 128)
             for i in range(position_embeddings.shape[0] / 128):
                 embeddings += position_embeddings[(i * 128):((i + 1) * 128)]
         embeddings = self.LayerNorm(embeddings)
