@@ -47,6 +47,7 @@ def _build_dataloader(dataset, **kwargs):
 Metrics = Dict[str, Dict[str, Any]]
 
 TASK_NAME_TO_NUM_LABELS = {
+    'contract_nli': 3,
     'mnli': 3,
     'rte': 2,
     'mrpc': 2,

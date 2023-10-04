@@ -75,7 +75,7 @@ scheduler:
 
 # Task configuration
 tasks:
-  mnli:
+  contract_nli:
     # Specify any extra task-specific arguments for the trainer here
     trainer_kwargs:
       # We keep one MNLI checkpoint locally so that we can start finetuning of
