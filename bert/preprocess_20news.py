@@ -20,7 +20,7 @@ import random
 import json, numpy
 
 INPUT_DIR = 'datasets/20news/'
-OUTPUT_DIR = '/data/20news/splits'
+OUTPUT_DIR = 'datasets/20news/splits'
 
 examples = []
 for label in os.listdir(os.path.join(INPUT_DIR, "train")):
