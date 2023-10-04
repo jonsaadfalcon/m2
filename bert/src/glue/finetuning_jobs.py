@@ -167,7 +167,7 @@ class FineTuneJob:
         concat_positional_embeddings = True
         if concat_positional_embeddings:
 
-            positional_embeddings = trainer._original_model.model.model.bert.embeddings.position_embeddings
+            positional_embeddings = trainer._original_model.model.bert.embeddings.position_embeddings
             concatenated_output = nn.Embedding(num_embeddings=512, embedding_dim=768)
             
             # Copy the weights from the original embedding to the expanded one
@@ -178,11 +178,11 @@ class FineTuneJob:
 
             #print("concatenated_output shape")
             #print(concatenated_output)
-            trainer._original_model.model.model.bert.embeddings.position_embeddings = concatenated_output
+            trainer._original_model.model.bert.embeddings.position_embeddings = concatenated_output
 
             
             print("Print modified model")
-            print(trainer._original_model.model.model)
+            print(trainer._original_model.model)
 
             #assert False
 
