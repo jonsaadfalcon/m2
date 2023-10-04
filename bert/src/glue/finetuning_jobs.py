@@ -1138,20 +1138,44 @@ class ContractNLIJob(GlueClassificationJob):
             'shuffle': False,
             'drop_last': False,
         }
-        #train_dataset = create_glue_dataset(split='train', **dataset_kwargs)
-        #self.train_dataloader = _build_dataloader(train_dataset,
-        #                                          **dataloader_kwargs)
-        #qnli_eval_dataset = create_glue_dataset(split='validation',
-        #                                        **dataset_kwargs)
-        contract_nli_eval_dataset = create_long_context_dataset("contract_nli", "train", self.tokenizer_name, self.max_sequence_length, num_workers=8)
+        train_dataset = create_long_context_dataset("contract_nli", "train", self.tokenizer_name, self.max_sequence_length, num_workers=8)
+        self.train_dataloader = _build_dataloader(train_dataset,
+                                                  **dataloader_kwargs)
+        contract_nli_eval_dataset = create_long_context_dataset("contract_nli", "validation", self.tokenizer_name, self.max_sequence_length, num_workers=8)
 
         print("contract_nli_eval_dataset generated")
         print(contract_nli_eval_dataset)
         #assert False
         
 
-        qnli_evaluator = Evaluator(label='contract_nli',
+        long_context_evaluator = Evaluator(label='contract_nli',
                                    dataloader=_build_dataloader(
                                        contract_nli_eval_dataset, **dataloader_kwargs),
                                    metric_names=['MulticlassAccuracy'])
-        self.evaluators = [qnli_evaluator]
+        self.evaluators = [long_context_evaluator]
+
+        #######################
+
+        """ train_dataset = create_glue_dataset(split='train', **dataset_kwargs)
+        self.train_dataloader = _build_dataloader(train_dataset,
+                                                  **dataloader_kwargs)
+        mnli_eval_dataset = create_glue_dataset(split='validation_matched',
+                                                **dataset_kwargs)
+        mnli_eval_mismatched_dataset = create_glue_dataset(
+            split='validation_mismatched', **dataset_kwargs)
+        mnli_evaluator = Evaluator(label='glue_mnli',
+                                   dataloader=_build_dataloader(
+                                       mnli_eval_dataset, **dataloader_kwargs),
+                                   metric_names=['MulticlassAccuracy'])
+        
+        #print("MNLI Evaluator Found")
+        #print(type(mnli_eval_dataset))
+        #print(mnli_eval_dataset)
+        #assert False
+        
+        mnli_evaluator_mismatched = Evaluator(
+            label='glue_mnli_mismatched',
+            dataloader=_build_dataloader(mnli_eval_mismatched_dataset,
+                                         **dataloader_kwargs),
+            metric_names=['MulticlassAccuracy'])
+        self.evaluators = [mnli_evaluator, mnli_evaluator_mismatched] """
