@@ -1058,6 +1058,8 @@ def create_long_context_dataset(task_name, split, tokenizer_name, max_seq_length
         load_from_cache_file=True,
     )
 
+    dataset = dataset.remove_columns(['idx', 'pid', 'input'])
+
     return dataset
 
 class ContractNLIJob(GlueClassificationJob):
