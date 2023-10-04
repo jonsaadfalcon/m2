@@ -259,7 +259,7 @@ def run_job_worker(config: om.DictConfig,
     #print(model.model.bert.embeddings.position_embeddings)
     #print(type(model.model.bert.embeddings.position_embeddings))
 
-    concat_positional_embeddings = False
+    concat_positional_embeddings = True
     if concat_positional_embeddings:
 
         positional_embeddings = model.model.bert.embeddings.position_embeddings
@@ -278,7 +278,7 @@ def run_job_worker(config: om.DictConfig,
         print("Print modified model")
         print(model.model)
 
-        assert False
+        #assert False
 
     n_params = sum(p.numel() for p in model.parameters())
     print(f'{n_params=:.4e}')
