@@ -374,6 +374,11 @@ class MNLIJob(GlueClassificationJob):
                                    dataloader=_build_dataloader(
                                        mnli_eval_dataset, **dataloader_kwargs),
                                    metric_names=['MulticlassAccuracy'])
+        dataloader = _build_dataloader(mnli_eval_dataset, **dataloader_kwargs)
+        print("MNLI Evaluator Found")
+        print(dataloader)
+        assert False
+        
         mnli_evaluator_mismatched = Evaluator(
             label='glue_mnli_mismatched',
             dataloader=_build_dataloader(mnli_eval_mismatched_dataset,
