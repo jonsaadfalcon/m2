@@ -991,11 +991,75 @@ _task_column_names = {
     'contract_nli': ('input', None),
 }
 
-def create_news20_dataset(split, max_retries=10):
-    pass
+def create_news20_dataset(split):
 
-def create_mimic_dataset(split, max_retries=10):
-    pass
+    OUTPUT_DIR = "datasets/20news/splits/"
+    
+    print(f"Split: {split}")
+
+    if split == 'train':
+        path = os.path.join(OUTPUT_DIR, 'train.json')
+    elif 'val' in split or 'dev' in split:
+        path = os.path.join(OUTPUT_DIR, 'dev.json')
+        split = 'dev'
+    elif split == 'test':
+        path = os.path.join(OUTPUT_DIR, 'test.json')
+    
+    dataset = load_dataset(
+        'json', 
+        data_files=[path]
+    )
+    dataset = dataset['train']
+
+    label_names = set(dataset['label'])
+    label_names = sorted(label_names)
+    label_map = {label: i for i, label in enumerate(label_names)}
+
+    def map_labels(example):
+        example['label'] = label_map[example['label']]
+        return example
+    
+    dataset = dataset.map(map_labels)
+
+    return dataset
+
+
+def create_mimic_dataset(split):
+    OUTPUT_DIR = "/data/mimiciii/0/50"
+    
+    print(f"Split: {split}")
+
+    if split == 'train':
+        path = os.path.join(OUTPUT_DIR, 'train.json')
+    elif 'val' in split or 'dev' in split:
+        path = os.path.join(OUTPUT_DIR, 'dev.json')
+        split = 'dev'
+    elif split == 'test':
+        path = os.path.join(OUTPUT_DIR, 'test.json')
+    
+    dataset = load_dataset(
+        'json', 
+        data_files=[path]
+    )
+    dataset = dataset['train']
+
+    label2idx_path = os.path.join(OUTPUT_DIR, 'label2idx.json')
+    with open(label2idx_path, 'r') as f:
+        label_map = json.load(f)
+
+    num_labels = len(label_map)
+
+    def map_labels(example):
+        labels = [0 for i in range(num_labels)]
+        for label in example['labels']:
+            labels[label_map[label]] = 1
+        example['label_ids'] = torch.tensor(labels, dtype=torch.long)
+        del example['labels']
+        return example
+    
+    dataset = dataset.map(map_labels)
+
+    return dataset
 
 def create_contract_nli_dataset(split, max_retries=10):
     download_config = datasets.DownloadConfig(max_retries=max_retries)
