@@ -259,23 +259,26 @@ def run_job_worker(config: om.DictConfig,
     #print(model.model.bert.embeddings.position_embeddings)
     #print(type(model.model.bert.embeddings.position_embeddings))
 
-    positional_embeddings = model.model.bert.embeddings.position_embeddings
-    concatenated_output = nn.Embedding(num_embeddings=512, embedding_dim=768)
-    
-    # Copy the weights from the original embedding to the expanded one
-    concatenated_output.weight.data[:128] = positional_embeddings.weight.data
-    concatenated_output.weight.data[128:256] = positional_embeddings.weight.data
-    concatenated_output.weight.data[256:384] = positional_embeddings.weight.data
-    concatenated_output.weight.data[384:512] = positional_embeddings.weight.data
+    concat_positional_embeddings = False
+    if concat_positional_embeddings:
 
-    #print("concatenated_output shape")
-    #print(concatenated_output)
-    model.model.bert.embeddings.position_embeddings = concatenated_output
+        positional_embeddings = model.model.bert.embeddings.position_embeddings
+        concatenated_output = nn.Embedding(num_embeddings=512, embedding_dim=768)
+        
+        # Copy the weights from the original embedding to the expanded one
+        concatenated_output.weight.data[:128] = positional_embeddings.weight.data
+        concatenated_output.weight.data[128:256] = positional_embeddings.weight.data
+        concatenated_output.weight.data[256:384] = positional_embeddings.weight.data
+        concatenated_output.weight.data[384:512] = positional_embeddings.weight.data
 
-    print("Print modified model")
-    print(model.model)
+        #print("concatenated_output shape")
+        #print(concatenated_output)
+        model.model.bert.embeddings.position_embeddings = concatenated_output
 
-    assert False
+        print("Print modified model")
+        print(model.model)
+
+        assert False
 
     n_params = sum(p.numel() for p in model.parameters())
     print(f'{n_params=:.4e}')

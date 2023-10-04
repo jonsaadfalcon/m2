@@ -935,3 +935,96 @@ class STSBJob(GlueClassificationJob):
 
         # Hardcoded for STSB due to a bug (Can be removed once torchmetrics fixes https://github.com/Lightning-AI/metrics/issues/1294)
         self.precision = 'fp32'
+
+
+
+
+
+
+
+
+
+class News20Job(GlueClassificationJob):
+    """News20."""
+
+    def __init__(
+        self,
+        model: ComposerModel,
+        tokenizer_name: str,
+        job_name: Optional[str] = None,
+        seed: int = 42,
+        eval_interval: str = '1000ba',
+        scheduler: Optional[ComposerScheduler] = None,
+        max_sequence_length: Optional[int] = 256,
+        max_duration: Optional[str] = '10ep',
+        batch_size: Optional[int] = 16,
+        load_path: Optional[str] = None,
+        save_folder: Optional[str] = None,
+        loggers: Optional[List[LoggerDestination]] = None,
+        callbacks: Optional[List[Callback]] = None,
+        precision: Optional[str] = None,
+        lr: Optional[float] = 1.0e-5,
+        wd: Optional[float] = 1.0e-6,
+        optim_name: Optional[str] = 'DecoupledAdamW',
+        **kwargs,
+    ):
+        super().__init__(model=model,
+                         tokenizer_name=tokenizer_name,
+                         job_name=job_name,
+                         seed=seed,
+                         task_name='qnli',
+                         num_labels=2,
+                         eval_interval=eval_interval,
+                         scheduler=scheduler,
+                         max_sequence_length=max_sequence_length,
+                         max_duration=max_duration,
+                         batch_size=batch_size,
+                         load_path=load_path,
+                         save_folder=save_folder,
+                         loggers=loggers,
+                         callbacks=callbacks,
+                         precision=precision,
+                         **kwargs)
+
+        print(f"\nGLUE task {self.task_name} Details:")
+        print('-- lr:', lr)
+        print('-- wd:', wd)
+        print(f"-- seed: {seed}")
+        if optim_name == 'DecoupledAdamW':
+            print(f"-- using DecoupledAdamW optimizer")
+            self.optimizer = DecoupledAdamW(create_param_groups(None, self.model),
+                                        lr=lr,
+                                        betas=(0.9, 0.98),
+                                        eps=1.0e-06,
+                                        weight_decay=wd)
+        else:
+            from torch.optim import AdamW
+            print(f"-- using AdamW optimizer")
+            self.optimizer = AdamW(create_param_groups(None, self.model),
+                                        lr=lr,
+                                        betas=(0.9, 0.98),
+                                        eps=1.0e-06,
+                                        weight_decay=wd)
+
+        dataset_kwargs = {
+            'task': self.task_name,
+            'tokenizer_name': self.tokenizer_name,
+            'max_seq_length': self.max_sequence_length,
+        }
+
+        dataloader_kwargs = {
+            'batch_size': self.batch_size,
+            'num_workers': 0,
+            'shuffle': False,
+            'drop_last': False,
+        }
+        train_dataset = create_glue_dataset(split='train', **dataset_kwargs)
+        self.train_dataloader = _build_dataloader(train_dataset,
+                                                  **dataloader_kwargs)
+        qnli_eval_dataset = create_glue_dataset(split='validation',
+                                                **dataset_kwargs)
+        qnli_evaluator = Evaluator(label='glue_qnli',
+                                   dataloader=_build_dataloader(
+                                       qnli_eval_dataset, **dataloader_kwargs),
+                                   metric_names=['MulticlassAccuracy'])
+        self.evaluators = [qnli_evaluator]
