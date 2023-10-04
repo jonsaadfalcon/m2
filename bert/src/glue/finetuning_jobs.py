@@ -168,7 +168,7 @@ class FineTuneJob:
         if concat_positional_embeddings:
 
             positional_embeddings = trainer._original_model.model.bert.embeddings.position_embeddings
-            concatenated_output = nn.Embedding(num_embeddings=512, embedding_dim=768)
+            concatenated_output = nn.Embedding(num_embeddings=512, embedding_dim=768, device="cuda:0")
             
             # Copy the weights from the original embedding to the expanded one
             concatenated_output.weight.data[:128] = positional_embeddings.weight.data
