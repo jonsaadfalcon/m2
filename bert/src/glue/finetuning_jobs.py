@@ -172,8 +172,8 @@ class FineTuneJob:
             
             # Copy the weights from the original embedding to the expanded one
             concatenated_output.weight.data[:128] = positional_embeddings.weight.data
-            concatenated_output.weight.data[128:256] = positional_embeddings.weight.data
-            concatenated_output.weight.data[256:384] = positional_embeddings.weight.data
+            concatenated_output.weight.data[128:512] = positional_embeddings.weight.data
+            concatenated_output.weight.data[512:384] = positional_embeddings.weight.data
             concatenated_output.weight.data[384:512] = positional_embeddings.weight.data
 
             #print("concatenated_output shape")
@@ -223,7 +223,7 @@ class GlueClassificationJob(FineTuneJob):
         num_labels: Optional[int] = -1,
         eval_interval: str = '1000ba',
         scheduler: Optional[ComposerScheduler] = None,
-        max_sequence_length: Optional[int] = 256,
+        max_sequence_length: Optional[int] = 512,
         max_duration: Optional[str] = '3ep',
         batch_size: Optional[int] = 32,
         load_path: Optional[str] = None,
@@ -299,7 +299,7 @@ class MNLIJob(GlueClassificationJob):
         seed: int = 42,
         eval_interval: str = '2300ba',
         scheduler: Optional[ComposerScheduler] = None,
-        max_sequence_length: Optional[int] = 256,
+        max_sequence_length: Optional[int] = 512,
         max_duration: Optional[str] = '3ep',
         batch_size: Optional[int] = 48,
         load_path: Optional[str] = None,
@@ -393,7 +393,7 @@ class RTEJob(GlueClassificationJob):
         seed: int = 42,
         eval_interval: str = '100ba',
         scheduler: Optional[ComposerScheduler] = None,
-        max_sequence_length: Optional[int] = 256,
+        max_sequence_length: Optional[int] = 512,
         max_duration: Optional[str] = '3ep',
         batch_size: Optional[int] = 16,
         load_path: Optional[str] = None,
@@ -473,7 +473,7 @@ class QQPJob(GlueClassificationJob):
         seed: int = 42,
         eval_interval: str = '2000ba',
         scheduler: Optional[ComposerScheduler] = None,
-        max_sequence_length: Optional[int] = 256,
+        max_sequence_length: Optional[int] = 512,
         max_duration: Optional[str] = '5ep',
         batch_size: Optional[int] = 16,
         load_path: Optional[str] = None,
@@ -557,7 +557,7 @@ class COLAJob(GlueClassificationJob):
         seed: int = 42,
         eval_interval: str = '250ba',
         scheduler: Optional[ComposerScheduler] = None,
-        max_sequence_length: Optional[int] = 256,
+        max_sequence_length: Optional[int] = 512,
         max_duration: Optional[str] = '10ep',
         batch_size: Optional[int] = 32,
         load_path: Optional[str] = None,
@@ -641,7 +641,7 @@ class MRPCJob(GlueClassificationJob):
         seed: int = 42,
         eval_interval: str = '100ba',
         scheduler: Optional[ComposerScheduler] = None,
-        max_sequence_length: Optional[int] = 256,
+        max_sequence_length: Optional[int] = 512,
         max_duration: Optional[str] = '10ep',
         batch_size: Optional[int] = 32,
         load_path: Optional[str] = None,
@@ -724,7 +724,7 @@ class QNLIJob(GlueClassificationJob):
         seed: int = 42,
         eval_interval: str = '1000ba',
         scheduler: Optional[ComposerScheduler] = None,
-        max_sequence_length: Optional[int] = 256,
+        max_sequence_length: Optional[int] = 512,
         max_duration: Optional[str] = '10ep',
         batch_size: Optional[int] = 16,
         load_path: Optional[str] = None,
@@ -810,7 +810,7 @@ class SST2Job(GlueClassificationJob):
         seed: int = 42,
         eval_interval: str = '500ba',
         scheduler: Optional[ComposerScheduler] = None,
-        max_sequence_length: Optional[int] = 256,
+        max_sequence_length: Optional[int] = 512,
         max_duration: Optional[str] = '3ep',
         batch_size: Optional[int] = 16,
         load_path: Optional[str] = None,
@@ -894,7 +894,7 @@ class STSBJob(GlueClassificationJob):
         seed: int = 42,
         eval_interval: str = '200ba',
         scheduler: Optional[ComposerScheduler] = None,
-        max_sequence_length: Optional[int] = 256,
+        max_sequence_length: Optional[int] = 512,
         max_duration: Optional[str] = '10ep',
         batch_size: Optional[int] = 32,
         load_path: Optional[str] = None,
@@ -984,7 +984,7 @@ class News20Job(GlueClassificationJob):
         seed: int = 42,
         eval_interval: str = '1000ba',
         scheduler: Optional[ComposerScheduler] = None,
-        max_sequence_length: Optional[int] = 256,
+        max_sequence_length: Optional[int] = 512,
         max_duration: Optional[str] = '10ep',
         batch_size: Optional[int] = 16,
         load_path: Optional[str] = None,
