@@ -181,8 +181,8 @@ class FineTuneJob:
             trainer._original_model.model.bert.embeddings.position_embeddings = concatenated_output
 
             
-            print("Print modified model")
-            print(trainer._original_model.model)
+            #print("Print modified model")
+            #print(trainer._original_model.model)
 
             #assert False
 
