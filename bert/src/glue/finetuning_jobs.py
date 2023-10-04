@@ -30,6 +30,7 @@ from data import create_glue_dataset
 from torch.utils.data import DataLoader
 
 import torch.nn as nn
+import datasets
 from datasets import load_dataset
 
 def _build_dataloader(dataset, **kwargs):
