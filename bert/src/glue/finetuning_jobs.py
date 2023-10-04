@@ -164,7 +164,7 @@ class FineTuneJob:
         #print("Found the trainer!")
         #print(trainer.__dict__)
 
-        concat_positional_embeddings = True
+        """ concat_positional_embeddings = True
         if concat_positional_embeddings:
 
             positional_embeddings = trainer._original_model.model.bert.embeddings.position_embeddings
@@ -184,7 +184,7 @@ class FineTuneJob:
             #print("Print modified model")
             #print(trainer._original_model.model)
 
-            #assert False
+            #assert False """
 
         ############################################################
 

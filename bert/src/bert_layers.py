@@ -64,6 +64,22 @@ class BertEmbeddings(nn.Module):
         # ALiBi doesn't use position embeddings
         if config.use_positional_encodings:
             self.position_embeddings = nn.Embedding(config.max_position_embeddings, config.hidden_size)
+
+            concat_positional_embeddings = True
+            if concat_positional_embeddings:
+
+                positional_embeddings = self.position_embeddings
+                concatenated_output = nn.Embedding(num_embeddings=512, embedding_dim=768, device="cuda:0")
+                
+                # Copy the weights from the original embedding to the expanded one
+                concatenated_output.weight.data[:128] = positional_embeddings.weight.data
+                concatenated_output.weight.data[128:256] = positional_embeddings.weight.data
+                concatenated_output.weight.data[256:384] = positional_embeddings.weight.data
+                concatenated_output.weight.data[384:512] = positional_embeddings.weight.data
+
+                self.position_embeddings = concatenated_output
+
+
         self.use_positional_encodings = config.use_positional_encodings
         self.token_type_embeddings = nn.Embedding(config.type_vocab_size,
                                                   config.hidden_size)
@@ -126,11 +142,12 @@ class BertEmbeddings(nn.Module):
         embeddings = inputs_embeds + token_type_embeddings
         if self.use_positional_encodings:
             position_embeddings = self.position_embeddings(position_ids)
-            print("position_embeddings")
-            print(position_embeddings.shape)
-            split_count = int(int(position_embeddings.shape[0]) / 128)
-            for i in range(position_embeddings.shape[0] / 128):
-                embeddings += position_embeddings[(i * 128):((i + 1) * 128)]
+            #print("position_embeddings")
+            #print(position_embeddings.shape)
+            split_count = int(int(position_embeddings.shape[1]) / 128)
+            for i in range(4):
+                #embeddings += position_embeddings[0][(i * 128):((i + 1) * 128)]
+                embeddings += position_embeddings
         embeddings = self.LayerNorm(embeddings)
         embeddings = self.dropout(embeddings)
         if return_position_encodings:
