@@ -1089,19 +1089,27 @@ def create_ecthr_dataset(split):
 
     dataset = dataset.rename_column('labels', 'label')
 
+    label_names = set()
     for row in range(len(dataset)):
         assert type(dataset[row]['label']) == list
-        assert len(dataset[row]['label']) == 1
+        #assert len(dataset[row]['label']) == 1
+        for label in dataset[row]['label']:
+            label_names.add(label)
 
-    label_names = set(dataset['label'])
+    #label_names = set(dataset['label'])
     label_names = sorted(label_names)
     label_map = {label: i for i, label in enumerate(label_names)}
 
     print("label_map for ecthr")
     print(label_map)
+    num_labels = len(label_map)
 
     def map_labels(example):
-        example['label'] = label_map[example['label']]
+        labels = [0 for i in range(num_labels)]
+        for label in example['labels']:
+            labels[label_map[label]] = 1
+        example['label_ids'] = torch.tensor(labels, dtype=torch.long)
+        del example['labels']
         return example
     
     dataset = dataset.map(map_labels)
