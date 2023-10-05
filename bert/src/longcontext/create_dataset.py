@@ -4,6 +4,7 @@ import json
 import datasets
 from datasets import load_dataset
 import transformers
+import torch
 
 _task_column_names = {
     '20news': ('text', None),
