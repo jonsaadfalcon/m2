@@ -179,6 +179,7 @@ def build_my_dataloader(task_name, cfg: DictConfig, device_batch_size: int):
 
 def build_model(cfg: DictConfig, num_labels):
     # Note: cfg.num_labels should match the number of classes in your dataset!
+    cfg.num_labels = num_labels
 
     if cfg.name == 'hf_bert':
         return hf_bert_module.create_hf_bert_classification(
