@@ -50,7 +50,7 @@ Metrics = Dict[str, Dict[str, Any]]
 TASK_NAME_TO_NUM_LABELS = {
     'contract_nli': 3,
     '20news': 20,
-    'ecthr': 2,
+    'ecthr': 9,
     'mnli': 3,
     'rte': 2,
     'mrpc': 2,
@@ -1109,6 +1109,7 @@ def create_ecthr_dataset(split):
         for label in example['label']:
             labels[label_map[label]] = 1
         example['label_ids'] = torch.tensor(labels, dtype=torch.long)
+        #example['labels'] = torch.tensor(labels, dtype=torch.long)
         del example['label']
         return example
     
@@ -1396,7 +1397,7 @@ class ECTHRJob(GlueClassificationJob):
                          job_name=job_name,
                          seed=seed,
                          task_name='ecthr',
-                         num_labels=2,
+                         num_labels=9,
                          eval_interval=eval_interval,
                          scheduler=scheduler,
                          max_sequence_length=max_sequence_length,
