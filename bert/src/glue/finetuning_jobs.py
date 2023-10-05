@@ -1094,9 +1094,10 @@ def create_ecthr_dataset(split):
     label_map = {}
     for row in range(len(dataset)):
         assert type(dataset[row]['labels']) == list
-        assert len(dataset[row]['labels']) == 1
-        if dataset[row]['labels'][0] not in label_map:
-            label_map[dataset[row]['labels'][0]] = int(dataset[row]['labels'][0])
+        #assert len(dataset[row]['labels']) == 1
+        for label in dataset[row]['labels']:
+            if label not in label_map:
+                label_map[label] = int(label)
 
     print("label_map for ecthr")
     print(label_map)
