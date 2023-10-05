@@ -19,7 +19,7 @@ task_name: 'mimic'
 
 # (Optionally) provide a composer checkpoint to use for the starting weights
 #load_path: ./local-bert-checkpoints/alt-hyena-lc-resid-bd-mlp-glu-pretrain-c4-w10-ord128-mlm30-lr8e-4-dim1536-bf16-rerun/ep0-ba70000-rank0.pt
-load_path: ./local-bert-checkpoints/M2-260M/model.pt
+load_path: ./local-bert-checkpoints/M2-260M/ep0-ba70000-rank0.pt
 # long-context-seq-len-1024
 
 # Model
