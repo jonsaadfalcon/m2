@@ -1092,12 +1092,14 @@ def create_ecthr_dataset(split):
     #    label_map = json.load(f)
 
     label_map = {}
+    count = 0
     for row in range(len(dataset)):
         assert type(dataset[row]['labels']) == list
         #assert len(dataset[row]['labels']) == 1
         for label in dataset[row]['labels']:
             if label not in label_map:
-                label_map[label] = int(label)
+                label_map[label] = count
+                count += 1
 
     print("label_map for ecthr")
     print(label_map)
