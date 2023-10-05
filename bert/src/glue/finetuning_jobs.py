@@ -1091,24 +1091,25 @@ def create_ecthr_dataset(split):
     #with open(label2idx_path, 'r') as f:
     #    label_map = json.load(f)
 
-    #num_labels = len(label_map)
+    label_map = {}
+    for row in range(len(dataset)):
+        assert type(dataset[row]['labels']) == list
+        assert len(dataset[row]['labels']) == 1
+        if dataset[row]['labels'][0] not in label_map:
+            label_map[dataset[row]['labels'][0]] = int(dataset[row]['labels'][0])
 
-    #def map_labels(example):
-    #    labels = [0 for i in range(num_labels)]
-    #    for label in example['labels']:
-    #        labels[label_map[label]] = 1
-    #    example['label_ids'] = torch.tensor(labels, dtype=torch.long)
-    #    del example['labels']
-    #    return example
-    label_set = set()
+    print("label_map for ecthr")
+    print(label_map)
+
+    num_labels = len(label_map)
+
     def map_labels(example):
-        assert type(example['labels']) == list
-        assert len(example['labels']) == 1
-        label_set.add(int(example['labels'][0]))
-        return int(example['labels'][0])
-
-    print("label_set for ecthr")
-    print(label_set)
+        labels = [0 for i in range(num_labels)]
+        for label in example['labels']:
+            labels[label_map[label]] = 1
+        example['label_ids'] = torch.tensor(labels, dtype=torch.long)
+        del example['labels']
+        return example
     
     dataset = dataset.map(map_labels)
 
