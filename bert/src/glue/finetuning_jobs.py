@@ -1087,6 +1087,7 @@ def create_ecthr_dataset(split):
     )
     dataset = dataset['train']
 
+    dataset = dataset.rename_column('labels', 'label')
     label_names = set(dataset['label'])
     label_names = sorted(label_names)
     label_map = {label: i for i, label in enumerate(label_names)}
