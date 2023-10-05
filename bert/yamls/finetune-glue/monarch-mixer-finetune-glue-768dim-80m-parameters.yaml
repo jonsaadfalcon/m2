@@ -8,7 +8,7 @@ parallel: true
 base_run_name: monarch-mixer-finetune-glue-786dim-80m-parameters
 default_seed: 19
 precision: fp32 
-max_seq_len: 512
+max_seq_len: 128
 
 # Tokenizer for dataset creation
 tokenizer_name: bert-base-uncased
@@ -45,16 +45,17 @@ model:
 
 # Loading
 starting_checkpoint_load_path: model.pt    # Fill this in with the checkpoint from the end of pretraining
-local_pretrain_checkpoint_folder: ./local-bert-checkpoints_v3/
+local_pretrain_checkpoint_folder: ./local-bert-checkpoints/
 
 # When starting from mnli
 # local_pretrain_checkpoint_folder: ./local-finetune-checkpoints/{base_run_name}/task=mnli/seed=19/
 # starting_checkpoint_load_path: ${local_pretrain_checkpoint_folder}/ep3-ba24546-rank0.pt
 
 # Saving
-save_finetune_checkpoint_prefix: ./local-bert-checkpoints_v3/ # (local)
+save_finetune_checkpoint_prefix: ./local-bert-checkpoints/ # (local)
 # save_finetune_checkpoint_prefix: s3://<bucket>/remote-finetune-checkpoints # (remote)
 save_finetune_checkpoint_folder: ${save_finetune_checkpoint_prefix}/${base_run_name}
+overwrite: True
 
 # (Optional) W&B logging
 # loggers:
@@ -81,7 +82,7 @@ tasks:
       # We keep one MNLI checkpoint locally so that we can start finetuning of
       # RTE, MRPC and STS-B from the MNLI checkpoint
       save_num_checkpoints_to_keep: 1
-      max_sequence_length: 512
+      max_sequence_length: 128
       wd: 5e-6
       lr: 5e-5
   #ecthr:
@@ -90,7 +91,7 @@ tasks:
       # We keep one MNLI checkpoint locally so that we can start finetuning of
       # RTE, MRPC and STS-B from the MNLI checkpoint
   #    save_num_checkpoints_to_keep: 1
-  #    max_sequence_length: 512
+  #    max_sequence_length: 128
    #   wd: 5e-6
    #   lr: 5e-5
   contract_nli:
@@ -99,7 +100,7 @@ tasks:
       # We keep one MNLI checkpoint locally so that we can start finetuning of
       # RTE, MRPC and STS-B from the MNLI checkpoint
       save_num_checkpoints_to_keep: 1
-      max_sequence_length: 512
+      max_sequence_length: 128
       wd: 5e-6
       lr: 5e-5
   mnli:
@@ -108,14 +109,14 @@ tasks:
       # We keep one MNLI checkpoint locally so that we can start finetuning of
       # RTE, MRPC and STS-B from the MNLI checkpoint
       save_num_checkpoints_to_keep: 1
-      max_sequence_length: 512
+      max_sequence_length: 128
       wd: 5e-6
       lr: 5e-5
   rte:
     seeds: [19, 8364, 717, 10536, 90166]
     trainer_kwargs:
       save_num_checkpoints_to_keep: 0
-      max_sequence_length: 512
+      max_sequence_length: 128
       optim_name: adamw
       max_duration: 6ep
       wd: 0.01
@@ -123,7 +124,7 @@ tasks:
   qqp:
     trainer_kwargs:
       save_num_checkpoints_to_keep: 0
-      max_sequence_length: 512
+      max_sequence_length: 128
       optim_name: adamw
       wd: 0.01
       lr: 3e-5
@@ -131,7 +132,7 @@ tasks:
   qnli:
     trainer_kwargs:
       save_num_checkpoints_to_keep: 0
-      max_sequence_length: 512
+      max_sequence_length: 128
       wd: 1e-6
       lr: 5e-5
       pool_all: True # average pooling
@@ -139,14 +140,14 @@ tasks:
     seeds: [19, 8364, 717]
     trainer_kwargs:
       save_num_checkpoints_to_keep: 0
-      max_sequence_length: 512
+      max_sequence_length: 128
       wd: 3e-6
       lr: 3e-5
   stsb:
     seeds: [19, 8364, 717, 10536, 90166]
     trainer_kwargs:
       save_num_checkpoints_to_keep: 0
-      max_sequence_length: 512
+      max_sequence_length: 128
       optim_name: adamw
       wd: 0.01
       lr: 7e-5
@@ -154,7 +155,7 @@ tasks:
     seeds: [19, 8364, 717, 10536, 90166]
     trainer_kwargs:
       save_num_checkpoints_to_keep: 0
-      max_sequence_length: 512
+      max_sequence_length: 128
       optim_name: adamw
       wd: 0.01
       lr: 5e-5
@@ -162,6 +163,6 @@ tasks:
     seeds: [19, 8364, 717, 10536]
     trainer_kwargs:
       save_num_checkpoints_to_keep: 0
-      max_sequence_length: 512
+      max_sequence_length: 128
       wd: 5e-6
       lr: 5e-5

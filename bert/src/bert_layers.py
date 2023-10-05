@@ -142,16 +142,8 @@ class BertEmbeddings(nn.Module):
         embeddings = inputs_embeds + token_type_embeddings
         if self.use_positional_encodings:
             position_embeddings = self.position_embeddings(position_ids)
-            #embeddings += position_embeddings
-            
-            #print("position_embeddings")
-            #print(position_embeddings.shape)
-            #split_count = int(int(position_embeddings.shape[1]) / 128)
-
-            #for i in range(4):
-                #embeddings += position_embeddings[0][(i * 128):((i + 1) * 128)]
-            
-            embeddings += torch.cat((position_embeddings, position_embeddings, position_embeddings, position_embeddings), dim=1)
+            embeddings += position_embeddings
+            #embeddings += torch.cat((position_embeddings, position_embeddings, position_embeddings, position_embeddings), dim=1)
         
         embeddings = self.LayerNorm(embeddings)
         embeddings = self.dropout(embeddings)
