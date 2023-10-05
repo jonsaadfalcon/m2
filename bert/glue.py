@@ -39,6 +39,8 @@ import torch.nn as nn
 
 TASK_NAME_TO_CLASS = {
     'contract_nli': finetuning_jobs_module.ContractNLIJob,
+    '20news': finetuning_jobs_module.News20Job,
+    'ecthr': finetuning_jobs_module.ECTHRJob,
     'mnli': finetuning_jobs_module.MNLIJob,
     'rte': finetuning_jobs_module.RTEJob,
     'mrpc': finetuning_jobs_module.MRPCJob,
@@ -432,7 +434,7 @@ def train(config: om.DictConfig) -> None:
         round_1_task_names = {'cola', 'sst2', 'qqp', 'qnli', 'mnli', 'rte', 'mrpc', 'stsb'}
         #round_1_task_names = {'contract_nli', 'cola', 'sst2', 'qqp', 'qnli', 'mnli', 'rte', 'mrpc', 'stsb'}
     
-    round_1_task_names = {'contract_nli'}
+    round_1_task_names = {'20news', 'ecthr', 'contract_nli'}
     round_1_job_configs = create_job_configs(config, round_1_task_names,
                                              local_pretrain_checkpoint_path)
 

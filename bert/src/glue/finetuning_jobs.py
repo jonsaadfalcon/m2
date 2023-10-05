@@ -990,6 +990,7 @@ _task_column_names = {
     '20news': ('text', None),
     'contract_nli': ('input', None),
     'mimic': ('text', None),
+    'ecthr': ('text', None),
 }
 
 def create_news20_dataset(split):
@@ -1015,6 +1016,9 @@ def create_news20_dataset(split):
     label_names = set(dataset['label'])
     label_names = sorted(label_names)
     label_map = {label: i for i, label in enumerate(label_names)}
+
+    print("label_map for news20")
+    print(label_map)
 
     def map_labels(example):
         example['label'] = label_map[example['label']]
@@ -1062,6 +1066,52 @@ def create_mimic_dataset(split):
 
     return dataset
 
+def create_ecthr_dataset(split):
+    OUTPUT_DIR = "datasets/ecthr/"
+    
+    print(f"Split: {split}")
+
+    if split == 'train':
+        path = os.path.join(OUTPUT_DIR, 'train.json')
+    elif 'val' in split or 'dev' in split:
+        path = os.path.join(OUTPUT_DIR, 'dev.json')
+        split = 'dev'
+    elif split == 'test':
+        path = os.path.join(OUTPUT_DIR, 'test.json')
+    
+    dataset = load_dataset(
+        'json', 
+        data_files=[path]
+    )
+    dataset = dataset['train']
+
+    #label2idx_path = os.path.join(OUTPUT_DIR, 'label2idx.json')
+    #with open(label2idx_path, 'r') as f:
+    #    label_map = json.load(f)
+
+    #num_labels = len(label_map)
+
+    #def map_labels(example):
+    #    labels = [0 for i in range(num_labels)]
+    #    for label in example['labels']:
+    #        labels[label_map[label]] = 1
+    #    example['label_ids'] = torch.tensor(labels, dtype=torch.long)
+    #    del example['labels']
+    #    return example
+    label_set = set()
+    def map_labels(example):
+        assert type(example['labels']) == list
+        assert len(example['labels']) == 1
+        label_set.add(int(example['labels'][0]))
+        return int(example['labels'][0])
+
+    print("label_set for ecthr")
+    print(label_set)
+    
+    dataset = dataset.map(map_labels)
+
+    return dataset
+
 def create_contract_nli_dataset(split, max_retries=10):
     download_config = datasets.DownloadConfig(max_retries=max_retries)
     dataset = datasets.load_dataset(
@@ -1095,6 +1145,8 @@ def create_long_context_dataset(task_name, split, tokenizer_name, max_seq_length
         dataset = create_mimic_dataset(split)
     elif task_name == 'contract_nli':
         dataset = create_contract_nli_dataset(split)
+    elif task_name == "ecthr":
+        dataset = create_ecthr_dataset(split)
 
     text_column_names = _task_column_names[task_name]
     tokenizer = transformers.AutoTokenizer.from_pretrained(tokenizer_name) 
@@ -1158,6 +1210,97 @@ class ContractNLIJob(GlueClassificationJob):
                          job_name=job_name,
                          seed=seed,
                          task_name='contract_nli',
+                         num_labels=3,
+                         eval_interval=eval_interval,
+                         scheduler=scheduler,
+                         max_sequence_length=max_sequence_length,
+                         max_duration=max_duration,
+                         batch_size=batch_size,
+                         load_path=load_path,
+                         save_folder=save_folder,
+                         loggers=loggers,
+                         callbacks=callbacks,
+                         precision=precision,
+                         **kwargs)
+
+        print(f"\nGLUE task {self.task_name} Details:")
+        print('-- lr:', lr)
+        print('-- wd:', wd)
+        print(f"-- seed: {seed}")
+        if optim_name == 'DecoupledAdamW':
+            print(f"-- using DecoupledAdamW optimizer")
+            self.optimizer = DecoupledAdamW(create_param_groups(None, self.model),
+                                        lr=lr,
+                                        betas=(0.9, 0.98),
+                                        eps=1.0e-06,
+                                        weight_decay=wd)
+        else:
+            from torch.optim import AdamW
+            print(f"-- using AdamW optimizer")
+            self.optimizer = AdamW(create_param_groups(None, self.model),
+                                        lr=lr,
+                                        betas=(0.9, 0.98),
+                                        eps=1.0e-06,
+                                        weight_decay=wd)
+
+        dataset_kwargs = {
+            'task': self.task_name,
+            'tokenizer_name': self.tokenizer_name,
+            'max_seq_length': self.max_sequence_length,
+        }
+
+        dataloader_kwargs = {
+            'batch_size': self.batch_size,
+            'num_workers': 0,
+            'shuffle': False,
+            'drop_last': False,
+        }
+        train_dataset = create_long_context_dataset(self.task_name, "train", self.tokenizer_name, self.max_sequence_length, num_workers=8)
+        self.train_dataloader = _build_dataloader(train_dataset,
+                                                  **dataloader_kwargs)
+        eval_dataset = create_long_context_dataset(self.task_name, "validation", self.tokenizer_name, self.max_sequence_length, num_workers=8)
+
+        print("Eval_Dataset Generated - " + self.task_name)
+        print(eval_dataset)
+        
+
+        long_context_evaluator = Evaluator(label=self.task_name,
+                                   dataloader=_build_dataloader(
+                                       eval_dataset, **dataloader_kwargs),
+                                   metric_names=['MulticlassAccuracy'])
+        self.evaluators = [long_context_evaluator]
+
+
+
+class News20Job(GlueClassificationJob):
+    """News20Job."""
+
+    def __init__(
+        self,
+        model: ComposerModel,
+        tokenizer_name: str,
+        job_name: Optional[str] = None,
+        seed: int = 42,
+        eval_interval: str = '1000ba',
+        scheduler: Optional[ComposerScheduler] = None,
+        max_sequence_length: Optional[int] = 512,
+        max_duration: Optional[str] = '10ep',
+        batch_size: Optional[int] = 16,
+        load_path: Optional[str] = None,
+        save_folder: Optional[str] = None,
+        loggers: Optional[List[LoggerDestination]] = None,
+        callbacks: Optional[List[Callback]] = None,
+        precision: Optional[str] = None,
+        lr: Optional[float] = 1.0e-5,
+        wd: Optional[float] = 1.0e-6,
+        optim_name: Optional[str] = 'DecoupledAdamW',
+        **kwargs,
+    ):
+        super().__init__(model=model,
+                         tokenizer_name=tokenizer_name,
+                         job_name=job_name,
+                         seed=seed,
+                         task_name='20news',
                          num_labels=2,
                          eval_interval=eval_interval,
                          scheduler=scheduler,
@@ -1203,44 +1346,108 @@ class ContractNLIJob(GlueClassificationJob):
             'shuffle': False,
             'drop_last': False,
         }
-        train_dataset = create_long_context_dataset("contract_nli", "train", self.tokenizer_name, self.max_sequence_length, num_workers=8)
+        train_dataset = create_long_context_dataset(self.task_name, "train", self.tokenizer_name, self.max_sequence_length, num_workers=8)
         self.train_dataloader = _build_dataloader(train_dataset,
                                                   **dataloader_kwargs)
-        contract_nli_eval_dataset = create_long_context_dataset("contract_nli", "validation", self.tokenizer_name, self.max_sequence_length, num_workers=8)
+        eval_dataset = create_long_context_dataset(self.task_name, "validation", self.tokenizer_name, self.max_sequence_length, num_workers=8)
 
-        print("contract_nli_eval_dataset generated")
-        print(contract_nli_eval_dataset)
-        #assert False
+        print("Eval_Dataset Generated - " + self.task_name)
+        print(eval_dataset)
         
 
-        long_context_evaluator = Evaluator(label='contract_nli',
+        long_context_evaluator = Evaluator(label=self.task_name,
                                    dataloader=_build_dataloader(
-                                       contract_nli_eval_dataset, **dataloader_kwargs),
+                                       eval_dataset, **dataloader_kwargs),
                                    metric_names=['MulticlassAccuracy'])
         self.evaluators = [long_context_evaluator]
 
-        #######################
 
-        """ train_dataset = create_glue_dataset(split='train', **dataset_kwargs)
+
+class ECTHRJob(GlueClassificationJob):
+    """ECTHRJob."""
+
+    def __init__(
+        self,
+        model: ComposerModel,
+        tokenizer_name: str,
+        job_name: Optional[str] = None,
+        seed: int = 42,
+        eval_interval: str = '1000ba',
+        scheduler: Optional[ComposerScheduler] = None,
+        max_sequence_length: Optional[int] = 512,
+        max_duration: Optional[str] = '10ep',
+        batch_size: Optional[int] = 16,
+        load_path: Optional[str] = None,
+        save_folder: Optional[str] = None,
+        loggers: Optional[List[LoggerDestination]] = None,
+        callbacks: Optional[List[Callback]] = None,
+        precision: Optional[str] = None,
+        lr: Optional[float] = 1.0e-5,
+        wd: Optional[float] = 1.0e-6,
+        optim_name: Optional[str] = 'DecoupledAdamW',
+        **kwargs,
+    ):
+        super().__init__(model=model,
+                         tokenizer_name=tokenizer_name,
+                         job_name=job_name,
+                         seed=seed,
+                         task_name='ecthr',
+                         num_labels=2,
+                         eval_interval=eval_interval,
+                         scheduler=scheduler,
+                         max_sequence_length=max_sequence_length,
+                         max_duration=max_duration,
+                         batch_size=batch_size,
+                         load_path=load_path,
+                         save_folder=save_folder,
+                         loggers=loggers,
+                         callbacks=callbacks,
+                         precision=precision,
+                         **kwargs)
+
+        print(f"\nGLUE task {self.task_name} Details:")
+        print('-- lr:', lr)
+        print('-- wd:', wd)
+        print(f"-- seed: {seed}")
+        if optim_name == 'DecoupledAdamW':
+            print(f"-- using DecoupledAdamW optimizer")
+            self.optimizer = DecoupledAdamW(create_param_groups(None, self.model),
+                                        lr=lr,
+                                        betas=(0.9, 0.98),
+                                        eps=1.0e-06,
+                                        weight_decay=wd)
+        else:
+            from torch.optim import AdamW
+            print(f"-- using AdamW optimizer")
+            self.optimizer = AdamW(create_param_groups(None, self.model),
+                                        lr=lr,
+                                        betas=(0.9, 0.98),
+                                        eps=1.0e-06,
+                                        weight_decay=wd)
+
+        dataset_kwargs = {
+            'task': self.task_name,
+            'tokenizer_name': self.tokenizer_name,
+            'max_seq_length': self.max_sequence_length,
+        }
+
+        dataloader_kwargs = {
+            'batch_size': self.batch_size,
+            'num_workers': 0,
+            'shuffle': False,
+            'drop_last': False,
+        }
+        train_dataset = create_long_context_dataset(self.task_name, "train", self.tokenizer_name, self.max_sequence_length, num_workers=8)
         self.train_dataloader = _build_dataloader(train_dataset,
                                                   **dataloader_kwargs)
-        mnli_eval_dataset = create_glue_dataset(split='validation_matched',
-                                                **dataset_kwargs)
-        mnli_eval_mismatched_dataset = create_glue_dataset(
-            split='validation_mismatched', **dataset_kwargs)
-        mnli_evaluator = Evaluator(label='glue_mnli',
+        eval_dataset = create_long_context_dataset(self.task_name, "validation", self.tokenizer_name, self.max_sequence_length, num_workers=8)
+
+        print("Eval_Dataset Generated - " + self.task_name)
+        print(eval_dataset)
+        
+
+        long_context_evaluator = Evaluator(label=self.task_name,
                                    dataloader=_build_dataloader(
-                                       mnli_eval_dataset, **dataloader_kwargs),
+                                       eval_dataset, **dataloader_kwargs),
                                    metric_names=['MulticlassAccuracy'])
-        
-        #print("MNLI Evaluator Found")
-        #print(type(mnli_eval_dataset))
-        #print(mnli_eval_dataset)
-        #assert False
-        
-        mnli_evaluator_mismatched = Evaluator(
-            label='glue_mnli_mismatched',
-            dataloader=_build_dataloader(mnli_eval_mismatched_dataset,
-                                         **dataloader_kwargs),
-            metric_names=['MulticlassAccuracy'])
-        self.evaluators = [mnli_evaluator, mnli_evaluator_mismatched] """
+        self.evaluators = [long_context_evaluator]
