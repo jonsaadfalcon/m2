@@ -217,8 +217,8 @@ def main(cfg: DictConfig,
     n_params = sum(p.numel() for p in model.parameters())
     print(f'{n_params=:.4e}')
 
-    print("Model loaded! Overview:")
-    print(model)
+    #print("Model loaded! Overview:")
+    #print(model)
 
     # Dataloaders # TODO simran: potentially modify to have the test dataloader as well.
     print('Building train loader...')
@@ -263,6 +263,9 @@ def main(cfg: DictConfig,
     if cfg.get('run_name') is None:
         cfg.run_name = os.environ.get('COMPOSER_RUN_NAME',
                                       'sequence-classification')
+        
+    print("train_loader")
+    print(train_loader)
 
     # Build the Trainer
     trainer = Trainer(
