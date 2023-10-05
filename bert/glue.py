@@ -434,7 +434,8 @@ def train(config: om.DictConfig) -> None:
         round_1_task_names = {'cola', 'sst2', 'qqp', 'qnli', 'mnli', 'rte', 'mrpc', 'stsb'}
         #round_1_task_names = {'contract_nli', 'cola', 'sst2', 'qqp', 'qnli', 'mnli', 'rte', 'mrpc', 'stsb'}
     
-    round_1_task_names = {'20news', 'ecthr', 'contract_nli'}
+    #round_1_task_names = {'20news', 'ecthr', 'contract_nli'}
+    round_1_task_names = {'20news'}
     round_1_job_configs = create_job_configs(config, round_1_task_names,
                                              local_pretrain_checkpoint_path)
 

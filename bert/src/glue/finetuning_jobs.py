@@ -47,8 +47,10 @@ def _build_dataloader(dataset, **kwargs):
 
 Metrics = Dict[str, Dict[str, Any]]
 
-TASK_NAME_TO_NUM_LABELS = {
+""" TASK_NAME_TO_NUM_LABELS = {
     'contract_nli': 3,
+    '20news': 2,
+    'ecthr': 2,
     'mnli': 3,
     'rte': 2,
     'mrpc': 2,
@@ -57,7 +59,7 @@ TASK_NAME_TO_NUM_LABELS = {
     'sst2': 2,
     'stsb': 1,
     'cola': 2,
-}
+} """
 
 
 def reset_trainer(trainer: Trainer, garbage_collect: bool = False):
