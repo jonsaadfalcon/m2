@@ -263,9 +263,6 @@ def main(cfg: DictConfig,
     if cfg.get('run_name') is None:
         cfg.run_name = os.environ.get('COMPOSER_RUN_NAME',
                                       'sequence-classification')
-        
-    print("train_loader")
-    print(train_loader)
 
     # Build the Trainer
     trainer = Trainer(
