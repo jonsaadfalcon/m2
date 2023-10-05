@@ -1032,7 +1032,7 @@ def create_news20_dataset(split):
 
 
 def create_mimic_dataset(split):
-    OUTPUT_DIR = "/data/mimiciii/0/50"
+    OUTPUT_DIR = "datasets/mimiciii/0/50"
     
     print(f"Split: {split}")
 
