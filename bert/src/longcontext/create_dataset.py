@@ -169,6 +169,7 @@ def create_contract_nli_dataset(split, max_retries=10):
     
     def map_labels(example):
         example['output'] = mapping[example['output']]
+        example['output'] = torch.tensor(example['output'], dtype=torch.long)
         return example
     dataset = dataset.map(map_labels)
     dataset = dataset.rename_column('output', 'label')
