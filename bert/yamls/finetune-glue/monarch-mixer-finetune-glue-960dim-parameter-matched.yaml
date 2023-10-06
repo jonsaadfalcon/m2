@@ -73,7 +73,8 @@ task_name: 'contract_nli'
 
 # Base model config
 model:
-  name: bert
+  #name: bert
+  name: mosaic_bert
   pretrained_model_name: ${tokenizer_name}
   tokenizer_name: ${tokenizer_name}
   model_config:
