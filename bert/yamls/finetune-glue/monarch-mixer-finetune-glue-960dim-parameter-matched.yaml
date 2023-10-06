@@ -9,10 +9,67 @@ base_run_name: monarch-mixer-finetune-glue-960dim-parameter-matched
 default_seed: 19
 precision: fp32 
 max_seq_len: 128
-seed: 17
 
 # Tokenizer for dataset creation
 tokenizer_name: bert-base-uncased
+
+
+
+
+
+
+# Dataloaders (make sure to update these after you modify the starter script!)
+train_loader:
+  split: train
+  tokenizer_name: ${tokenizer_name}
+  max_seq_len: ${max_seq_len}
+  shuffle: true
+  drop_last: true
+  num_workers: 8
+
+eval_loader:
+  split: validation
+  tokenizer_name: ${tokenizer_name}
+  max_seq_len: ${max_seq_len}
+  shuffle: true
+  drop_last: true
+  num_workers: 8
+
+# Optimization
+scheduler:
+  name: linear_decay_with_warmup
+  t_warmup: 0.06dur # Warmup to the full LR for 6% of the training duration
+  alpha_f: 0.02 # Linearly decay to 0.02x the full LR by the end of the training duration
+
+optimizer:
+  name: decoupled_adamw
+  lr: 1.0e-5
+  betas:
+  - 0.9
+  - 0.98
+  eps: 1.0e-06
+  weight_decay: 1.0e-6
+
+# Training duration and evaluation frequency
+max_duration: 10ep
+eval_interval: 1ep
+global_train_batch_size: 16
+
+# System
+seed: 17
+device_eval_batch_size: 16
+device_train_microbatch_size: 16
+
+# Logging
+progress_bar: false
+log_to_console: true
+console_log_interval: 10ba
+
+
+
+
+
+
 
 # Base model config
 model:
