@@ -20,38 +20,57 @@ task_name: 'contract_nli'
 
 # (Optionally) provide a composer checkpoint to use for the starting weights
 #load_path: ./local-bert-checkpoints/alt-hyena-lc-resid-bd-mlp-glu-pretrain-c4-w10-ord128-mlm30-lr8e-4-dim1536-bf16-rerun/ep0-ba70000-rank0.pt
-#load_path: ./local-bert-checkpoints/M2-260M/ep0-ba70000-rank0.pt
-load_path: ./local-bert-checkpoints/M2-80M/model.pt
+load_path: ./local-bert-checkpoints/M2-260M/ep0-ba70000-rank0.pt
+#load_path: ./local-bert-checkpoints/M2-80M/model.pt
 # long-context-seq-len-1024
 
-# Base model config
+# Model
 model:
-  name: bert
+  name: mosaic_bert
   pretrained_model_name: ${tokenizer_name}
   tokenizer_name: ${tokenizer_name}
   model_config:
-    num_attention_heads: 12 
-    num_hidden_layers: 12 
-    attention_probs_dropout_prob: 0.0 
+    problem_type: multi_label_classification
+    num_labels: 3
+    #problem_type: single_label_classification
+    #num_labels: 3
+    
+    num_attention_heads: 12 # bert-base default
+    num_hidden_layers: 12 # bert-base default
+    hidden_size: 1536
+    intermediate_size: 6144
+    attention_probs_dropout_prob: 0.0 # This must be 0 for Flash Attention with triton to work
     max_position_embeddings: 128
 
-    monarch_mixer_sequence_mixing: True
+    # use_monarch_attention: True
+    # use_simple_hyena: true
+    use_alternate_hyena: True
+    hyena_long_conv: False
     long_conv_l_max: 128
+    long_conv_lam: 0.001 # ignored
+    long_conv_kernel_dropout: 0.1 # ignored
     long_conv_kernel_learning_rate: 1e-3
     hyena_lr_pos_emb: 1e-5
     hyena_w: 10
     hyena_wd: 0.1
     hyena_emb_dim: 5
+    prenorm: False
+    use_silu: False
+    use_fast_fftconv: True
     hyena_filter_order: 128
-    hyena_training_additions: True
 
-    bidirectional: true
+    long_conv_bidirectional: true
+    long_conv_circular: false
+    long_conv_exp_mod: false
     residual_long_conv: true
 
     use_glu_mlp: True
+
     use_monarch_mlp: True
     monarch_mlp_nblocks: 4
+
     use_positional_encodings: True
+    pool_all: False
 
 # Dataloaders (make sure to update these after you modify the starter script!)
 train_loader:
