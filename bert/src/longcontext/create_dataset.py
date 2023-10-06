@@ -155,7 +155,7 @@ def create_contract_nli_dataset(split, max_retries=10):
     }
 
     def map_labels(example):
-        labels = [0 for i in range(num_labels)]
+        labels = [0 for i in range(len(mapping))]
         labels[mapping[example['label']]] = 1
         #example['label_ids'] = torch.tensor(labels, dtype=torch.long)
         example['label'] = torch.tensor(labels, dtype=torch.long)
