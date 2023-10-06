@@ -296,6 +296,10 @@ def create_mosaic_bert_classification(
                 F1Score(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro', threshold=0.),
                 AUROC(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro'),
             ]
+        elif config.problem_type == 'subgke_label_classification':
+            metrics = [
+                F1Score(task='singlelabel', num_labels=num_labels, average='micro', threshold=0.)
+            ]
 
     hf_model = HuggingFaceModel(model=model,
                                 tokenizer=tokenizer,

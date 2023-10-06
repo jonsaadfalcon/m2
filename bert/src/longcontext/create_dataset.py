@@ -158,6 +158,10 @@ def create_contract_nli_dataset(split, max_retries=10):
         return example
     dataset = dataset.map(map_labels)
     dataset = dataset.rename_column('output', 'label')
+
+    print("Contract NLI Dataset")
+    print(dataset)
+
     return dataset
 
 
