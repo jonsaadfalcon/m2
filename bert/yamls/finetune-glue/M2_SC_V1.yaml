@@ -62,8 +62,10 @@ progress_bar: false
 log_to_console: true
 console_log_interval: 10ba
 
-task_name: 'mimic'
+#task_name: 'mimic'
+task_name: ecthr
 #task_name: 'contract_nli'
+num_labels: 9
 
 #################################################
 
@@ -75,7 +77,7 @@ model:
   tokenizer_name: ${tokenizer_name}
   model_config:
     problem_type: multi_label_classification
-    num_labels: 50
+    num_labels: ${num_labels}
     num_attention_heads: 12 
     num_hidden_layers: 12 
     attention_probs_dropout_prob: 0.0 
