@@ -29,6 +29,8 @@ from omegaconf import DictConfig
 from omegaconf import OmegaConf as om
 from torch.utils.data import DataLoader
 
+import pdb
+
 
 TASK2LABELS = {
     '20news': 20,
@@ -215,6 +217,7 @@ def main(cfg: DictConfig,
     print('Initializing model...')
     num_labels = TASK2LABELS[cfg.task_name]
     model = build_model(cfg.model, num_labels)
+    pdb.set_trace()
     n_params = sum(p.numel() for p in model.parameters())
     print(f'{n_params=:.4e}')
 
