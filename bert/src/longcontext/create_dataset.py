@@ -88,7 +88,7 @@ def create_mimic_dataset(split):
     print("Created Mimic Dataset!")
     print(dataset)
     print(dataset[0]['label_ids'])
-    print(dataset[0]['input'])
+    print(dataset[0]['text'])
 
     return dataset
 
@@ -231,5 +231,8 @@ def create_long_context_dataset(task_name, split, tokenizer_name, max_seq_length
     for column in dataset.features:
         if column not in ['label', 'input_ids', 'token_type_ids', 'attention_mask']:
             dataset = dataset.remove_columns([column])
+
+    print("Final Columns for Dataset")
+    print(dataset.features)
 
     return dataset
