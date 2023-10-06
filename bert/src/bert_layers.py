@@ -1155,13 +1155,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
             elif self.config.problem_type == 'multi_label_classification':
                 loss_fct = nn.BCEWithLogitsLoss()
                 #loss_fct = nn.CrossEntropyLoss()
-                print("Logits and labels shapes")
-                #print(logits)
-                print(logits.shape)
-                #print(labels)
-                print(labels.shape)
                 loss = loss_fct(logits, labels.float())
-                assert False
 
         if not return_dict:
             output = (logits,) + outputs[2:]
