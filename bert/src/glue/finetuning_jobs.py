@@ -50,7 +50,7 @@ Metrics = Dict[str, Dict[str, Any]]
 TASK_NAME_TO_NUM_LABELS = {
     'contract_nli': 3,
     '20news': 20,
-    #'ecthr': 9,
+    #'ecthr': 10,
     'mnli': 3,
     'rte': 2,
     'mrpc': 2,

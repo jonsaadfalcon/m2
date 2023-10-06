@@ -36,7 +36,7 @@ TASK2LABELS = {
     '20news': 20,
     'contract_nli': 3,
     'mimic': 50,
-    'ecthr': 9,
+    'ecthr': 10,
 }
 
 

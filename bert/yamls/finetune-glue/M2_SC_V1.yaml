@@ -65,7 +65,7 @@ console_log_interval: 10ba
 #task_name: 'mimic'
 task_name: ecthr
 #task_name: 'contract_nli'
-num_labels: 9
+num_labels: 10
 
 #################################################
 
