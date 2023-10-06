@@ -44,7 +44,7 @@ model:
     use_positional_encodings: True
 
 # Loading
-starting_checkpoint_load_path:      # Fill this in with the checkpoint from the end of pretraining
+starting_checkpoint_load_path: M2-110M/model.pt     # Fill this in with the checkpoint from the end of pretraining
 local_pretrain_checkpoint_folder: ./local-bert-checkpoints/
 
 # When starting from mnli
@@ -52,7 +52,7 @@ local_pretrain_checkpoint_folder: ./local-bert-checkpoints/
 # starting_checkpoint_load_path: ${local_pretrain_checkpoint_folder}/ep3-ba24546-rank0.pt
 
 # Saving
-save_finetune_checkpoint_prefix: ./local-finetune-checkpoints/ # (local)
+save_finetune_checkpoint_prefix: ./local-finetune-checkpoints/M2-110/ # (local)
 # save_finetune_checkpoint_prefix: s3://<bucket>/remote-finetune-checkpoints # (remote)
 save_finetune_checkpoint_folder: ${save_finetune_checkpoint_prefix}/${base_run_name}
 
