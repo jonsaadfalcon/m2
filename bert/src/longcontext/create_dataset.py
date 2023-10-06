@@ -159,7 +159,7 @@ def create_contract_nli_dataset(split, max_retries=10):
         labels[mapping[example['output']]] = 1
         example['label_ids'] = torch.tensor(labels, dtype=torch.long)
         example['label'] = torch.tensor(labels, dtype=torch.long)
-        example['label'] = torch.reshape(example['label'], (3, 1))
+        #example['label'] = torch.reshape(example['label'], (3, 1))
         del example['output']
         return example
     
