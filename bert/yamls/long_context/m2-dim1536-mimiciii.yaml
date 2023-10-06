@@ -31,7 +31,7 @@ model:
   model_config:
     #problem_type: multi_label_classification
     #num_labels: 50
-    problem_type: single_label_classification
+    #problem_type: single_label_classification
     num_labels: 3
     
     num_attention_heads: 12 # bert-base default
