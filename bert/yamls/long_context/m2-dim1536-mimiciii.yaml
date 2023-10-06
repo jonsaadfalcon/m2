@@ -15,8 +15,8 @@ tokenizer_name: bert-base-uncased
 max_seq_len: 128
 precision: amp_bf16
 
-#task_name: 'mimic'
-task_name: 'contract_nli'
+task_name: 'mimic'
+#task_name: 'contract_nli'
 
 # (Optionally) provide a composer checkpoint to use for the starting weights
 #load_path: ./local-bert-checkpoints/alt-hyena-lc-resid-bd-mlp-glu-pretrain-c4-w10-ord128-mlm30-lr8e-4-dim1536-bf16-rerun/ep0-ba70000-rank0.pt
@@ -30,7 +30,7 @@ model:
   tokenizer_name: ${tokenizer_name}
   model_config:
     problem_type: multi_label_classification
-    num_labels: 3
+    num_labels: 50
     #problem_type: single_label_classification
     #num_labels: 3
     
