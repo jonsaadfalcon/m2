@@ -221,8 +221,8 @@ def main(cfg: DictConfig,
     n_params = sum(p.numel() for p in model.parameters())
     print(f'{n_params=:.4e}')
 
-    print("Model loaded! Overview:")
-    print(model)
+    #print("Model loaded! Overview:")
+    #print(model)
 
     # Dataloaders # TODO simran: potentially modify to have the test dataloader as well.
     print('Building train loader...')

@@ -1153,8 +1153,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
                 loss = loss_fct(logits.view(-1, self.num_labels),
                                 labels.view(-1))
             elif self.config.problem_type == 'multi_label_classification':
-                #loss_fct = nn.BCEWithLogitsLoss()
-                loss_fct = nn.CrossEntropyLoss()
+                loss_fct = nn.BCEWithLogitsLoss()
+                #loss_fct = nn.CrossEntropyLoss()
                 loss = loss_fct(logits, labels)
 
         if not return_dict:
