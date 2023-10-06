@@ -74,6 +74,8 @@ model:
   pretrained_model_name: ${tokenizer_name}
   tokenizer_name: ${tokenizer_name}
   model_config:
+    problem_type: multi_label_classification
+    num_labels: 50
     num_attention_heads: 12 
     num_hidden_layers: 12 
     attention_probs_dropout_prob: 0.0 
