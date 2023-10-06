@@ -165,6 +165,8 @@ def create_contract_nli_dataset(split, max_retries=10):
     
     dataset = dataset.map(map_labels)
 
+    print("Created Contract NLI Dataset!")
+
     return dataset
     
     #def map_labels(example):
