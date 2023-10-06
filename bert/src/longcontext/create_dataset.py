@@ -85,6 +85,11 @@ def create_mimic_dataset(split):
     
     dataset = dataset.map(map_labels)
 
+    print("Created Mimic Dataset!")
+    print(dataset)
+    print(dataset[0]['label_ids'])
+    print(dataset[0]['input'])
+
     return dataset
 
 def create_ecthr_dataset(split):

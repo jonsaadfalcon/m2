@@ -62,8 +62,8 @@ progress_bar: false
 log_to_console: true
 console_log_interval: 10ba
 
-#task_name: 'mimic'
-task_name: 'contract_nli'
+task_name: 'mimic'
+#task_name: 'contract_nli'
 
 #################################################
 
