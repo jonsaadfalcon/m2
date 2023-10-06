@@ -1,3 +1,4 @@
+
 # Note that some of the fields in this template haven't been filled in yet.
 # Please resolve any `null` fields before launching!
 
@@ -13,9 +14,63 @@ max_seq_len: 128
 # Tokenizer for dataset creation
 tokenizer_name: bert-base-uncased
 
+
+# Dataloaders (make sure to update these after you modify the starter script!)
+train_loader:
+  split: train
+  tokenizer_name: ${tokenizer_name}
+  max_seq_len: ${max_seq_len}
+  shuffle: true
+  drop_last: true
+  num_workers: 8
+
+eval_loader:
+  split: validation
+  tokenizer_name: ${tokenizer_name}
+  max_seq_len: ${max_seq_len}
+  shuffle: true
+  drop_last: true
+  num_workers: 8
+
+# Optimization
+scheduler:
+  name: linear_decay_with_warmup
+  t_warmup: 0.06dur # Warmup to the full LR for 6% of the training duration
+  alpha_f: 0.02 # Linearly decay to 0.02x the full LR by the end of the training duration
+
+optimizer:
+  name: decoupled_adamw
+  lr: 1.0e-5
+  betas:
+  - 0.9
+  - 0.98
+  eps: 1.0e-06
+  weight_decay: 1.0e-6
+
+# Training duration and evaluation frequency
+max_duration: 10ep
+eval_interval: 1ep
+global_train_batch_size: 16
+
+# System
+seed: 17
+device_eval_batch_size: 16
+device_train_microbatch_size: 16
+
+# Logging
+progress_bar: false
+log_to_console: true
+console_log_interval: 10ba
+
+#task_name: 'mimic'
+task_name: 'contract_nli'
+
+#################################################
+
 # Base model config
 model:
-  name: bert
+  #name: bert
+  name: mosaic_bert
   pretrained_model_name: ${tokenizer_name}
   tokenizer_name: ${tokenizer_name}
   model_config:
@@ -57,79 +112,12 @@ save_finetune_checkpoint_prefix: ./local-finetune-checkpoints/M2-110/ # (local)
 save_finetune_checkpoint_folder: ${save_finetune_checkpoint_prefix}/${base_run_name}
 
 # (Optional) W&B logging
-# loggers:
-#   wandb:
-#     project:     # Fill this in
-#     entity:      # Fill this in
+loggers:
+  wandb: 
+    project: attention
+    entity: hazy-research
 
 # Callbacks
 callbacks:
   lr_monitor: {}
   speed_monitor: {}
-
-# Scheduler
-scheduler:
-  name: linear_decay_with_warmup
-  t_warmup: 0.06dur
-  alpha_f: 0.0
-
-# Task configuration
-tasks:
-  mnli:
-    # Specify any extra task-specific arguments for the trainer here
-    trainer_kwargs:
-      # We keep one MNLI checkpoint locally so that we can start finetuning of
-      # RTE, MRPC and STS-B from the MNLI checkpoint
-      save_num_checkpoints_to_keep: 1
-      max_sequence_length: 128
-      lr: 5.0e-05
-      wd: 5.0e-06
-  rte:
-    seeds: [19, 8364, 717, 10536, 90166]
-    trainer_kwargs:
-      save_num_checkpoints_to_keep: 0
-      max_sequence_length: 128
-      lr: 1.0e-5
-      wd: 1.0e-6
-  qqp:
-    trainer_kwargs:
-      save_num_checkpoints_to_keep: 0
-      max_sequence_length: 128
-      lr: 3.0e-5
-      wd: 3.0e-6
-  qnli:
-    trainer_kwargs:
-      save_num_checkpoints_to_keep: 0
-      max_sequence_length: 128
-      lr: 5.0e-5
-      wd: 1.0e-6
-      pool_all: True
-  sst2:
-    seeds: [19, 8364, 717]
-    trainer_kwargs:
-      save_num_checkpoints_to_keep: 0
-      max_sequence_length: 128
-      lr: 3.0e-5
-      wd: 3.0e-6
-  stsb:
-    seeds: [19, 8364, 717, 10536, 90166]
-    trainer_kwargs:
-      save_num_checkpoints_to_keep: 0
-      max_sequence_length: 128
-      lr: 8.0e-5
-      wd: 3.0e-6
-  mrpc:
-    seeds: [19, 8364, 717, 10536, 90166]
-    trainer_kwargs:
-      save_num_checkpoints_to_keep: 0
-      max_sequence_length: 128
-      lr: 8.0e-5
-      wd: 8.0e-5
-  cola:
-    seeds: [19, 8364, 717, 10536]
-    trainer_kwargs:
-      save_num_checkpoints_to_keep: 0
-      max_sequence_length: 128
-      lr: 8.0e-5
-      wd: 5.0e-6
-      optim_name: AdamW
