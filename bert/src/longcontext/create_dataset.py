@@ -159,35 +159,35 @@ def create_contract_nli_dataset(split, max_retries=10):
         'Contradiction': 2
     }
 
-    def map_labels(example):
-        labels = [0 for i in range(len(mapping))]
-        labels[mapping[example['output']]] = 1
-        example['label_ids'] = torch.tensor(labels, dtype=torch.long)
-        #example['label'] = torch.tensor(labels, dtype=torch.long)
-        #example['label'] = torch.reshape(example['label'], (3, 1))
-        del example['output']
-        return example
+    #def map_labels(example):
+    #    labels = [0 for i in range(len(mapping))]
+    #    labels[mapping[example['output']]] = 1
+    #    example['label_ids'] = torch.tensor(labels, dtype=torch.long)
+    #    #example['label'] = torch.tensor(labels, dtype=torch.long)
+    #    #example['label'] = torch.reshape(example['label'], (3, 1))
+    #    del example['output']
+    #    return example
     
-    dataset = dataset.map(map_labels)
+    #dataset = dataset.map(map_labels)
 
     #print("Created Contract NLI Dataset!")
     #print(dataset)
     #print(dataset[0]['label_ids'])
     #print(dataset[0]['input'])
 
-    return dataset
-    
-    #def map_labels(example):
-    #    example['output'] = mapping[example['output']]
-    #    example['output'] = torch.tensor(example['output'], dtype=torch.long)
-    #    return example
-    #dataset = dataset.map(map_labels)
-    #dataset = dataset.rename_column('output', 'label')
-
-    #print("Contract NLI Dataset")
-    #print(dataset)
-
     #return dataset
+    
+    def map_labels(example):
+        example['output'] = mapping[example['output']]
+        example['output'] = torch.tensor(example['output'], dtype=torch.long)
+        return example
+    dataset = dataset.map(map_labels)
+    dataset = dataset.rename_column('output', 'label')
+
+    print("Contract NLI Dataset")
+    print(dataset)
+
+    return dataset
 
 
 def create_long_context_dataset(task_name, split, tokenizer_name, max_seq_length, num_workers=8):
