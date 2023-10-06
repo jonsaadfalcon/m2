@@ -85,8 +85,8 @@ model:
     max_position_embeddings: 128
     #hidden_size: 960
     #intermediate_size: 3840
-    hidden_size: 768
-    intermediate_size: 3072
+    hidden_size: 1536
+    intermediate_size: 6144
 
     monarch_mixer_sequence_mixing: True
     long_conv_l_max: 128
@@ -107,7 +107,8 @@ model:
 
 # Loading
 #starting_checkpoint_load_path: ./local-bert-checkpoints/M2-110M/model.pt
-starting_checkpoint_load_path: ./local-bert-checkpoints/M2-80M/model.pt
+#starting_checkpoint_load_path: ./local-bert-checkpoints/M2-80M/model.pt
+starting_checkpoint_load_path: ./local-bert-checkpoints/M2-260M/model.pt
 local_pretrain_checkpoint_folder: ./local-bert-checkpoints/
 
 # When starting from mnli
