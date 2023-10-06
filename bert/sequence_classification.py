@@ -32,7 +32,7 @@ from torch.utils.data import DataLoader
 
 TASK2LABELS = {
     '20news': 20,
-    'contract_nli': 1,
+    'contract_nli': 3,
     'mimic': 50,
 }
 

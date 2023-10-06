@@ -30,7 +30,7 @@ model:
   tokenizer_name: ${tokenizer_name}
   model_config:
     problem_type: multi_label_classification
-    num_labels: 1
+    num_labels: 3
     #problem_type: single_label_classification
     #num_labels: 3
     
