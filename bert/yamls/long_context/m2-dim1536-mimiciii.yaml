@@ -13,7 +13,8 @@ run_name: mimiciii-monarch-mixer-1536dim-finetuning
 
 tokenizer_name: bert-base-uncased
 max_seq_len: 128
-precision: amp_bf16
+#precision: amp_bf16
+precision: float16
 
 #task_name: 'mimic'
 task_name: 'contract_nli'
