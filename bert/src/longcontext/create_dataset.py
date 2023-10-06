@@ -159,6 +159,8 @@ def create_contract_nli_dataset(split, max_retries=10):
         labels[mapping[example['output']]] = 1
         #example['label_ids'] = torch.tensor(labels, dtype=torch.long)
         example['label'] = torch.tensor(labels, dtype=torch.long)
+        assert torch.tensor(labels, dtype=torch.long).shape[0] == 1
+        assert torch.tensor(labels, dtype=torch.long).shape[1] == 3
         #del example['label']
         return example
     
