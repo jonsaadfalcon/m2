@@ -22,7 +22,7 @@ from torchmetrics import MeanSquaredError
 from torchmetrics.classification.accuracy import MulticlassAccuracy
 from torchmetrics.classification.matthews_corrcoef import MatthewsCorrCoef
 from torchmetrics.regression.spearman import SpearmanCorrCoef
-from torchmetrics import F1Score
+from torchmetrics import F1Score, Accuracy
 from torchmetrics.classification import AUROC
 
 all = ['create_mosaic_bert_mlm', 'create_mosaic_bert_classification']
@@ -293,7 +293,8 @@ def create_mosaic_bert_classification(
                 metrics.append(BinaryF1Score())
         elif config.problem_type == 'multi_label_classification':
             metrics = [
-                F1Score(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro', threshold=0.),
+                #F1Score(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro', threshold=0.),
+                Accuracy(task="multilabel", num_classes=num_labels),
                 AUROC(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro'),
             ]
         elif config.problem_type == 'single_label_classification':
