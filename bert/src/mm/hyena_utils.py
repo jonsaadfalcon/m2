@@ -83,7 +83,11 @@ class PositionalEmbedding(OptimModule):
         self.register("t", t, lr=0.0)
 
     def forward(self, L):
-        return self.z[:, :L], self.t[:, :L]
+        #return self.z[:, :L], self.t[:, :L]
+        print("self.z[:, :L]")
+        print(self.z[:, :L].shape)
+        assert False
+        return 4 * self.z[:, :L], self.t[:, :L]
 
 
 class ExponentialModulation(OptimModule):
