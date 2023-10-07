@@ -204,10 +204,6 @@ def create_long_context_dataset(task_name, split, tokenizer_name, max_seq_length
     text_column_names = _task_column_names[task_name]
     tokenizer = transformers.AutoTokenizer.from_pretrained(tokenizer_name) 
 
-    print("dataset before tokenization")
-    print(dataset.features)
-    print(dataset[0]['label_ids'])
-
     def tokenize_function(inp):
         # truncates sentences to max_length or pads them to max_length
 
@@ -231,12 +227,6 @@ def create_long_context_dataset(task_name, split, tokenizer_name, max_seq_length
         new_fingerprint=f'{task_name}-tok-2-{split}-{max_seq_length}',
         load_from_cache_file=False,
     )
-
-    dataset = dataset.rename_column('label', 'label_ids')
-
-    print("dataset after tokenization")
-    print(dataset.features)
-    print(dataset[0]['label_ids'])
 
     for column in dataset.features:
         if column not in ['label', 'label_ids', 'input_ids', 'token_type_ids', 'attention_mask']:
