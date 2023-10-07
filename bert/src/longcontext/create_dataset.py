@@ -206,6 +206,7 @@ def create_long_context_dataset(task_name, split, tokenizer_name, max_seq_length
 
     print("dataset before tokenization")
     print(dataset.features)
+    print(dataset[0]['label_ids'])
 
     def tokenize_function(inp):
         # truncates sentences to max_length or pads them to max_length
