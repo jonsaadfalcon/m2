@@ -229,7 +229,7 @@ def create_long_context_dataset(task_name, split, tokenizer_name, max_seq_length
         num_proc=None if num_workers == 0 else num_workers,
         batch_size=1000,
         new_fingerprint=f'{task_name}-tok-2-{split}-{max_seq_length}',
-        load_from_cache_file=True,
+        load_from_cache_file=False,
     )
 
     dataset = dataset.rename_column('label', 'label_ids')
