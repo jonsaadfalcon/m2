@@ -48,7 +48,7 @@ optimizer:
   weight_decay: 1.0e-6
 
 # Training duration and evaluation frequency
-max_duration: 10ep
+max_duration: 3ep #10ep
 eval_interval: 1ep
 global_train_batch_size: 16
 
