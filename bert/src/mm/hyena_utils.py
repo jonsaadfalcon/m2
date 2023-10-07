@@ -86,6 +86,9 @@ class PositionalEmbedding(OptimModule):
         #return self.z[:, :L], self.t[:, :L]
         print("self.z[:, :L]")
         print(self.z[:, :L].shape)
+        current_z = self.z[:, :L]
+        current_z = torch.cat([current_z, current_z, current_z, current_z], dim=1)
+        print(current_z.shape)
         assert False
         return 4 * self.z[:, :L], self.t[:, :L]
 
