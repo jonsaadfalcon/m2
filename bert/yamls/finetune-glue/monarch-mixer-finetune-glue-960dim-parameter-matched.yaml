@@ -23,8 +23,8 @@ model:
     num_hidden_layers: 12 
     attention_probs_dropout_prob: 0.0 
     max_position_embeddings: 128
-    hidden_size: 1536 #960
-    intermediate_size: 6144 #3840
+    hidden_size: 1792 #960
+    intermediate_size: 7168 #3840
 
     monarch_mixer_sequence_mixing: True
     long_conv_l_max: 128
