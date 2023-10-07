@@ -82,7 +82,7 @@ tasks:
       # We keep one MNLI checkpoint locally so that we can start finetuning of
       # RTE, MRPC and STS-B from the MNLI checkpoint
       save_num_checkpoints_to_keep: 1
-      max_sequence_length: 512
+      max_sequence_length: 128
       wd: 5e-6
       lr: 5e-5
   contract_nli:
@@ -91,7 +91,7 @@ tasks:
       # We keep one MNLI checkpoint locally so that we can start finetuning of
       # RTE, MRPC and STS-B from the MNLI checkpoint
       save_num_checkpoints_to_keep: 1
-      max_sequence_length: 512
+      max_sequence_length: 128
       wd: 5e-6
       lr: 5e-5
   mnli:
