@@ -62,10 +62,10 @@ progress_bar: false
 log_to_console: true
 console_log_interval: 10ba
 
-task_name: 'mimic'
+#task_name: 'mimic'
 #task_name: ecthr
-#task_name: 'contract_nli'
-num_labels: 50
+task_name: 'contract_nli'
+num_labels: 3
 problem_type: multi_label_classification #multi_label_classification
 
 #################################################
@@ -108,7 +108,8 @@ model:
 # Loading
 #starting_checkpoint_load_path: ./local-bert-checkpoints/M2-110M/model.pt
 #starting_checkpoint_load_path: ./local-bert-checkpoints/M2-80M/model.pt
-starting_checkpoint_load_path: ./local-bert-checkpoints/M2-260M/model.pt
+#starting_checkpoint_load_path: ./local-bert-checkpoints/M2-260M/model.pt
+starting_checkpoint_load_path: ./local-bert-checkpoints/M2-341M/model.pt
 local_pretrain_checkpoint_folder: ./local-bert-checkpoints/
 
 # When starting from mnli
