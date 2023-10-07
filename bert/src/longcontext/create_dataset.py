@@ -204,6 +204,9 @@ def create_long_context_dataset(task_name, split, tokenizer_name, max_seq_length
     text_column_names = _task_column_names[task_name]
     tokenizer = transformers.AutoTokenizer.from_pretrained(tokenizer_name) 
 
+    print("dataset before tokenization")
+    print(dataset.columns)
+
     def tokenize_function(inp):
         # truncates sentences to max_length or pads them to max_length
 
