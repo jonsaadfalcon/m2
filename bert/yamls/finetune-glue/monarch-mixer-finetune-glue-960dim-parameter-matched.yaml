@@ -44,7 +44,8 @@ model:
     use_positional_encodings: True
 
 # Loading
-starting_checkpoint_load_path: ./local-bert-checkpoints/M2-260M/model.pt
+#starting_checkpoint_load_path: ./local-bert-checkpoints/M2-110M/model.pt
+starting_checkpoint_load_path: ./local-bert-checkpoints/M2-260M/ep0-ba70000-rank0.pt model.pt
 local_pretrain_checkpoint_folder: ./local-bert-checkpoints/
 
 # When starting from mnli
