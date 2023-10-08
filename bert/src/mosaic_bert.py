@@ -261,9 +261,11 @@ def create_mosaic_bert_classification(
         config.vocab_size += 8 - (config.vocab_size % 8)
 
     if pretrained_checkpoint is not None:
+        print("Using pretrained checkpoint")
         model = bert_layers_module.BertForSequenceClassification.from_composer(
             pretrained_checkpoint=pretrained_checkpoint, config=config)
     else:
+        print("Not using pretrained checkpoint")
         model = bert_layers_module.BertForSequenceClassification(config)
 
 
