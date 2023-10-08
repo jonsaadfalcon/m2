@@ -106,7 +106,9 @@ model:
   pretrained_model_name: ${tokenizer_name}
   tokenizer_name: ${tokenizer_name}
   pretrained_checkpoint: ${starting_checkpoint_load_path}
+  use_learnable_monarch: True
   model_config:
+    use_learnable_monarch: True
     problem_type: ${problem_type}
     num_labels: ${num_labels}
     num_attention_heads: 12 
