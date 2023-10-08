@@ -1100,8 +1100,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
         if expand_positional_embeddings:
             
             original_embedding = model.bert.embeddings.position_embeddings
-            #new_num_embeddings = 4 * original_embedding.num_embeddings
-            new_num_embeddings = original_embedding.num_embeddings
+            new_num_embeddings = 4 * original_embedding.num_embeddings
+            #new_num_embeddings = original_embedding.num_embeddings
             expanded_embedding = nn.Embedding(num_embeddings=new_num_embeddings, embedding_dim=original_embedding.embedding_dim)
 
             print("Original and expanded shapes")
