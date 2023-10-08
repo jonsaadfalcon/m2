@@ -1081,11 +1081,35 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         state_dict = torch.load(pretrained_checkpoint)
         # If the state_dict was saved after wrapping with `composer.HuggingFaceModel`, it takes on the `model` prefix
+
+        for key in state_dict['state']['model'].keys():
+            if "pos_emb.z" in key:
+                print(key)
+
         pdb.set_trace()
 
         consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
+        
         missing_keys, unexpected_keys = model.load_state_dict(state_dict,
                                                               strict=False)
+        
+
+        ################################################
+
+        expand_positional_embeddings = True
+        if expand_positional_embeddings:
+            positional_embeddings = model.bert.embeddings.position_embeddings
+            model.bert.embeddings.position_embeddings = torch.cat([positional_embeddings, positional_embeddings, positional_embeddings, positional_embeddings], dim=1)
+            assert model.bert.embeddings.position_embeddings.shape[1] == 512
+            for key in state_dict['state']['model'].keys():
+                if "pos_emb.z" in key:
+                    current_param = state_dict['state']['model']
+                    state_dict['state']['model'][key] = torch.cat([current_param, current_param, current_param, current_param], dim=1)
+                    assert state_dict['state']['model'][key].shape[1] == 512
+
+
+        ################################################
+
 
         if len(missing_keys) > 0:
             logger.warning(

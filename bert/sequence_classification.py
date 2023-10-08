@@ -211,9 +211,6 @@ def main(cfg: DictConfig,
     print(om.to_yaml(cfg))
     reproducibility.seed_all(cfg.seed)
 
-    print("cfg pretrained checkpoint path")
-    print(cfg.model.get('pretrained_checkpoint'))
-
     # Get batch size info
     cfg = update_batch_size_info(cfg)
 
