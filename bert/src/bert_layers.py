@@ -143,14 +143,19 @@ class BertEmbeddings(nn.Module):
 
         embeddings = inputs_embeds + token_type_embeddings
         if self.use_positional_encodings:
-            position_embeddings = self.position_embeddings(position_ids)
-            embeddings += position_embeddings
-            print("Two embedding shapes")
-            print(embeddings.shape)
-            print(position_embeddings.shape)
-            assert False
-            #combined_embeddings = torch.cat([position_embeddings, position_embeddings, position_embeddings, position_embeddings], axis=1)
-            #embeddings += combined_embeddings
+            expanded_embeddings = True
+            if not expanded_embeddings:
+                position_embeddings = self.position_embeddings(position_ids)
+                embeddings += position_embeddings
+            else:
+                position_embeddings = self.position_embeddings(position_ids)
+                combined_embeddings = torch.cat([position_embeddings, position_embeddings, position_embeddings, position_embeddings], axis=1)
+                embeddings += combined_embeddings
+                print("Two embedding shapes")
+                print(embeddings.shape)
+                print(combined_embeddings.shape)
+                print(position_embeddings.shape)
+                assert False
         
         embeddings = self.LayerNorm(embeddings)
         embeddings = self.dropout(embeddings)
