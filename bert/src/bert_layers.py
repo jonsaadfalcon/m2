@@ -146,8 +146,8 @@ class BertEmbeddings(nn.Module):
             position_embeddings = self.position_embeddings(position_ids)
             for _ in range(1):
                 print("Two embedding shapes")
-                print(embeddings.weight.shape)
-                print(position_embeddings.weight.shape)
+                print(embeddings.shape)
+                print(position_embeddings.shape)
                 embeddings += position_embeddings
         
         embeddings = self.LayerNorm(embeddings)
