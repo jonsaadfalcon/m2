@@ -1088,7 +1088,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         #pdb.set_trace()
 
-        consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
+        #consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
+        consume_prefix_in_state_dict_if_present(state_dict, prefix='')
         
         missing_keys, unexpected_keys = model.load_state_dict(state_dict,
                                                               strict=False)

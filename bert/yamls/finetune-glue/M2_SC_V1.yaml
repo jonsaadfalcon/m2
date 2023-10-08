@@ -105,7 +105,7 @@ model:
   name: mosaic_bert
   pretrained_model_name: ${tokenizer_name}
   tokenizer_name: ${tokenizer_name}
-  pretrained_checkpoint: ${starting_checkpoint_load_path}
+  #pretrained_checkpoint: ${starting_checkpoint_load_path}
 
 
 
