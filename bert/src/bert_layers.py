@@ -1103,6 +1103,10 @@ class BertForSequenceClassification(BertPreTrainedModel):
             new_num_embeddings = 4 * original_embedding.num_embeddings
             expanded_embedding = nn.Embedding(num_embeddings=new_num_embeddings, embedding_dim=original_embedding.embedding_dim)
 
+            print("Original and expanded shapes")
+            print(original_embedding.weight.shape)
+            print(expanded_embedding.weight.shape)
+
             for i in range(4):
                 expanded_embedding.weight.data[0:128] = original_embedding.weight.data
                 expanded_embedding.weight.data[128:256] = original_embedding.weight.data
