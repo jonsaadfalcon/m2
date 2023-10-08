@@ -26,6 +26,8 @@ from transformers.modeling_outputs import (MaskedLMOutput,
                                            SequenceClassifierOutput)
 from transformers.models.bert.modeling_bert import BertPreTrainedModel
 
+import pdb
+
 try:
     import flash_attn_triton as flash_attn_triton
     flash_attn_qkvpacked_func = flash_attn_triton.flash_attn_qkvpacked_func
@@ -912,10 +914,9 @@ class BertForMaskedLM(BertPreTrainedModel):
 
         state_dict = torch.load(pretrained_checkpoint)
         # If the state_dict was saved after wrapping with `composer.HuggingFaceModel`, it takes on the `model` prefix
-        print("state_dict found!")
-        print(state_dict.keys())
-        assert False
-        
+        #print("state_dict found!")
+        #print(state_dict.keys())
+
         consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
         missing_keys, unexpected_keys = model.load_state_dict(state_dict,
                                                               strict=False)
@@ -1080,6 +1081,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         state_dict = torch.load(pretrained_checkpoint)
         # If the state_dict was saved after wrapping with `composer.HuggingFaceModel`, it takes on the `model` prefix
+        pdb.set_trace()
+
         consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
         missing_keys, unexpected_keys = model.load_state_dict(state_dict,
                                                               strict=False)
