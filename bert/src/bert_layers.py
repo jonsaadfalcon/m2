@@ -1098,9 +1098,21 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         expand_positional_embeddings = True
         if expand_positional_embeddings:
-            positional_embeddings = model.bert.embeddings.position_embeddings
-            model.bert.embeddings.position_embeddings = torch.cat([positional_embeddings, positional_embeddings, positional_embeddings, positional_embeddings], dim=1)
-            assert model.bert.embeddings.position_embeddings.shape[1] == 512
+            
+            original_embedding = model.bert.embeddings.position_embeddings
+            new_num_embeddings = 4 * original_embedding.num_embeddings
+            expanded_embedding = nn.Embedding(num_embeddings=new_num_embeddings, embedding_dim=960)
+
+            for i in range(4):
+                expanded_embedding.weight.data[0:128] = original_embedding.weight.data
+                expanded_embedding.weight.data[128:256] = original_embedding.weight.data
+                expanded_embedding.weight.data[256:384] = original_embedding.weight.data
+                expanded_embedding.weight.data[384:512] = original_embedding.weight.data
+
+            model.bert.embeddings.position_embeddings = expanded_embedding
+            assert original_embedding.weight.shape[0] == 512
+            assert original_embedding.weight.shape[1] in [768, 960, 1536, 1792]
+
             for i in range(0, 12):
                 current_param = model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z
                 model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z = torch.cat([current_param, current_param, current_param, current_param], dim=1)
