@@ -1157,6 +1157,32 @@ class BertForSequenceClassification(BertPreTrainedModel):
                 model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z = expanded_parameter
                 assert model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z.shape[1] == 512
 
+                ###################################################
+                
+                current_param = model.bert.encoder.layer[i].attention.filter_fn.pos_emb.t
+                
+                expanded_parameter = nn.Parameter(torch.zeros(current_param.shape[0], 4 * current_param.shape[1], current_param.shape[2]))
+                expanded_parameter.data[:, :current_param.shape[1], :] = current_param.data
+                expanded_parameter.data[:, current_param.shape[1]: 2 * current_param.shape[1], :] = current_param.data
+                expanded_parameter.data[:, 2 * current_param.shape[1]: 3 * current_param.shape[1], :] = current_param.data
+                expanded_parameter.data[:, 3 * current_param.shape[1]: 4 * current_param.shape[1], :] = current_param.data
+                
+                model.bert.encoder.layer[i].attention.filter_fn.pos_emb.t = expanded_parameter
+                assert model.bert.encoder.layer[i].attention.filter_fn.pos_emb.t.shape[1] == 512
+
+                ###################################################
+                
+                current_param = model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.t
+                
+                expanded_parameter = nn.Parameter(torch.zeros(current_param.shape[0], 4 * current_param.shape[1], current_param.shape[2]))
+                expanded_parameter.data[:, :current_param.shape[1], :] = current_param.data
+                expanded_parameter.data[:, current_param.shape[1]: 2 * current_param.shape[1], :] = current_param.data
+                expanded_parameter.data[:, 2 * current_param.shape[1]: 3 * current_param.shape[1], :] = current_param.data
+                expanded_parameter.data[:, 3 * current_param.shape[1]: 4 * current_param.shape[1], :] = current_param.data
+                
+                model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.t = expanded_parameter
+                assert model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.t.shape[1] == 512
+
             print("Manipulated BERT model")
             print(model)
             #assert False
