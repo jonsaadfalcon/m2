@@ -1093,7 +1093,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
         
-        missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=True)
+        missing_keys, unexpected_keys = model.load_state_dict(state_dict, 
+                                                              strict=False)
 
         ########################################
 
@@ -1145,9 +1146,9 @@ class BertForSequenceClassification(BertPreTrainedModel):
                 model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z = expanded_parameter
                 assert model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z.shape[1] == 512
 
-            #print("Manipulated BERT model")
-            #print(model)
-            #assert False
+            print("Manipulated BERT model")
+            print(model)
+            assert False
 
         ################################################
 
