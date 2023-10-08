@@ -912,6 +912,9 @@ class BertForMaskedLM(BertPreTrainedModel):
 
         state_dict = torch.load(pretrained_checkpoint)
         # If the state_dict was saved after wrapping with `composer.HuggingFaceModel`, it takes on the `model` prefix
+        print("state_dict found!")
+        print(state_dict.keys())
+        assert False
         consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
         missing_keys, unexpected_keys = model.load_state_dict(state_dict,
                                                               strict=False)
