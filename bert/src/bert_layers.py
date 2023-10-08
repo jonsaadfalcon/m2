@@ -915,6 +915,7 @@ class BertForMaskedLM(BertPreTrainedModel):
         print("state_dict found!")
         print(state_dict.keys())
         assert False
+        
         consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
         missing_keys, unexpected_keys = model.load_state_dict(state_dict,
                                                               strict=False)
