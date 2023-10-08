@@ -268,7 +268,7 @@ def create_mosaic_bert_classification(
         print("Got to the not pretrained checkpoint path")
         model = bert_layers_module.BertForSequenceClassification(config)
 
-    assert False
+    #assert False
 
     #if config.use_learnable_monarch:
     #    model.to_learnable_monarch()
