@@ -1097,10 +1097,10 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         print("Keys Found")
         for key in state_dict.keys():
-            if ".t" in key:
+            if "pos_emb.t" in key:
                 print(key)
         
-        #pdb.set_trace()
+        pdb.set_trace()
 
         consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
         
