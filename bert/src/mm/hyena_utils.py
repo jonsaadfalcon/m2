@@ -70,6 +70,12 @@ class PositionalEmbedding(OptimModule):
         # The time embedding fed to the filteres is normalized so that t_f = 1
         t = torch.linspace(0, 1, self.seq_len)[None, :, None]  # 1, L, 1
 
+        ######################################################
+
+        pdb.set_trace()
+
+        ######################################################
+
         if emb_dim > 1:
             bands = (emb_dim - 1) // 2
         # To compute the right embeddings we use the "proper" linspace
