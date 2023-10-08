@@ -12,6 +12,7 @@ import opt_einsum as oe
 contract = oe.contract
 
 from src.utils.train import OptimModule
+import pdb
 
 
 def fftconv_ref(u, k, D, dropout_mask, gelu=True, k_rev=None):
@@ -70,12 +71,6 @@ class PositionalEmbedding(OptimModule):
         # The time embedding fed to the filteres is normalized so that t_f = 1
         t = torch.linspace(0, 1, self.seq_len)[None, :, None]  # 1, L, 1
 
-        ######################################################
-
-        pdb.set_trace()
-
-        ######################################################
-
         if emb_dim > 1:
             bands = (emb_dim - 1) // 2
         # To compute the right embeddings we use the "proper" linspace
@@ -118,6 +113,7 @@ class ExponentialModulation(OptimModule):
         self.register("deltas", deltas, lr=modulation_lr)
 
     def forward(self, t, x):
+        pdb.set_trace()
         decay = torch.exp(-t * self.deltas.abs())
         x = x * (decay + self.shift)
         return x
