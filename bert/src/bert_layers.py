@@ -1098,7 +1098,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         ########################################
 
-        expand_positional_embeddings = False
+        expand_positional_embeddings = True
         if expand_positional_embeddings:
             
             original_embedding = model.bert.embeddings.position_embeddings
@@ -1155,11 +1155,11 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         if len(missing_keys) > 0:
             logger.warning(
-                f"Found these missing keys in the checkpoint: {', '.join(missing_keys)}"
+                f"\nFound these missing keys in the checkpoint: {', '.join(missing_keys)}\n"
             )
         if len(unexpected_keys) > 0:
             logger.warning(
-                f"Found these unexpected keys in the checkpoint: {', '.join(unexpected_keys)}"
+                f"\nFound these unexpected keys in the checkpoint: {', '.join(unexpected_keys)}\n"
             )
 
         return model
