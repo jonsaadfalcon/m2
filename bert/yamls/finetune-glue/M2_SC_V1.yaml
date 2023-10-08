@@ -9,7 +9,7 @@ parallel: false
 base_run_name: monarch-mixer-finetune-glue-960dim-parameter-matched
 default_seed: 19
 precision: fp32 
-max_seq_len: 128
+max_seq_len: 512
 
 # Tokenizer for dataset creation
 tokenizer_name: bert-base-uncased
@@ -106,15 +106,30 @@ model:
   pretrained_model_name: ${tokenizer_name}
   tokenizer_name: ${tokenizer_name}
   pretrained_checkpoint: ${starting_checkpoint_load_path}
+
+
+
+
+
+
+
+
   use_learnable_monarch: True
   model_config:
     use_learnable_monarch: True
+
+
+
+
+
+
+
     problem_type: ${problem_type}
     num_labels: ${num_labels}
     num_attention_heads: 12 
     num_hidden_layers: 12 
     attention_probs_dropout_prob: 0.0 
-    max_position_embeddings: 128
+    max_position_embeddings: 512
 
     hidden_size: 768
     intermediate_size: 3072

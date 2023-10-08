@@ -1096,7 +1096,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         ################################################
 
-        expand_positional_embeddings = False
+        expand_positional_embeddings = True
         if expand_positional_embeddings:
             positional_embeddings = model.bert.embeddings.position_embeddings
             model.bert.embeddings.position_embeddings = torch.cat([positional_embeddings, positional_embeddings, positional_embeddings, positional_embeddings], dim=1)
@@ -1109,6 +1109,9 @@ class BertForSequenceClassification(BertPreTrainedModel):
                 current_param = model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z
                 model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z = torch.cat([current_param, current_param, current_param, current_param], dim=1)
                 assert model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z.shape[1] == 512
+
+            print("Manipulated BERT model")
+            print(model)
 
         ################################################
 
