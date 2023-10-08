@@ -99,18 +99,16 @@ save_finetune_checkpoint_folder: ${save_finetune_checkpoint_prefix}/${base_run_n
 
 #################################################
 
-pretrained_checkpoint: ${starting_checkpoint_load_path}
-
 # Base model config
 model:
   #name: bert
   name: mosaic_bert
   pretrained_model_name: ${tokenizer_name}
   tokenizer_name: ${tokenizer_name}
+  pretrained_checkpoint: ${starting_checkpoint_load_path}
   model_config:
     problem_type: ${problem_type}
     num_labels: ${num_labels}
-    pretrained_checkpoint: ${starting_checkpoint_load_path}
     num_attention_heads: 12 
     num_hidden_layers: 12 
     attention_probs_dropout_prob: 0.0 
