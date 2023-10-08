@@ -1086,13 +1086,13 @@ class BertForSequenceClassification(BertPreTrainedModel):
         #    if "pos_emb.z" in key:
         #        print(key)
 
-        #pdb.set_trace()
+        pdb.set_trace()
 
         #consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
-        consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
+        consume_prefix_in_state_dict_if_present(state_dict, prefix='state.model.')
         
         missing_keys, unexpected_keys = model.load_state_dict(state_dict,
-                                                              strict=False)
+                                                              strict=True)
         
 
         ################################################
