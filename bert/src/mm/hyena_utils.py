@@ -85,6 +85,12 @@ class PositionalEmbedding(OptimModule):
 
         f = torch.linspace(1e-4, bands - 1, bands)[None, None]
         z = torch.exp(-1j * f * w)
+
+        print("Shapes found")
+        print(t.shape)
+        print(z.real.shape)
+        print(z.imag.shape)
+
         z = torch.cat([t, z.real, z.imag], dim=-1)
         self.register("z", z, lr=lr_pos_emb)
         self.register("t", t, lr=0.0)
