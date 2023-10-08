@@ -1096,7 +1096,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         ################################################
 
-        expand_positional_embeddings = True
+        expand_positional_embeddings = False
         if expand_positional_embeddings:
             
             original_embedding = model.bert.embeddings.position_embeddings
@@ -1108,11 +1108,11 @@ class BertForSequenceClassification(BertPreTrainedModel):
             print(original_embedding.weight.shape)
             print(expanded_embedding.weight.shape)
 
-            for i in range(4):
-                expanded_embedding.weight.data[0:128] = original_embedding.weight.data[0:128]
-                expanded_embedding.weight.data[128:256] = original_embedding.weight.data[0:128]
-                expanded_embedding.weight.data[256:384] = original_embedding.weight.data[0:128]
-                expanded_embedding.weight.data[384:512] = original_embedding.weight.data[0:128]
+            #for i in range(4):
+            expanded_embedding.weight.data[0:128] = original_embedding.weight.data[0:128]
+            expanded_embedding.weight.data[128:256] = original_embedding.weight.data[0:128]
+            expanded_embedding.weight.data[256:384] = original_embedding.weight.data[0:128]
+            expanded_embedding.weight.data[384:512] = original_embedding.weight.data[0:128]
 
             model.bert.embeddings.position_embeddings = expanded_embedding
             assert expanded_embedding.weight.shape[0] == 512
