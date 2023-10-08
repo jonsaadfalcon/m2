@@ -9,7 +9,7 @@ parallel: false
 base_run_name: monarch-mixer-finetune-glue-960dim-parameter-matched
 default_seed: 19
 precision: fp32 
-max_seq_len: 128
+max_seq_len: 512 #128
 
 # Tokenizer for dataset creation
 tokenizer_name: bert-base-uncased
