@@ -1112,6 +1112,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
             print("Manipulated BERT model")
             print(model)
+            assert False
 
         ################################################
 
