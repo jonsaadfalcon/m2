@@ -1107,7 +1107,6 @@ class BertForSequenceClassification(BertPreTrainedModel):
             print("Original and expanded shapes")
             print(original_embedding.weight.shape)
             print(expanded_embedding.weight.shape)
-            print(original_embedding.weight)
 
             for i in range(4):
                 expanded_embedding.weight.data[0:128] = original_embedding.weight.data[0:128]
@@ -1116,8 +1115,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
                 expanded_embedding.weight.data[384:512] = original_embedding.weight.data[0:128]
 
             model.bert.embeddings.position_embeddings = expanded_embedding
-            assert original_embedding.weight.shape[0] == 512
-            assert original_embedding.weight.shape[1] in [768, 960, 1536, 1792]
+            assert expanded_embedding.weight.shape[0] == 512
+            assert expanded_embedding.weight.shape[1] in [768, 960, 1536, 1792]
 
             for i in range(0, 12):
 
