@@ -1100,7 +1100,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
             if "pos_emb.t" in key:
                 print(key)
         
-        pdb.set_trace()
+        #pdb.set_trace()
 
         consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
         
