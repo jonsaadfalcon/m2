@@ -1106,6 +1106,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
             print("Original and expanded shapes")
             print(original_embedding.weight.shape)
             print(expanded_embedding.weight.shape)
+            print(original_embedding)
 
             for i in range(4):
                 expanded_embedding.weight.data[0:128] = original_embedding.weight.data
