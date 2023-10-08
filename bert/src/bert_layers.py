@@ -1101,12 +1101,14 @@ class BertForSequenceClassification(BertPreTrainedModel):
             positional_embeddings = model.bert.embeddings.position_embeddings
             model.bert.embeddings.position_embeddings = torch.cat([positional_embeddings, positional_embeddings, positional_embeddings, positional_embeddings], dim=1)
             assert model.bert.embeddings.position_embeddings.shape[1] == 512
-            for key in state_dict['state']['model'].keys():
-                if "pos_emb.z" in key:
-                    current_param = state_dict['state']['model']
-                    state_dict['state']['model'][key] = torch.cat([current_param, current_param, current_param, current_param], dim=1)
-                    assert state_dict['state']['model'][key].shape[1] == 512
-
+            for i in range(0, 12):
+                current_param = model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z
+                model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z = torch.cat([current_param, current_param, current_param, current_param], dim=1)
+                assert model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z.shape[1] == 512
+                
+                current_param = model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z
+                model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z = torch.cat([current_param, current_param, current_param, current_param], dim=1)
+                assert model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z.shape[1] == 512
 
         ################################################
 
