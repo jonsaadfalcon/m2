@@ -1145,9 +1145,9 @@ class BertForSequenceClassification(BertPreTrainedModel):
                 model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z = expanded_parameter
                 assert model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z.shape[1] == 512
 
-            print("Manipulated BERT model")
-            print(model)
-            assert False
+            #print("Manipulated BERT model")
+            #print(model)
+            #assert False
 
         ################################################
 
