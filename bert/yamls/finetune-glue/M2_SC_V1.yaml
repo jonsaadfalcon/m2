@@ -99,6 +99,8 @@ save_finetune_checkpoint_folder: ${save_finetune_checkpoint_prefix}/${base_run_n
 
 #################################################
 
+pretrained_checkpoint: ${starting_checkpoint_load_path}
+
 # Base model config
 model:
   #name: bert
