@@ -1120,6 +1120,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
             for i in range(0, 12):
                 current_param = model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z
+                pdb.set_trace()
                 model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z = torch.cat([current_param, current_param, current_param, current_param], dim=1)
                 assert model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z.shape[1] == 512
                 
