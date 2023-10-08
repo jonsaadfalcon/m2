@@ -266,8 +266,31 @@ def create_mosaic_bert_classification(
     else:
         model = bert_layers_module.BertForSequenceClassification(config)
 
-    if config.use_learnable_monarch:
-        model.to_learnable_monarch()
+
+
+
+
+
+
+
+
+
+
+    #if config.use_learnable_monarch:
+    #    model.to_learnable_monarch()
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     if gradient_checkpointing:
         model.gradient_checkpointing_enable()  # type: ignore
