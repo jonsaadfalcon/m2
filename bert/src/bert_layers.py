@@ -145,9 +145,10 @@ class BertEmbeddings(nn.Module):
         if self.use_positional_encodings:
             position_embeddings = self.position_embeddings(position_ids)
             embeddings += position_embeddings
-            #print("Two embedding shapes")
-            #print(embeddings.shape)
-            #print(position_embeddings.shape)
+            print("Two embedding shapes")
+            print(embeddings.shape)
+            print(position_embeddings.shape)
+            assert False
             #combined_embeddings = torch.cat([position_embeddings, position_embeddings, position_embeddings, position_embeddings], axis=1)
             #embeddings += combined_embeddings
         
