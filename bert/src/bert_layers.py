@@ -153,7 +153,7 @@ class BertEmbeddings(nn.Module):
 
         embeddings = inputs_embeds + token_type_embeddings
         if self.use_positional_encodings:
-            expanded_embeddings = False
+            expanded_embeddings = True
             if not expanded_embeddings:
                 position_embeddings = self.position_embeddings(position_ids)
                 #pdb.set_trace()
