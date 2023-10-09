@@ -67,6 +67,16 @@ class BertEmbeddings(nn.Module):
         if config.use_positional_encodings:
             self.position_embeddings = nn.Embedding(config.max_position_embeddings, config.hidden_size)
 
+
+
+
+
+
+            #self.position_embeddings = nn.Embedding(512, 960)
+
+
+
+
             """ concat_positional_embeddings = True
             if concat_positional_embeddings:
 
@@ -146,10 +156,10 @@ class BertEmbeddings(nn.Module):
             expanded_embeddings = False
             if not expanded_embeddings:
                 position_embeddings = self.position_embeddings(position_ids)
-                pdb.set_trace()
-                print("Shapes of embeddings")
-                print(position_embeddings.shape)
-                print(embeddings.shape)
+                #pdb.set_trace()
+                #print("Shapes of embeddings")
+                #print(position_embeddings.shape)
+                #print(embeddings.shape)
                 embeddings += position_embeddings
             else:
                 position_embeddings = self.position_embeddings(position_ids)
@@ -1238,6 +1248,12 @@ class BertForSequenceClassification(BertPreTrainedModel):
             output_hidden_states=output_hidden_states,
             return_dict=return_dict,
         )
+
+        assert self.bert.encoder.layer[0].attention.filter_fn.pos_emb.z.shape[1] == 512
+        assert self.bert.encoder.layer[0].attention.filter_fn2.pos_emb.z.shape[1] == 512
+        assert self.bert.encoder.layer[0].attention.filter_fn.pos_emb.t.shape[1] == 512
+        assert self.bert.encoder.layer[0].attention.filter_fn2.pos_emb.t.shape[1] == 512
+        assert False
         
         pooled_output = outputs[1]
 
