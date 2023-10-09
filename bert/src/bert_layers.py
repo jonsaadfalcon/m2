@@ -146,6 +146,7 @@ class BertEmbeddings(nn.Module):
             expanded_embeddings = False
             if not expanded_embeddings:
                 position_embeddings = self.position_embeddings(position_ids)
+                pdb.set_trace()
                 print("Shapes of embeddings")
                 print(position_embeddings.shape)
                 print(embeddings.shape)
