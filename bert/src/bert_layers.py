@@ -151,6 +151,15 @@ class BertEmbeddings(nn.Module):
             inputs_embeds = self.word_embeddings(input_ids)
         token_type_embeddings = self.token_type_embeddings(token_type_ids)
 
+        """if self.position_embeddings.shape[0] == 128:
+            print("Fixing the position_embeddings shape")
+            expanded_embedding = nn.Embedding(num_embeddings=512, embedding_dim=960)
+            expanded_embedding.weight.data[0:128] = self.position_embeddings.weight.data[0:128]
+            expanded_embedding.weight.data[128:256] = self.position_embeddings.weight.data[0:128]
+            expanded_embedding.weight.data[256:384] = self.position_embeddings.weight.data[0:128]
+            expanded_embedding.weight.data[384:512] = self.position_embeddings.weight.data[0:128]
+            self.position_embeddings = expanded_embedding"""
+
         embeddings = inputs_embeds + token_type_embeddings
         if self.use_positional_encodings:
             expanded_embeddings = True
@@ -1249,11 +1258,18 @@ class BertForSequenceClassification(BertPreTrainedModel):
             return_dict=return_dict,
         )
 
+        assert self.bert.embeddings.position_embeddings.shape[0] == 512
+        assert self.bert.embeddings.position_embeddings.shape[1] == 960
+
         assert self.bert.encoder.layer[0].attention.filter_fn.pos_emb.z.shape[1] == 512
         assert self.bert.encoder.layer[0].attention.filter_fn2.pos_emb.z.shape[1] == 512
         assert self.bert.encoder.layer[0].attention.filter_fn.pos_emb.t.shape[1] == 512
         assert self.bert.encoder.layer[0].attention.filter_fn2.pos_emb.t.shape[1] == 512
-        assert False
+        assert self.bert.encoder.layer[11].attention.filter_fn.pos_emb.z.shape[1] == 512
+        assert self.bert.encoder.layer[11].attention.filter_fn2.pos_emb.z.shape[1] == 512
+        assert self.bert.encoder.layer[11].attention.filter_fn.pos_emb.t.shape[1] == 512
+        assert self.bert.encoder.layer[11].attention.filter_fn2.pos_emb.t.shape[1] == 512
+        #assert False
         
         pooled_output = outputs[1]
 
