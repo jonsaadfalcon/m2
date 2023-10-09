@@ -9,7 +9,7 @@ parallel: false
 base_run_name: monarch-mixer-finetune-glue-960dim-parameter-matched
 default_seed: 19
 precision: fp32 
-max_seq_len: 128 #128
+max_seq_len: 512 #128
 
 # Tokenizer for dataset creation
 tokenizer_name: bert-base-uncased
@@ -48,7 +48,7 @@ optimizer:
   weight_decay: 1.0e-6
 
 # Training duration and evaluation frequency
-max_duration: 10ep
+max_duration: 3ep
 eval_interval: 1ep
 global_train_batch_size: 16
 
