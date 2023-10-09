@@ -160,6 +160,8 @@ def build_my_dataloader(task_name, cfg: DictConfig, device_batch_size: int):
         max_seq_length=cfg.max_seq_len,
     )
 
+    print("Maximum Sequence Length: " + str(cfg.max_seq_len))
+
     dataset = cast(Dataset, dataset)
     dataloader = DataLoader(
         dataset,

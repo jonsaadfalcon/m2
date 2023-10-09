@@ -74,9 +74,9 @@ log_to_console: true
 console_log_interval: 50ba
 
 #task_name: 'mimic'
-task_name: ecthr
-#task_name: 'contract_nli'
-num_labels: 10
+#task_name: ecthr
+task_name: 'contract_nli'
+num_labels: 3
 problem_type: multi_label_classification #multi_label_classification
 
 ##########################################################
