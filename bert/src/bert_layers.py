@@ -1107,7 +1107,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         ########################################
 
-        expand_positional_embeddings = True
+        expand_positional_embeddings = False
         if expand_positional_embeddings:
             
             original_embedding = model.bert.embeddings.position_embeddings
