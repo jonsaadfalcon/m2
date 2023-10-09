@@ -160,6 +160,8 @@ class BertEmbeddings(nn.Module):
             expanded_embedding.weight.data[384:512] = self.position_embeddings.weight.data[0:128]
             self.position_embeddings = expanded_embedding
 
+        pdb.set_trace()
+
         embeddings = inputs_embeds + token_type_embeddings
         if self.use_positional_encodings:
             expanded_embeddings = False
