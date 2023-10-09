@@ -143,7 +143,7 @@ class BertEmbeddings(nn.Module):
 
         embeddings = inputs_embeds + token_type_embeddings
         if self.use_positional_encodings:
-            expanded_embeddings = True
+            expanded_embeddings = False
             if not expanded_embeddings:
                 position_embeddings = self.position_embeddings(position_ids)
                 embeddings += position_embeddings
