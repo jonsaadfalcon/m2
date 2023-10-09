@@ -151,18 +151,18 @@ class BertEmbeddings(nn.Module):
             inputs_embeds = self.word_embeddings(input_ids)
         token_type_embeddings = self.token_type_embeddings(token_type_ids)
 
-        """if self.position_embeddings.shape[0] == 128:
+        if self.position_embeddings.shape[0] == 128:
             print("Fixing the position_embeddings shape")
             expanded_embedding = nn.Embedding(num_embeddings=512, embedding_dim=960)
             expanded_embedding.weight.data[0:128] = self.position_embeddings.weight.data[0:128]
             expanded_embedding.weight.data[128:256] = self.position_embeddings.weight.data[0:128]
             expanded_embedding.weight.data[256:384] = self.position_embeddings.weight.data[0:128]
             expanded_embedding.weight.data[384:512] = self.position_embeddings.weight.data[0:128]
-            self.position_embeddings = expanded_embedding"""
+            self.position_embeddings = expanded_embedding
 
         embeddings = inputs_embeds + token_type_embeddings
         if self.use_positional_encodings:
-            expanded_embeddings = True
+            expanded_embeddings = False
             if not expanded_embeddings:
                 position_embeddings = self.position_embeddings(position_ids)
                 #pdb.set_trace()
@@ -1258,7 +1258,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
             return_dict=return_dict,
         )
         
-        pdb.set_trace()
+        #pdb.set_trace()
 
         assert self.bert.embeddings.position_embeddings.shape[0] == 512
         assert self.bert.embeddings.position_embeddings.shape[1] == 960
