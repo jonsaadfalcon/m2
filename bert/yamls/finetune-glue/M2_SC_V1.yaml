@@ -82,11 +82,13 @@ problem_type: multi_label_classification #multi_label_classification
 ##########################################################
 
 # Loading
-starting_checkpoint_load_path: ./local-bert-checkpoints/M2-110M/model.pt
+#starting_checkpoint_load_path: ./local-bert-checkpoints/M2-80M/model.pt
 #starting_checkpoint_load_path: ./local-bert-checkpoints/M2-110M/model.pt
 #starting_checkpoint_load_path: ./local-bert-checkpoints/M2-260M/model.pt
 #starting_checkpoint_load_path: ./local-bert-checkpoints/M2-341M/model.pt
 local_pretrain_checkpoint_folder: ./local-bert-checkpoints/
+
+starting_checkpoint_load_path: bert-base-uncased
 
 # When starting from mnli
 # local_pretrain_checkpoint_folder: ./local-finetune-checkpoints/{base_run_name}/task=mnli/seed=19/
@@ -101,8 +103,8 @@ save_finetune_checkpoint_folder: ${save_finetune_checkpoint_prefix}/${base_run_n
 
 # Base model config
 model:
-  #name: bert
-  name: mosaic_bert
+  name: hf_bert
+  #name: mosaic_bert
   pretrained_model_name: ${tokenizer_name}
   tokenizer_name: ${tokenizer_name}
   pretrained_checkpoint: ${starting_checkpoint_load_path}
