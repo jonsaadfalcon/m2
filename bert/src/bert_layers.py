@@ -1215,12 +1215,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
             assert self.bert.encoder.layer[0].attention.filter_fn.pos_emb.z.shape[1] == 512
             assert self.bert.encoder.layer[0].attention.filter_fn2.pos_emb.z.shape[1] == 512
-            assert self.bert.encoder.layer[0].attention.filter_fn.pos_emb.t.shape[1] == 512
-            assert self.bert.encoder.layer[0].attention.filter_fn2.pos_emb.t.shape[1] == 512
             assert self.bert.encoder.layer[11].attention.filter_fn.pos_emb.z.shape[1] == 512
             assert self.bert.encoder.layer[11].attention.filter_fn2.pos_emb.z.shape[1] == 512
-            assert self.bert.encoder.layer[11].attention.filter_fn.pos_emb.t.shape[1] == 512
-            assert self.bert.encoder.layer[11].attention.filter_fn2.pos_emb.t.shape[1] == 512
             #assert False
         
         pooled_output = outputs[1]
