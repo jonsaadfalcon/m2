@@ -66,16 +66,7 @@ class BertEmbeddings(nn.Module):
         # ALiBi doesn't use position embeddings
         if config.use_positional_encodings:
             self.position_embeddings = nn.Embedding(config.max_position_embeddings, config.hidden_size)
-
-
-
-
-
-
             #self.position_embeddings = nn.Embedding(512, 960)
-
-
-
 
             """ concat_positional_embeddings = True
             if concat_positional_embeddings:
@@ -151,36 +142,18 @@ class BertEmbeddings(nn.Module):
             inputs_embeds = self.word_embeddings(input_ids)
         token_type_embeddings = self.token_type_embeddings(token_type_ids)
 
-        if self.position_embeddings.weight.shape[0] == 128:
-            print("Fixing the position_embeddings shape")
-            expanded_embedding = nn.Embedding(num_embeddings=512, embedding_dim=960)
-            expanded_embedding.weight.data[0:128] = self.position_embeddings.weight.data[0:128]
-            expanded_embedding.weight.data[128:256] = self.position_embeddings.weight.data[0:128]
-            expanded_embedding.weight.data[256:384] = self.position_embeddings.weight.data[0:128]
-            expanded_embedding.weight.data[384:512] = self.position_embeddings.weight.data[0:128]
-            self.position_embeddings = expanded_embedding
-
-        pdb.set_trace()
+        #pdb.set_trace()
 
         embeddings = inputs_embeds + token_type_embeddings
         if self.use_positional_encodings:
             expanded_embeddings = False
             if not expanded_embeddings:
                 position_embeddings = self.position_embeddings(position_ids)
-                #pdb.set_trace()
-                #print("Shapes of embeddings")
-                #print(position_embeddings.shape)
-                #print(embeddings.shape)
                 embeddings += position_embeddings
             else:
                 position_embeddings = self.position_embeddings(position_ids)
                 position_embeddings = torch.cat([position_embeddings, position_embeddings, position_embeddings, position_embeddings], axis=1)
                 embeddings += position_embeddings
-                #print("Two embedding shapes")
-                #print(embeddings.shape)
-                #print(position_embeddings.shape)
-                #print(self.position_embeddings(position_ids).shape)
-                #assert False
         
         embeddings = self.LayerNorm(embeddings)
         embeddings = self.dropout(embeddings)
@@ -1139,14 +1112,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
             
             original_embedding = model.bert.embeddings.position_embeddings
             new_num_embeddings = 4 * original_embedding.num_embeddings
-            #new_num_embeddings = original_embedding.num_embeddings
             expanded_embedding = nn.Embedding(num_embeddings=new_num_embeddings, embedding_dim=original_embedding.embedding_dim)
 
-            print("Original and expanded shapes")
-            print(original_embedding.weight.shape)
-            print(expanded_embedding.weight.shape)
-
-            #for i in range(4):
             expanded_embedding.weight.data[0:128] = original_embedding.weight.data[0:128]
             expanded_embedding.weight.data[128:256] = original_embedding.weight.data[0:128]
             expanded_embedding.weight.data[256:384] = original_embedding.weight.data[0:128]
@@ -1155,6 +1122,11 @@ class BertForSequenceClassification(BertPreTrainedModel):
             model.bert.embeddings.position_embeddings = expanded_embedding
             assert expanded_embedding.weight.shape[0] == 512
             assert expanded_embedding.weight.shape[1] in [768, 960, 1536, 1792]
+
+            original_position_ids = model.bert.embeddings.position_ids
+            model.bert.embeddings.position_ids = torch.cat([original_position_ids, original_position_ids, original_position_ids, original_position_ids], axis=1)
+            assert model.bert.embeddings.position_ids.shape[0] == 1
+            assert model.bert.embeddings.position_ids.shape[1] == 512
 
             for i in range(0, 12):
 
@@ -1264,6 +1236,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         assert self.bert.embeddings.position_embeddings.shape[0] == 512
         assert self.bert.embeddings.position_embeddings.shape[1] == 960
+        assert self.bert.embeddings.position_ids.shape[0] == 1
+        assert self.bert.embeddings.position_ids.shape[1] == 512
 
         assert self.bert.encoder.layer[0].attention.filter_fn.pos_emb.z.shape[1] == 512
         assert self.bert.encoder.layer[0].attention.filter_fn2.pos_emb.z.shape[1] == 512
