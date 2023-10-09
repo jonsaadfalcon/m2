@@ -146,6 +146,9 @@ class BertEmbeddings(nn.Module):
             expanded_embeddings = False
             if not expanded_embeddings:
                 position_embeddings = self.position_embeddings(position_ids)
+                print("Shapes of embeddings")
+                print(position_embeddings.weight.shape)
+                print(embeddings.weight.shape)
                 embeddings += position_embeddings
             else:
                 position_embeddings = self.position_embeddings(position_ids)
