@@ -1257,6 +1257,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
             output_hidden_states=output_hidden_states,
             return_dict=return_dict,
         )
+        
+        pdb.set_trace()
 
         assert self.bert.embeddings.position_embeddings.shape[0] == 512
         assert self.bert.embeddings.position_embeddings.shape[1] == 960
