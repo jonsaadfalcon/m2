@@ -151,7 +151,7 @@ class BertEmbeddings(nn.Module):
             inputs_embeds = self.word_embeddings(input_ids)
         token_type_embeddings = self.token_type_embeddings(token_type_ids)
 
-        if self.position_embeddings.shape[0] == 128:
+        if self.position_embeddings.weight.shape[0] == 128:
             print("Fixing the position_embeddings shape")
             expanded_embedding = nn.Embedding(num_embeddings=512, embedding_dim=960)
             expanded_embedding.weight.data[0:128] = self.position_embeddings.weight.data[0:128]
