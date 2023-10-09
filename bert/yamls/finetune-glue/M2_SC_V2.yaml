@@ -103,7 +103,7 @@ save_finetune_checkpoint_folder: ${save_finetune_checkpoint_prefix}/${base_run_n
 
 # Base model config
 model:
-  name: bert
+  name: hf_bert
   #name: hf_bert
   #name: mosaic_bert
   pretrained_model_name: ${tokenizer_name}
