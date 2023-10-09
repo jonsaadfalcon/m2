@@ -1234,20 +1234,22 @@ class BertForSequenceClassification(BertPreTrainedModel):
         
         #pdb.set_trace()
 
-        assert self.bert.embeddings.position_embeddings.shape[0] == 512
-        assert self.bert.embeddings.position_embeddings.shape[1] == 960
-        assert self.bert.embeddings.position_ids.shape[0] == 1
-        assert self.bert.embeddings.position_ids.shape[1] == 512
+        expanding_contexts = True
+        if expanding_contexts:
+            assert self.bert.embeddings.position_embeddings.weight.shape[0] == 512
+            assert self.bert.embeddings.position_embeddings.weight.shape[1] == 960
+            assert self.bert.embeddings.position_ids.shape[0] == 1
+            assert self.bert.embeddings.position_ids.shape[1] == 512
 
-        assert self.bert.encoder.layer[0].attention.filter_fn.pos_emb.z.shape[1] == 512
-        assert self.bert.encoder.layer[0].attention.filter_fn2.pos_emb.z.shape[1] == 512
-        assert self.bert.encoder.layer[0].attention.filter_fn.pos_emb.t.shape[1] == 512
-        assert self.bert.encoder.layer[0].attention.filter_fn2.pos_emb.t.shape[1] == 512
-        assert self.bert.encoder.layer[11].attention.filter_fn.pos_emb.z.shape[1] == 512
-        assert self.bert.encoder.layer[11].attention.filter_fn2.pos_emb.z.shape[1] == 512
-        assert self.bert.encoder.layer[11].attention.filter_fn.pos_emb.t.shape[1] == 512
-        assert self.bert.encoder.layer[11].attention.filter_fn2.pos_emb.t.shape[1] == 512
-        #assert False
+            assert self.bert.encoder.layer[0].attention.filter_fn.pos_emb.z.shape[1] == 512
+            assert self.bert.encoder.layer[0].attention.filter_fn2.pos_emb.z.shape[1] == 512
+            assert self.bert.encoder.layer[0].attention.filter_fn.pos_emb.t.shape[1] == 512
+            assert self.bert.encoder.layer[0].attention.filter_fn2.pos_emb.t.shape[1] == 512
+            assert self.bert.encoder.layer[11].attention.filter_fn.pos_emb.z.shape[1] == 512
+            assert self.bert.encoder.layer[11].attention.filter_fn2.pos_emb.z.shape[1] == 512
+            assert self.bert.encoder.layer[11].attention.filter_fn.pos_emb.t.shape[1] == 512
+            assert self.bert.encoder.layer[11].attention.filter_fn2.pos_emb.t.shape[1] == 512
+            #assert False
         
         pooled_output = outputs[1]
 
