@@ -149,12 +149,12 @@ class BertEmbeddings(nn.Module):
                 embeddings += position_embeddings
             else:
                 position_embeddings = self.position_embeddings(position_ids)
-                combined_embeddings = torch.cat([position_embeddings, position_embeddings, position_embeddings, position_embeddings], axis=1)
-                embeddings += combined_embeddings
+                position_embeddings = torch.cat([position_embeddings, position_embeddings, position_embeddings, position_embeddings], axis=1)
+                embeddings += position_embeddings
                 #print("Two embedding shapes")
                 #print(embeddings.shape)
-                #print(combined_embeddings.shape)
                 #print(position_embeddings.shape)
+                #print(self.position_embeddings(position_ids).shape)
                 #assert False
         
         embeddings = self.LayerNorm(embeddings)
