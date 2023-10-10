@@ -6,7 +6,7 @@
 parallel: false
 
 # Basic run configuration, additional details will be added to this name for each GLUE task, and each random seed
-base_run_name: monarch-mixer-finetune-glue-960dim-parameter-matched
+base_run_name: monarch-mixer-finetune-long-context
 default_seed: 19
 precision: fp32 
 max_seq_len: 128 #512, 128
@@ -109,6 +109,8 @@ model:
   pretrained_model_name: ${tokenizer_name}
   tokenizer_name: ${tokenizer_name}
   pretrained_checkpoint: ${starting_checkpoint_load_path}
+  save_folder: ${save_finetune_checkpoint_folder}
+  save_num_checkpoints_to_keep: 10
 
 
 
