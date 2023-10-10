@@ -310,6 +310,9 @@ def main(cfg: DictConfig,
         print('Starting training...')
         trainer.fit()
 
+    print("Saved checkpoints from trainer")
+    print(trainer.saved_checkpoints)
+
     if return_trainer:
         return trainer
 

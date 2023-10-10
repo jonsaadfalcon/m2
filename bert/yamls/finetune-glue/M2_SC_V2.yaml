@@ -48,7 +48,7 @@ optimizer:
   weight_decay: 1.0e-6
 
 # Training duration and evaluation frequency
-max_duration: 10ep
+max_duration: 1ep
 eval_interval: 1ep
 global_train_batch_size: 16
 
@@ -73,11 +73,11 @@ progress_bar: false
 log_to_console: true
 console_log_interval: 50ba
 
-#task_name: 'mimic'
-task_name: ecthr
+task_name: 'mimic'
+#task_name: ecthr
 #task_name: 'contract_nli'
 #task_name: '20news'
-num_labels: 10
+num_labels: 50
 problem_type: multi_label_classification #multi_label_classification
 
 ##########################################################
