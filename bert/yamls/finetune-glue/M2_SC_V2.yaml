@@ -90,6 +90,7 @@ model:
   pretrained_model_name: ${tokenizer_name}
   tokenizer_name: ${tokenizer_name}
   problem_type: ${problem_type} #${problem_type}
+  save_num_checkpoints_to_keep: 10
   model_config:
     num_labels: ${num_labels} # <-- Make sure to update these after you modify the starter script!
     problem_type: ${problem_type} #${problem_type}
