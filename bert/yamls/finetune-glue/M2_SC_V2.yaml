@@ -88,10 +88,10 @@ model:
   use_pretrained: true
   pretrained_model_name: ${tokenizer_name}
   tokenizer_name: ${tokenizer_name}
-  problem_type: multi_label_classification
+  problem_type: multi_label_classification #${problem_type}
   model_config:
     num_labels: ${num_labels} # <-- Make sure to update these after you modify the starter script!
-    pretrained_model_name: ${tokenizer_name}
+    pretrained_model_name_or_path: ${tokenizer_name}
     tokenizer_name: ${tokenizer_name}
-    problem_type: multi_label_classification
+    problem_type: multi_label_classification #${problem_type}
 
