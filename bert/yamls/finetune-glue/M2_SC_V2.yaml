@@ -74,10 +74,10 @@ log_to_console: true
 console_log_interval: 50ba
 
 #task_name: 'mimic'
-task_name: ecthr
-#task_name: 'contract_nli'
-num_labels: 10
-problem_type: multi_label_classification #multi_label_classification
+#task_name: ecthr
+task_name: 'contract_nli'
+num_labels: 3
+problem_type: single_label_classification #multi_label_classification
 
 ##########################################################
 
@@ -88,8 +88,8 @@ model:
   use_pretrained: true
   pretrained_model_name: ${tokenizer_name}
   tokenizer_name: ${tokenizer_name}
-  problem_type: multi_label_classification #${problem_type}
+  problem_type: ${problem_type} #${problem_type}
   model_config:
     num_labels: ${num_labels} # <-- Make sure to update these after you modify the starter script!
-    problem_type: multi_label_classification #${problem_type}
+    problem_type: ${problem_type} #${problem_type}
 
