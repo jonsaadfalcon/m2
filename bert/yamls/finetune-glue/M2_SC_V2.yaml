@@ -88,4 +88,5 @@ model:
   use_pretrained: true
   pretrained_model_name: ${tokenizer_name}
   tokenizer_name: ${tokenizer_name}
+  problem_type: ${problem_type}
 
