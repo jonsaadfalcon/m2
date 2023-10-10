@@ -16,6 +16,7 @@ from torchmetrics.classification.accuracy import MulticlassAccuracy
 from torchmetrics.classification.matthews_corrcoef import MatthewsCorrCoef
 from torchmetrics.regression.spearman import SpearmanCorrCoef
 from torchmetrics.classification import MultilabelAccuracy, MultilabelF1Score
+from torchmetrics import F1Score
 
 __all__ = ['create_hf_bert_mlm', 'create_hf_bert_classification']
 
@@ -218,7 +219,11 @@ def create_hf_bert_classification(
     else:
         # Metrics for a classification model
         metrics = [
+            MultilabelF1Score(num_labels=num_labels, average='micro', threshold=0.3),
+            MultilabelF1Score(num_labels=num_labels, average='micro', threshold=0.2),
             MultilabelF1Score(num_labels=num_labels, average='micro', threshold=0.1),
+            MultilabelF1Score(num_labels=num_labels, average='micro', threshold=0.0),
+            F1Score(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro', threshold=0.1),
             #MulticlassAccuracy(num_classes=num_labels, average='micro'),
             #MatthewsCorrCoef(task='multiclass',
             #                 num_classes=model.config.num_labels)
