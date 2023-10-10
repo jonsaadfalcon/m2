@@ -79,7 +79,7 @@ task_name: ecthr
 #task_name: '20news'
 num_labels: 10
 problem_type: multi_label_classification #multi_label_classification
-save_folder: ./local-finetune-checkpoints/${tokenizer_name}
+save_folder: ./local-finetune-checkpoints/${tokenizer_name}/${max_seq_len}
 
 ##########################################################
 
