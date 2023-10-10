@@ -131,8 +131,8 @@ def create_ecthr_dataset(split):
     def map_labels(example):
         labels = [0 for i in range(num_labels)]
         for label in example['label']:
-            labels[label_map[label]] = 1.0
-        example['label_ids'] = torch.tensor(labels, dtype=torch.float)
+            labels[label_map[label]] = 1
+        example['label_ids'] = torch.tensor(labels, dtype=torch.long)
         #example['labels'] = torch.tensor(labels, dtype=torch.long)
         del example['label']
         return example
@@ -161,7 +161,7 @@ def create_contract_nli_dataset(split, max_retries=10):
 
     multilabel_classification = True
     if multilabel_classification:
-
+        
         def map_labels(example):
             labels = [0 for i in range(len(mapping))]
             labels[mapping[example['output']]] = 1
