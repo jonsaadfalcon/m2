@@ -91,6 +91,5 @@ model:
   problem_type: multi_label_classification #${problem_type}
   model_config:
     num_labels: ${num_labels} # <-- Make sure to update these after you modify the starter script!
-    tokenizer_name: ${tokenizer_name}
     problem_type: multi_label_classification #${problem_type}
 
