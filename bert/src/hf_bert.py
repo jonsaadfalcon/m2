@@ -219,9 +219,9 @@ def create_hf_bert_classification(
     else:
         # Metrics for a classification model
         metrics = [
-            #MultilabelF1Score(num_labels=num_labels, average='micro', threshold=0.25),
-            #F1Score(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro', threshold=0.25),
-            MulticlassAccuracy(num_classes=num_labels, average='micro'),
+            MultilabelF1Score(num_labels=num_labels, average='micro', threshold=0.4),
+            F1Score(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro', threshold=0.4),
+            #MulticlassAccuracy(num_classes=num_labels, average='micro'),
             #MatthewsCorrCoef(task='multiclass',
             #                 num_classes=model.config.num_labels)
         ]
