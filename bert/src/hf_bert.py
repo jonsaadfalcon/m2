@@ -17,6 +17,7 @@ from torchmetrics.classification.matthews_corrcoef import MatthewsCorrCoef
 from torchmetrics.regression.spearman import SpearmanCorrCoef
 from torchmetrics.classification import MultilabelAccuracy, MultilabelF1Score
 from torchmetrics import F1Score
+from torchmetrics.classification import AUROC
 
 __all__ = ['create_hf_bert_mlm', 'create_hf_bert_classification']
 
