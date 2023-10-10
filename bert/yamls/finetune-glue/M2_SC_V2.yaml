@@ -91,7 +91,6 @@ model:
   problem_type: multi_label_classification
   model_config:
     num_labels: ${num_labels} # <-- Make sure to update these after you modify the starter script!
-    use_pretrained: true
     pretrained_model_name: ${tokenizer_name}
     tokenizer_name: ${tokenizer_name}
     problem_type: multi_label_classification
