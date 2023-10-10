@@ -159,7 +159,7 @@ def create_contract_nli_dataset(split, max_retries=10):
         'Contradiction': 2
     }
 
-    multilabel_classification = True
+    multilabel_classification = False
     if multilabel_classification:
         
         def map_labels(example):
