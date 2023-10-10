@@ -320,9 +320,9 @@ def create_mosaic_bert_classification(
         elif config.problem_type == 'multi_label_classification':
             metrics = [
                 MultilabelF1Score(num_labels=num_labels, average='micro', threshold=0.5),
-                F1Score(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro', threshold=0.5),
+                AUROC(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro'),
+                #F1Score(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro', threshold=0.5),
                 #MultilabelAccuracy(num_labels=num_labels),
-                #AUROC(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro'),
             ]
         elif config.problem_type == 'single_label_classification':
             metrics = [
