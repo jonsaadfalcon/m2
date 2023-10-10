@@ -9,7 +9,7 @@ parallel: false
 base_run_name: monarch-mixer-finetune-glue-960dim-parameter-matched
 default_seed: 19
 precision: fp32 
-max_seq_len: 512 #512, 128
+max_seq_len: 2048 #512, 128
 
 # Tokenizer for dataset creation
 tokenizer_name: roberta-base #bert-base-uncased
@@ -73,11 +73,11 @@ progress_bar: false
 log_to_console: true
 console_log_interval: 50ba
 
-task_name: 'mimic'
-#task_name: ecthr
+#task_name: 'mimic'
+task_name: ecthr
 #task_name: 'contract_nli'
 #task_name: '20news'
-num_labels: 50
+num_labels: 10
 problem_type: multi_label_classification #multi_label_classification
 save_folder: ./local-finetune-checkpoints/${tokenizer_name}/${max_seq_len}/${task_name}
 
