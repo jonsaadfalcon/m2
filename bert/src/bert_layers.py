@@ -1107,7 +1107,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         ########################################
 
-        expand_positional_embeddings = True
+        expand_positional_embeddings = False
         if expand_positional_embeddings:
             
             original_embedding = model.bert.embeddings.position_embeddings
@@ -1206,7 +1206,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
         
         #pdb.set_trace()
 
-        expanding_contexts = True
+        expanding_contexts = False
         if expanding_contexts:
             assert self.bert.embeddings.position_embeddings.weight.shape[0] == 512
             assert self.bert.embeddings.position_embeddings.weight.shape[1] == 960
