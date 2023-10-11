@@ -199,6 +199,7 @@ def create_hyperpartisan_dataset(split):
 
     import re
 
+    FLAGS = re.MULTILINE | re.DOTALL
     def re_sub(pattern, repl, text, flags=None):
         if flags is None:
             return re.sub(pattern, repl, text, flags=FLAGS)
