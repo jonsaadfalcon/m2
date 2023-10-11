@@ -139,7 +139,7 @@ def create_ecthr_dataset(split):
         del example['label']
         return example
     
-    dataset = dataset.map(map_labels)
+    dataset = dataset.map(map_labels, load_from_cache_file=False)
 
     return dataset
 
