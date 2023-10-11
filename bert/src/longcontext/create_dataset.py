@@ -195,7 +195,7 @@ def create_contract_nli_dataset(split, max_retries=10):
 
         return dataset
 
-def create_hyper_partisan_dataset(split, max_retries=10):
+def create_hyperpartisan_dataset(split, max_retries=10):
     download_config = datasets.DownloadConfig(max_retries=max_retries)
     dataset = datasets.load_dataset(
         "hyperpartisan_news_detection", "bypublisher",
@@ -232,6 +232,8 @@ def create_long_context_dataset(task_name, split, tokenizer_name, max_seq_length
         dataset = create_contract_nli_dataset(split)
     elif task_name == "ecthr":
         dataset = create_ecthr_dataset(split)
+    elif task_name == "hyperpartisan":
+        dataset = create_hyperpartisan_dataset(split)
 
     text_column_names = _task_column_names[task_name]
     tokenizer = transformers.AutoTokenizer.from_pretrained(tokenizer_name) 
