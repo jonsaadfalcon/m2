@@ -84,8 +84,8 @@ problem_type: multi_label_classification #multi_label_classification
 # Loading
 #starting_checkpoint_load_path: ./local-bert-checkpoints/M2-110M/model.pt
 #starting_checkpoint_load_path: ./local-bert-checkpoints/M2-110M/model.pt
-starting_checkpoint_load_path: ./local-bert-checkpoints/M2-260M/ep0-ba70000-rank0.pt
-#starting_checkpoint_load_path: ./local-bert-checkpoints/M2-341M/ep0-ba70000-rank0.pt
+#starting_checkpoint_load_path: ./local-bert-checkpoints/M2-260M/ep0-ba70000-rank0.pt
+starting_checkpoint_load_path: ./local-bert-checkpoints/M2-341M/ep0-ba70000-rank0.pt
 local_pretrain_checkpoint_folder: ./local-bert-checkpoints/
 
 #starting_checkpoint_load_path: bert-base-uncased
@@ -95,7 +95,7 @@ local_pretrain_checkpoint_folder: ./local-bert-checkpoints/
 # starting_checkpoint_load_path: ${local_pretrain_checkpoint_folder}/ep3-ba24546-rank0.pt
 
 # Saving
-save_finetune_checkpoint_prefix: ./local-finetune-checkpoints/M2-260M/ # (local)
+save_finetune_checkpoint_prefix: ./local-finetune-checkpoints/M2-341M/ # (local)
 # save_finetune_checkpoint_prefix: s3://<bucket>/remote-finetune-checkpoints # (remote)
 save_finetune_checkpoint_folder: ${save_finetune_checkpoint_prefix}/${base_run_name}
 
@@ -140,10 +140,10 @@ model:
     #intermediate_size: 3072
     #hidden_size: 960
     #intermediate_size: 3840
-    hidden_size: 1536
-    intermediate_size: 6144
-    #hidden_size: 1792
-    #intermediate_size: 7168
+    #hidden_size: 1536
+    #intermediate_size: 6144
+    hidden_size: 1792
+    intermediate_size: 7168
 
     monarch_mixer_sequence_mixing: True
     long_conv_l_max: 512
