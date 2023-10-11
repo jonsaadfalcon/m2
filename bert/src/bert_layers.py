@@ -1120,10 +1120,12 @@ class BertForSequenceClassification(BertPreTrainedModel):
             print("position_ids")
             print(state_dict['model.bert.embeddings.position_ids'])
 
-            original_position_ids = state_dict['model.bert.embeddings.position_ids']
-            state_dict['model.bert.embeddings.position_ids'] = torch.cat([original_position_ids, original_position_ids, original_position_ids, original_position_ids], axis=0)
-            assert state_dict['model.bert.embeddings.position_ids'].shape[0] == 1
-            assert state_dict['model.bert.embeddings.position_ids'].shape[1] == 512
+            del state_dict['model.bert.embeddings.position_ids']
+
+            #original_position_ids = state_dict['model.bert.embeddings.position_ids']
+            #state_dict['model.bert.embeddings.position_ids'] = torch.cat([original_position_ids, original_position_ids, original_position_ids, original_position_ids], axis=0)
+            #assert state_dict['model.bert.embeddings.position_ids'].shape[0] == 1
+            #assert state_dict['model.bert.embeddings.position_ids'].shape[1] == 512
 
             for i in range(0, 12):
 
