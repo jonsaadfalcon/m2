@@ -195,25 +195,36 @@ def create_contract_nli_dataset(split, max_retries=10):
 
         return dataset
 
-def create_hyperpartisan_dataset(split, max_retries=10):
-    download_config = datasets.DownloadConfig(max_retries=max_retries)
-    dataset = datasets.load_dataset(
-        "hyperpartisan_news_detection", "bypublisher",
-        download_config=download_config,
-    )[split]
+def create_hyperpartisan_dataset(split):
+    OUTPUT_DIR = "datasets/hyperpartisan/"
+    
+    print(f"Split: {split}")
 
-    dataset = dataset.rename_column('bias', 'label')
-    dataset = dataset.rename_column('text', 'article_text')
+    if split == 'train':
+        path = os.path.join(OUTPUT_DIR, 'train.json')
+    elif 'val' in split or 'dev' in split:
+        path = os.path.join(OUTPUT_DIR, 'dev.json')
+        split = 'dev'
+    elif split == 'test':
+        path = os.path.join(OUTPUT_DIR, 'test.json')
+    
+    dataset = load_dataset(
+        'json', 
+        data_files=[path]
+    )
+    dataset = dataset['train']
 
-    def map_text(example):
-        combined_text = example['title'] + " | " + example['article_text']
-        example['text'] = combined_text
-        return example
-    dataset = dataset.map(map_text)
+    # remap the labels 
+    mapping = {
+        'false': 0, 
+        'true': 1
+    }
 
     def map_labels(example):
+        example['label'] = mapping[example['label']]
         example['label'] = torch.tensor(example['label'], dtype=torch.long)
         return example
+    
     dataset = dataset.map(map_labels)
 
     print("Hyper Partisan Dataset")
