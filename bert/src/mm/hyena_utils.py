@@ -119,7 +119,7 @@ class ExponentialModulation(OptimModule):
         self.register("deltas", deltas, lr=modulation_lr)
 
     def forward(self, t, x):
-        pdb.set_trace()
+        #pdb.set_trace()
         decay = torch.exp(-t * self.deltas.abs())
         x = x * (decay + self.shift)
         return x
