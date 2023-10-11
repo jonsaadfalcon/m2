@@ -240,7 +240,8 @@ def create_hyperpartisan_dataset(split):
     
     dataset = load_dataset(
         'json', 
-        data_files=[path]
+        data_files=[path],
+        load_from_cache_file=False
     )
     dataset = dataset['train']
 
