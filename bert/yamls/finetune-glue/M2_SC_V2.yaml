@@ -10,7 +10,6 @@ base_run_name: vanilla-transformer-testing
 default_seed: 19
 precision: fp32 
 max_seq_len: 512 #512, 128
-split_for_testing: test
 
 # Tokenizer for dataset creation
 tokenizer_name: bert-base-uncased #roberta-base #bert-base-uncased
@@ -25,6 +24,7 @@ train_loader:
   drop_last: true
   num_workers: 8
 
+split_for_testing: test
 eval_loader:
   split: ${split_for_testing}
   tokenizer_name: ${tokenizer_name}
@@ -39,9 +39,10 @@ scheduler:
   t_warmup: 0.1dur #0.06dur #1ep # Warmup to the full LR for 6% of the training duration
   alpha_f: 0.02 # Linearly decay to 0.02x the full LR by the end of the training duration
 
+learning_rate: 2.0e-5
 optimizer:
   name: decoupled_adamw
-  lr: 2.0e-5
+  lr: ${learning_rate}
   betas:
   - 0.9
   - 0.98
@@ -82,7 +83,7 @@ loggers:
   wandb: 
     project: attention
     entity: hazy-research
-    name: ${tokenizer_name}-${max_seq_len}-${split_for_testing}-${max_duration}-${lr}_LR-${name}-${t_warmup}-${alpha_f}-${task_name}-${problem_type}
+    name: ${tokenizer_name}-${max_seq_len}-${split_for_testing}-${max_duration}-${learning_rate}_LR-${name}-${t_warmup}-${alpha_f}-${task_name}-${problem_type}
 
 ##########################################################
 
