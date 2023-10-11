@@ -1102,6 +1102,61 @@ class BertForSequenceClassification(BertPreTrainedModel):
         
         #pdb.set_trace()
 
+        ########################################
+
+        expand_positional_embeddings = True
+        if expand_positional_embeddings:
+
+            pdb.set_trace()
+            
+            original_embedding = state_dict['model']['bert'].embeddings.position_embeddings
+            new_num_embeddings = 4 * original_embedding.num_embeddings
+            expanded_embedding = nn.Embedding(num_embeddings=new_num_embeddings, embedding_dim=original_embedding.embedding_dim)
+
+            expanded_embedding.weight.data[0:128] = original_embedding.weight.data[0:128]
+            expanded_embedding.weight.data[128:256] = original_embedding.weight.data[0:128]
+            expanded_embedding.weight.data[256:384] = original_embedding.weight.data[0:128]
+            expanded_embedding.weight.data[384:512] = original_embedding.weight.data[0:128]
+
+            model.bert.embeddings.position_embeddings = expanded_embedding
+            assert expanded_embedding.weight.shape[0] == 512
+            assert expanded_embedding.weight.shape[1] in [768, 960, 1536, 1792]
+
+            original_position_ids = model.bert.embeddings.position_ids
+            model.bert.embeddings.position_ids = torch.cat([original_position_ids, original_position_ids, original_position_ids, original_position_ids], axis=1)
+            assert model.bert.embeddings.position_ids.shape[0] == 1
+            assert model.bert.embeddings.position_ids.shape[1] == 512
+
+            for i in range(0, 12):
+
+                def expand_parameter(current_param):
+                    expanded_parameter = nn.Parameter(torch.zeros(current_param.shape[0], 4 * current_param.shape[1], current_param.shape[2]))
+                    expanded_parameter.data[:, :current_param.shape[1], :] = current_param.data
+                    expanded_parameter.data[:, current_param.shape[1]: 2 * current_param.shape[1], :] = current_param.data
+                    expanded_parameter.data[:, 2 * current_param.shape[1]: 3 * current_param.shape[1], :] = current_param.data
+                    expanded_parameter.data[:, 3 * current_param.shape[1]: 4 * current_param.shape[1], :] = current_param.data
+                    return expanded_parameter
+
+                model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z = expand_parameter(model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z)
+                assert model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z.shape[1] == 512
+                
+                model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z = expand_parameter(model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z)
+                assert model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z.shape[1] == 512
+
+                #model.bert.encoder.layer[i].attention.filter_fn.pos_emb.t = expand_parameter(model.bert.encoder.layer[i].attention.filter_fn.pos_emb.t)
+                #assert model.bert.encoder.layer[i].attention.filter_fn.pos_emb.t.shape[1] == 512
+                
+                #model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.t = expand_parameter(model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.t)
+                #assert model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.t.shape[1] == 512
+
+                ###################################################
+
+            print("Manipulated BERT model")
+            print(model)
+            #assert False
+
+        ########################################
+
         consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
         
         missing_keys, unexpected_keys = model.load_state_dict(state_dict, 
@@ -1109,7 +1164,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         ########################################
 
-        expand_positional_embeddings = True
+        """expand_positional_embeddings = True
         if expand_positional_embeddings:
             
             original_embedding = model.bert.embeddings.position_embeddings
@@ -1156,7 +1211,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
             print("Manipulated BERT model")
             print(model)
-            #assert False
+            #assert False"""
 
         ################################################
 
