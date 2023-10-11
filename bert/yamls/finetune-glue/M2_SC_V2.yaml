@@ -25,7 +25,7 @@ train_loader:
   num_workers: 8
 
 eval_loader:
-  split: validation
+  split: test
   tokenizer_name: ${tokenizer_name}
   max_seq_len: ${max_seq_len}
   shuffle: true

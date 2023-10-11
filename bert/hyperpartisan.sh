@@ -35,7 +35,7 @@ if ! test -f "/future/u/jonsf/HazyLab/m2/bert/datasets/hyperpartisan/${output}.j
   --dataset_name $dataset \
   --output_metrics_filepath "/future/u/jonsf/HazyLab/m2/bert/datasets/hyperpartisan/${output}.json" \
   --model_dir $output_dir \
-  --test_filepath ../data/sample.json \
+  --test_filepath "/future/u/jonsf/HazyLab/m2/bert/datasets/hyperpartisan/test.json" \
   --output_dir $output_dir \
   --max_seq_length $length \
   --segment_length 64 --do_use_stride --do_use_label_wise_attention
