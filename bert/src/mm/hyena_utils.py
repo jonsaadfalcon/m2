@@ -69,6 +69,8 @@ class PositionalEmbedding(OptimModule):
 
         self.seq_len = seq_len
 
+        pdb.set_trace()
+
         # The time embedding fed to the filteres is normalized so that t_f = 1
         t = torch.linspace(0, 1, self.seq_len)[None, :, None]  # 1, L, 1
 

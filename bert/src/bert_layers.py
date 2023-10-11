@@ -1110,17 +1110,10 @@ class BertForSequenceClassification(BertPreTrainedModel):
             #pdb.set_trace()
             
             original_embedding = state_dict['model.bert.embeddings.position_embeddings.weight']
-            new_num_embeddings = 4 * original_embedding.shape[0]
-            expanded_embedding = nn.Embedding(num_embeddings=new_num_embeddings, embedding_dim=original_embedding.shape[1])
+            state_dict['model.bert.embeddings.position_embeddings.weight'] = torch.cat([original_embedding, original_embedding, original_embedding, original_embedding], axis=1)
 
-            expanded_embedding.weight.data[0:128] = original_embedding[0:128, :]
-            expanded_embedding.weight.data[128:256] = original_embedding[0:128, :]
-            expanded_embedding.weight.data[256:384] = original_embedding[0:128, :]
-            expanded_embedding.weight.data[384:512] = original_embedding[0:128, :]
-
-            state_dict['model.bert.embeddings.position_embeddings.weight'] = expanded_embedding
-            assert expanded_embedding.weight.shape[0] == 512
-            assert expanded_embedding.weight.shape[1] in [768, 960, 1536, 1792]
+            assert state_dict['model.bert.embeddings.position_embeddings.weight'].weight.shape[0] == 512
+            assert state_dict['model.bert.embeddings.position_embeddings.weight'].weight.shape[1] in [768, 960, 1536, 1792]
 
             original_position_ids = state_dict['model.bert.embeddings.position_ids']
             state_dict['model.bert.embeddings.position_ids'] = torch.cat([original_position_ids, original_position_ids, original_position_ids, original_position_ids], axis=1)
