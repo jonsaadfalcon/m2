@@ -241,7 +241,7 @@ def create_hyperpartisan_dataset(split):
     dataset = load_dataset(
         'json', 
         data_files=[path],
-        load_from_cache_file=False
+        #load_from_cache_file=False
     )
     dataset = dataset['train']
 
@@ -264,8 +264,8 @@ def create_hyperpartisan_dataset(split):
         example['label'] = torch.tensor(example['label'], dtype=torch.long)
         return example
     
-    dataset = dataset.map(map_labels)
-    dataset = dataset.map(map_text)
+    dataset = dataset.map(map_labels, load_from_cache_file=False)
+    dataset = dataset.map(map_text, load_from_cache_file=False)
 
     print("Hyper Partisan Dataset")
     print(dataset)
