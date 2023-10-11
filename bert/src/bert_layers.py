@@ -1112,8 +1112,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
             original_embedding = state_dict['model.bert.embeddings.position_embeddings.weight']
             state_dict['model.bert.embeddings.position_embeddings.weight'] = torch.cat([original_embedding, original_embedding, original_embedding, original_embedding], axis=1)
 
-            assert state_dict['model.bert.embeddings.position_embeddings.weight'].weight.shape[0] == 512
-            assert state_dict['model.bert.embeddings.position_embeddings.weight'].weight.shape[1] in [768, 960, 1536, 1792]
+            assert state_dict['model.bert.embeddings.position_embeddings.weight'].shape[0] == 512
+            assert state_dict['model.bert.embeddings.position_embeddings.weight'].shape[1] in [768, 960, 1536, 1792]
 
             print("position_ids")
             print(state_dict['model.bert.embeddings.position_ids'])
@@ -1127,10 +1127,10 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
                 def expand_parameter(current_param):
                     expanded_parameter = nn.Parameter(torch.zeros(current_param.shape[0], 4 * current_param.shape[1], current_param.shape[2]))
-                    expanded_parameter.data[:, :current_param.shape[1], :] = current_param.data
-                    expanded_parameter.data[:, current_param.shape[1]: 2 * current_param.shape[1], :] = current_param.data
-                    expanded_parameter.data[:, 2 * current_param.shape[1]: 3 * current_param.shape[1], :] = current_param.data
-                    expanded_parameter.data[:, 3 * current_param.shape[1]: 4 * current_param.shape[1], :] = current_param.data
+                    expanded_parameter.data[:, :current_param.shape[1], :] = current_param
+                    expanded_parameter.data[:, current_param.shape[1]: 2 * current_param.shape[1], :] = current_param
+                    expanded_parameter.data[:, 2 * current_param.shape[1]: 3 * current_param.shape[1], :] = current_param
+                    expanded_parameter.data[:, 3 * current_param.shape[1]: 4 * current_param.shape[1], :] = current_param
                     return expanded_parameter
 
                 state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.z'] = expand_parameter(state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.z'])
