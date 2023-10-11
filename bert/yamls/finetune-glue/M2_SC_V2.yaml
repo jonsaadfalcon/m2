@@ -86,7 +86,7 @@ loggers:
   wandb: 
     project: attention
     entity: hazy-research
-    name: ${tokenizer_name}-${max_seq_len}-${split_for_testing}-${max_duration}-${learning_rate}_LR-${name}-${t_warmup}-${alpha_f}-${task_name}-${problem_type}
+    name: ${tokenizer_name}-${max_seq_len}-${split_for_testing}-${max_duration}-${learning_rate}_LR-${scheduler_name}-${t_warmup}-${alpha_f}-${task_name}-${problem_type}
 
 ##########################################################
 
