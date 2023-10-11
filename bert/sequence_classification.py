@@ -212,13 +212,15 @@ def build_my_dataloader(task_name, cfg: DictConfig, device_batch_size: int):
             timeout=cfg.get('timeout', 0),
         )
 
+        print("Creating early stopping evaluator")
+
         evaluator = Evaluator(
             dataloader = dataloader,
             label = 'my_evaluator',
             metric_names = ['MulticlassAccuracy']
         )
 
-        return dataloader
+        return evaluator
 
 
 
