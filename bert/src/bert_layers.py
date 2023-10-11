@@ -1130,6 +1130,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
             for i in range(0, 12):
 
                 def expand_parameter(current_param):
+                    #return torch.cat([current_param, current_param, current_param, current_param], axis=1)
                     expanded_parameter = nn.Parameter(torch.zeros(current_param.shape[0], 4 * current_param.shape[1], current_param.shape[2]))
                     expanded_parameter.data[:, :current_param.shape[1], :] = current_param
                     expanded_parameter.data[:, current_param.shape[1]: 2 * current_param.shape[1], :] = current_param
