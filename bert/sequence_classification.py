@@ -157,70 +157,33 @@ def build_optimizer(cfg, model):
 
 
 def build_my_dataloader(task_name, cfg: DictConfig, device_batch_size: int):
-    if cfg.tokenizer_name not in ['roberta-base', 'bert-base-uncased']:
-        dataset = create_long_context_dataset(
-            task_name=task_name,
-            split=cfg.split,
-            tokenizer_name=cfg.tokenizer_name,
-            max_seq_length=cfg.max_seq_len,
-        )
+    dataset = create_long_context_dataset(
+        task_name=task_name,
+        split=cfg.split,
+        tokenizer_name=cfg.tokenizer_name,
+        max_seq_length=cfg.max_seq_len,
+    )
 
-        print("Maximum Sequence Length: " + str(cfg.max_seq_len))
+    print("Maximum Sequence Length: " + str(cfg.max_seq_len))
 
-        dataset = cast(Dataset, dataset)
-        dataloader = DataLoader(
-            dataset,
-            # As an alternative to formatting the examples inside the dataloader,
-            # you can write a custom data collator to do that instead.
-            collate_fn=transformers.default_data_collator,
-            batch_size=device_batch_size,
-            sampler=dist.get_sampler(dataset,
-                                    drop_last=cfg.drop_last,
-                                    shuffle=cfg.shuffle),
-            num_workers=cfg.num_workers,
-            pin_memory=cfg.get('pin_memory', True),
-            prefetch_factor=cfg.get('prefetch_factor', 2),
-            persistent_workers=cfg.get('persistent_workers', True),
-            timeout=cfg.get('timeout', 0),
-        )
+    dataset = cast(Dataset, dataset)
+    dataloader = DataLoader(
+        dataset,
+        # As an alternative to formatting the examples inside the dataloader,
+        # you can write a custom data collator to do that instead.
+        collate_fn=transformers.default_data_collator,
+        batch_size=device_batch_size,
+        sampler=dist.get_sampler(dataset,
+                                drop_last=cfg.drop_last,
+                                shuffle=cfg.shuffle),
+        num_workers=cfg.num_workers,
+        pin_memory=cfg.get('pin_memory', True),
+        prefetch_factor=cfg.get('prefetch_factor', 2),
+        persistent_workers=cfg.get('persistent_workers', True),
+        timeout=cfg.get('timeout', 0),
+    )
 
-        return dataloader
-    else:
-        dataset = create_long_context_dataset(
-            task_name=task_name,
-            split=cfg.split,
-            tokenizer_name=cfg.tokenizer_name,
-            max_seq_length=cfg.max_seq_len,
-        )
-
-        print("Maximum Sequence Length: " + str(cfg.max_seq_len))
-
-        dataset = cast(Dataset, dataset)
-        dataloader = DataLoader(
-            dataset,
-            # As an alternative to formatting the examples inside the dataloader,
-            # you can write a custom data collator to do that instead.
-            collate_fn=transformers.default_data_collator,
-            batch_size=device_batch_size,
-            sampler=dist.get_sampler(dataset,
-                                    drop_last=cfg.drop_last,
-                                    shuffle=cfg.shuffle),
-            num_workers=cfg.num_workers,
-            pin_memory=cfg.get('pin_memory', True),
-            prefetch_factor=cfg.get('prefetch_factor', 2),
-            persistent_workers=cfg.get('persistent_workers', True),
-            timeout=cfg.get('timeout', 0),
-        )
-
-        print("Creating early stopping evaluator")
-
-        evaluator = Evaluator(
-            dataloader = dataloader,
-            label = 'my_evaluator',
-            metric_names = ['MulticlassAccuracy']
-        )
-
-        return evaluator
+    return dataloader
 
 
 
@@ -332,7 +295,7 @@ def main(cfg: DictConfig,
         log_to_console=cfg.log_to_console,
         console_log_interval=cfg.console_log_interval,
         loggers=loggers,
-        callbacks=[EarlyStopper('MulticlassAccuracy', 'my_evaluator', patience=1)],
+        callbacks=[EarlyStopper('MulticlassAccuracy', 'eval', patience=1)],
         precision=cfg.precision,
         device=cfg.get('device'),
         device_train_microbatch_size=cfg.get('device_train_microbatch_size',
