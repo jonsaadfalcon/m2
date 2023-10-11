@@ -197,6 +197,8 @@ def create_contract_nli_dataset(split, max_retries=10):
 
 def create_hyperpartisan_dataset(split):
 
+    import re
+
     def re_sub(pattern, repl, text, flags=None):
         if flags is None:
             return re.sub(pattern, repl, text, flags=FLAGS)
