@@ -10,6 +10,7 @@ base_run_name: vanilla-transformer-testing
 default_seed: 19
 precision: fp32 
 max_seq_len: 512 #512, 128
+split_for_testing: test
 
 # Tokenizer for dataset creation
 tokenizer_name: bert-base-uncased #roberta-base #bert-base-uncased
@@ -25,7 +26,7 @@ train_loader:
   num_workers: 8
 
 eval_loader:
-  split: test
+  split: ${split_for_testing}
   tokenizer_name: ${tokenizer_name}
   max_seq_len: ${max_seq_len}
   shuffle: true
@@ -81,7 +82,7 @@ loggers:
   wandb: 
     project: attention
     entity: hazy-research
-    name: ${tokenizer_name}-${max_seq_len}-${optimizer.split}-${max_duration}-${lr}_LR-${name}-${t_warmup}-${alpha_f}-${task_name}-${problem_type}
+    name: ${tokenizer_name}-${max_seq_len}-${split_for_testing}-${max_duration}-${lr}_LR-${name}-${t_warmup}-${alpha_f}-${task_name}-${problem_type}
 
 ##########################################################
 
