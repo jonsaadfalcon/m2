@@ -233,8 +233,9 @@ def create_hf_bert_classification(
             ]
         elif model_config['problem_type'] == "multi_label_classification":
             print("Adding metrics for multi_label_classification!")
+            print("Threshold: " + str(model_config['threshold']))
             metrics = [
-                MultilabelF1Score(num_labels=num_labels, average='micro', threshold=0.0),
+                MultilabelF1Score(num_labels=num_labels, average='micro', threshold=model_config['threshold']),
                 #F1Score(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro', threshold=0.0),
                 #AUROC(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro'),
             ]
