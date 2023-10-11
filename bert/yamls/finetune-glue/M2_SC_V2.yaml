@@ -80,7 +80,7 @@ task_name: ecthr
 #task_name: hyperpartisan
 num_labels: 10
 problem_type: multi_label_classification #single_label_classification multi_label_classification
-save_folder: ./local-finetune-checkpoints/${tokenizer_name}/${max_seq_len}/${task_name}/${max_duration}
+save_folder: ./local-finetune-checkpoints/${tokenizer_name}/${max_seq_len}/${task_name}/${max_duration}/${learning_rate}/${threshold}
 
 # (Optional) W&B logging
 loggers:
@@ -104,4 +104,5 @@ model:
   model_config:
     num_labels: ${num_labels} # <-- Make sure to update these after you modify the starter script!
     problem_type: ${problem_type}
+    threshold: ${threshold}
 
