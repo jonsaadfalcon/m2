@@ -220,9 +220,9 @@ def create_hf_bert_classification(
         # Metrics for a regression model
         metrics = [MeanSquaredError(), SpearmanCorrCoef()]
     else:
-        if num_labels == 2:
-            metrics.append(BinaryF1Score())
-        elif model_config['problem_type'] == "single_label_classification":
+        #if num_labels == 2:
+        #    metrics.append(BinaryF1Score())
+        if model_config['problem_type'] == "single_label_classification":
             metrics = [
                 MulticlassAccuracy(num_classes=num_labels, average='micro'),
                 F1Score(task='multiclass', num_classes=num_labels,  average='micro', threshold=0.),
