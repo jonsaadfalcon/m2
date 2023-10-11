@@ -1107,6 +1107,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
         expand_positional_embeddings = config.expand_positional_embeddings
         if expand_positional_embeddings:
 
+            print("Expanding positional embeddings")
+
             original_embedding = state_dict['model.bert.embeddings.position_embeddings.weight']
             state_dict['model.bert.embeddings.position_embeddings.weight'] = torch.cat([original_embedding, original_embedding, original_embedding, original_embedding], axis=0)
 
