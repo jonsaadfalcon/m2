@@ -196,6 +196,33 @@ def create_contract_nli_dataset(split, max_retries=10):
         return dataset
 
 def create_hyperpartisan_dataset(split):
+
+    def re_sub(pattern, repl, text, flags=None):
+        if flags is None:
+            return re.sub(pattern, repl, text, flags=FLAGS)
+        else:
+            return re.sub(pattern, repl, text, flags=(FLAGS | flags))
+
+
+    def clean_txt(text):
+
+        text = re.sub(r"[a-zA-Z]+\/[a-zA-Z]+", " ", text)
+        text = re.sub(r"\n", " ", text)
+        text = re.sub(r"&#160;", "", text)
+
+        # Remove URL
+        text = re_sub(r"(http)\S+", "", text)
+        text = re_sub(r"(www)\S+", "", text)
+        text = re_sub(r"(href)\S+", "", text)
+        # Remove multiple spaces
+        text = re_sub(r"[ \s\t\n]+", " ", text)
+
+        # remove repetition
+        text = re_sub(r"([!?.]){2,}", r"\1", text)
+        text = re_sub(r"\b(\S*?)(.)\2{2,}\b", r"\1\2", text)
+
+        return text.strip()
+
     OUTPUT_DIR = "datasets/hyperpartisan/"
     
     print(f"Split: {split}")

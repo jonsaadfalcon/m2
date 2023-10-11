@@ -35,7 +35,7 @@ eval_loader:
 # Optimization
 scheduler:
   name: linear_decay_with_warmup
-  t_warmup: 0ep #0.06dur #1ep # Warmup to the full LR for 6% of the training duration
+  t_warmup: 0.1dur #0.06dur #1ep # Warmup to the full LR for 6% of the training duration
   alpha_f: 0.02 # Linearly decay to 0.02x the full LR by the end of the training duration
 
 optimizer:
