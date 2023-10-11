@@ -1107,9 +1107,9 @@ class BertForSequenceClassification(BertPreTrainedModel):
         expand_positional_embeddings = True
         if expand_positional_embeddings:
 
-            pdb.set_trace()
+            #pdb.set_trace()
             
-            original_embedding = state_dict['model']['bert'].embeddings.position_embeddings
+            original_embedding = state_dict['model.bert.embeddings.position_embeddings.weight']
             new_num_embeddings = 4 * original_embedding.num_embeddings
             expanded_embedding = nn.Embedding(num_embeddings=new_num_embeddings, embedding_dim=original_embedding.embedding_dim)
 
@@ -1118,14 +1118,14 @@ class BertForSequenceClassification(BertPreTrainedModel):
             expanded_embedding.weight.data[256:384] = original_embedding.weight.data[0:128]
             expanded_embedding.weight.data[384:512] = original_embedding.weight.data[0:128]
 
-            model.bert.embeddings.position_embeddings = expanded_embedding
+            state_dict['model.bert.embeddings.position_embeddings.weight'] = expanded_embedding
             assert expanded_embedding.weight.shape[0] == 512
             assert expanded_embedding.weight.shape[1] in [768, 960, 1536, 1792]
 
-            original_position_ids = model.bert.embeddings.position_ids
-            model.bert.embeddings.position_ids = torch.cat([original_position_ids, original_position_ids, original_position_ids, original_position_ids], axis=1)
-            assert model.bert.embeddings.position_ids.shape[0] == 1
-            assert model.bert.embeddings.position_ids.shape[1] == 512
+            original_position_ids = state_dict['model.bert.embeddings.position_ids']
+            state_dict['model.bert.embeddings.position_ids'] = torch.cat([original_position_ids, original_position_ids, original_position_ids, original_position_ids], axis=1)
+            assert state_dict['model.bert.embeddings.position_ids'].shape[0] == 1
+            assert state_dict['model.bert.embeddings.position_ids'].shape[1] == 512
 
             for i in range(0, 12):
 
@@ -1137,11 +1137,11 @@ class BertForSequenceClassification(BertPreTrainedModel):
                     expanded_parameter.data[:, 3 * current_param.shape[1]: 4 * current_param.shape[1], :] = current_param.data
                     return expanded_parameter
 
-                model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z = expand_parameter(model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z)
-                assert model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z.shape[1] == 512
+                state_dict['model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z'] = expand_parameter(state_dict['model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z'])
+                assert state_dict['model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z'].shape[1] == 512
                 
-                model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z = expand_parameter(model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z)
-                assert model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.z.shape[1] == 512
+                state_dict['model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z'] = expand_parameter(state_dict['model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z'])
+                assert state_dict['model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z'].shape[1] == 512
 
                 #model.bert.encoder.layer[i].attention.filter_fn.pos_emb.t = expand_parameter(model.bert.encoder.layer[i].attention.filter_fn.pos_emb.t)
                 #assert model.bert.encoder.layer[i].attention.filter_fn.pos_emb.t.shape[1] == 512
