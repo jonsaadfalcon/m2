@@ -1254,7 +1254,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
         expanding_contexts = True
         if expanding_contexts:
             assert self.bert.embeddings.position_embeddings.weight.shape[0] == 512
-            assert self.bert.embeddings.position_embeddings.weight.shape[1] in [768, 960, 1568, 1792]
+            assert self.bert.embeddings.position_embeddings.weight.shape[1] in [768, 960, 1536, 1792]
             assert self.bert.embeddings.position_ids.shape[0] == 1
             assert self.bert.embeddings.position_ids.shape[1] == 512
 
