@@ -250,7 +250,11 @@ def create_hyperpartisan_dataset(split):
         'true': 1
     }
 
+    print("Dataset example before preprocessing")
+    print(dataset[0])
+
     def map_text(example):
+        assert type(example['text']) == str
         example['text'] = clean_txt(example['text'])
         return example
 
@@ -264,6 +268,7 @@ def create_hyperpartisan_dataset(split):
 
     print("Hyper Partisan Dataset")
     print(dataset)
+    print(dataset[0])
 
     return dataset
 
