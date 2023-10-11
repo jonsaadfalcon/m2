@@ -1111,7 +1111,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
             
             original_embedding = state_dict['model.bert.embeddings.position_embeddings.weight']
             new_num_embeddings = 4 * original_embedding.shape[0]
-            expanded_embedding = nn.Embedding(num_embeddings=new_num_embeddings, embedding_dim=original_embedding.embedding_dim)
+            expanded_embedding = nn.Embedding(num_embeddings=new_num_embeddings, embedding_dim=original_embedding.shape[1])
 
             expanded_embedding.weight.data[0:128] = original_embedding.weight.data[0:128]
             expanded_embedding.weight.data[128:256] = original_embedding.weight.data[0:128]
