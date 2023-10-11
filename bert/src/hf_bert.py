@@ -220,18 +220,20 @@ def create_hf_bert_classification(
         # Metrics for a regression model
         metrics = [MeanSquaredError(), SpearmanCorrCoef()]
     else:
-        # Metrics for a classification model
-        metrics = [
-            #MultilabelF1Score(num_labels=num_labels, average='micro', threshold=0.5),
-            #F1Score(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro', threshold=0.5),
-            #AUROC(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro'),
-            MulticlassAccuracy(num_classes=num_labels, average='micro'),
-            F1Score(task='multiclass', num_classes=num_labels,  average='micro', threshold=0.),
-            #MatthewsCorrCoef(task='multiclass',
-            #                 num_classes=model.config.num_labels)
-        ]
         if num_labels == 2:
             metrics.append(BinaryF1Score())
+        elif model_config['problem_type'] == "single_label_classification":
+            metrics = [
+                MulticlassAccuracy(num_classes=num_labels, average='micro'),
+                F1Score(task='multiclass', num_classes=num_labels,  average='micro', threshold=0.),
+                MatthewsCorrCoef(task='multiclass', num_classes=model.config.num_labels)
+            ]
+        elif model_config['problem_type'] == "multi_label_classification":
+            metrics = [
+                MultilabelF1Score(num_labels=num_labels, average='micro', threshold=0.5),
+                F1Score(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro', threshold=0.5),
+                AUROC(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro'),
+            ]
 
     return HuggingFaceModel(model=model,
                             tokenizer=tokenizer,
