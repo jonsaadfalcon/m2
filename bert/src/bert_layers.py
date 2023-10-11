@@ -1115,6 +1115,9 @@ class BertForSequenceClassification(BertPreTrainedModel):
             assert state_dict['model.bert.embeddings.position_embeddings.weight'].weight.shape[0] == 512
             assert state_dict['model.bert.embeddings.position_embeddings.weight'].weight.shape[1] in [768, 960, 1536, 1792]
 
+            print("position_ids")
+            print(state_dict['model.bert.embeddings.position_ids'])
+
             original_position_ids = state_dict['model.bert.embeddings.position_ids']
             state_dict['model.bert.embeddings.position_ids'] = torch.cat([original_position_ids, original_position_ids, original_position_ids, original_position_ids], axis=1)
             assert state_dict['model.bert.embeddings.position_ids'].shape[0] == 1
@@ -1136,24 +1139,24 @@ class BertForSequenceClassification(BertPreTrainedModel):
                 state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.z'] = expand_parameter(state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.z'])
                 assert state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.z'].shape[1] == 512
 
+                del state_dict["model.bert.encoder.layer." + str(i) + ".attention.filter_fn.pos_emb.t"]
+                del state_dict["model.bert.encoder.layer." + str(i) + ".attention.filter_fn2.pos_emb.t"]
+
                 #model.bert.encoder.layer[i].attention.filter_fn.pos_emb.t = expand_parameter(model.bert.encoder.layer[i].attention.filter_fn.pos_emb.t)
                 #assert model.bert.encoder.layer[i].attention.filter_fn.pos_emb.t.shape[1] == 512
                 
                 #model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.t = expand_parameter(model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.t)
                 #assert model.bert.encoder.layer[i].attention.filter_fn2.pos_emb.t.shape[1] == 512
 
-                ###################################################
-
-            print("Manipulated BERT model")
-            print(model)
-            #assert False
-
-        ########################################
+        ###################################################
 
         consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
         
         missing_keys, unexpected_keys = model.load_state_dict(state_dict, 
                                                               strict=False)
+        
+        print("Manipulated BERT model")
+        print(model)
 
         ########################################
 
