@@ -1137,11 +1137,11 @@ class BertForSequenceClassification(BertPreTrainedModel):
                     expanded_parameter.data[:, 3 * current_param.shape[1]: 4 * current_param.shape[1], :] = current_param.data
                     return expanded_parameter
 
-                state_dict['model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z'] = expand_parameter(state_dict['model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z'])
-                assert state_dict['model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z'].shape[1] == 512
+                state_dict['model.bert.encoder.layer[' + str(i) + '].attention.filter_fn.pos_emb.z'] = expand_parameter(state_dict['model.bert.encoder.layer[' + str(i) + '].attention.filter_fn.pos_emb.z'])
+                assert state_dict['model.bert.encoder.layer[' + str(i) + '].attention.filter_fn.pos_emb.z'].shape[1] == 512
                 
-                state_dict['model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z'] = expand_parameter(state_dict['model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z'])
-                assert state_dict['model.bert.encoder.layer[i].attention.filter_fn.pos_emb.z'].shape[1] == 512
+                state_dict['model.bert.encoder.layer[' + str(i) + '].attention.filter_fn.pos_emb.z'] = expand_parameter(state_dict['model.bert.encoder.layer[' + str(i) + '].attention.filter_fn.pos_emb.z'])
+                assert state_dict['model.bert.encoder.layer[' + str(i) + '].attention.filter_fn.pos_emb.z'].shape[1] == 512
 
                 #model.bert.encoder.layer[i].attention.filter_fn.pos_emb.t = expand_parameter(model.bert.encoder.layer[i].attention.filter_fn.pos_emb.t)
                 #assert model.bert.encoder.layer[i].attention.filter_fn.pos_emb.t.shape[1] == 512
