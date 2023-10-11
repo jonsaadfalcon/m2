@@ -247,12 +247,17 @@ def create_hyperpartisan_dataset(split):
         'true': 1
     }
 
+    def map_text(example):
+        example['text'] = clean_txt(example['text'])
+        return example
+
     def map_labels(example):
         example['label'] = mapping[example['label']]
         example['label'] = torch.tensor(example['label'], dtype=torch.long)
         return example
     
     dataset = dataset.map(map_labels)
+    dataset = dataset.map(map_text)
 
     print("Hyper Partisan Dataset")
     print(dataset)
