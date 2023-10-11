@@ -13,7 +13,6 @@ max_seq_len: 512 #512, 128
 
 # Tokenizer for dataset creation
 tokenizer_name: bert-base-uncased #roberta-base #bert-base-uncased
-threshold: 0.5
 
 
 # Dataloaders (make sure to update these after you modify the starter script!)
@@ -80,14 +79,14 @@ task_name: ecthr
 #task_name: hyperpartisan
 num_labels: 10
 problem_type: multi_label_classification #single_label_classification multi_label_classification
-save_folder: ./local-finetune-checkpoints/${tokenizer_name}/${max_seq_len}/${task_name}/${max_duration}/${learning_rate}/${threshold}
+save_folder: ./local-finetune-checkpoints/${tokenizer_name}/${max_seq_len}/${task_name}/${max_duration}/${learning_rate}
 
 # (Optional) W&B logging
 loggers:
   wandb: 
     project: attention
     entity: hazy-research
-    name: ${tokenizer_name}-${max_seq_len}-${split_for_testing}-${max_duration}-${learning_rate}_LR-${scheduler_name}-${t_warmup}-${alpha_f}-${task_name}-${problem_type}-${threshold}-threshold
+    name: ${tokenizer_name}-${max_seq_len}-${split_for_testing}-${max_duration}-${learning_rate}_LR-${scheduler_name}-${t_warmup}-${alpha_f}-${task_name}-${problem_type}
 
 ##########################################################
 
@@ -104,5 +103,4 @@ model:
   model_config:
     num_labels: ${num_labels} # <-- Make sure to update these after you modify the starter script!
     problem_type: ${problem_type}
-    threshold: ${threshold}
 
