@@ -1113,10 +1113,10 @@ class BertForSequenceClassification(BertPreTrainedModel):
             new_num_embeddings = 4 * original_embedding.shape[0]
             expanded_embedding = nn.Embedding(num_embeddings=new_num_embeddings, embedding_dim=original_embedding.shape[1])
 
-            expanded_embedding.weight.data[0:128] = original_embedding.weight.data[0:128]
-            expanded_embedding.weight.data[128:256] = original_embedding.weight.data[0:128]
-            expanded_embedding.weight.data[256:384] = original_embedding.weight.data[0:128]
-            expanded_embedding.weight.data[384:512] = original_embedding.weight.data[0:128]
+            expanded_embedding.weight.data[0:128] = original_embedding[0:128, :]
+            expanded_embedding.weight.data[128:256] = original_embedding[0:128, :]
+            expanded_embedding.weight.data[256:384] = original_embedding[0:128, :]
+            expanded_embedding.weight.data[384:512] = original_embedding[0:128, :]
 
             state_dict['model.bert.embeddings.position_embeddings.weight'] = expanded_embedding
             assert expanded_embedding.weight.shape[0] == 512
