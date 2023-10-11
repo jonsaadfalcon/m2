@@ -213,6 +213,7 @@ def build_my_dataloader(task_name, cfg: DictConfig, device_batch_size: int):
         )
 
         print("Creating early stopping evaluator")
+        print(len(dataloader))
 
         evaluator = Evaluator(
             dataloader = dataloader,
