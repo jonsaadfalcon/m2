@@ -69,7 +69,6 @@ class PositionalEmbedding(OptimModule):
 
         self.seq_len = seq_len
 
-        pdb.set_trace()
         # The time embedding fed to the filteres is normalized so that t_f = 1
         t = torch.linspace(0, 1, self.seq_len)[None, :, None]  # 1, L, 1
 
@@ -120,7 +119,7 @@ class ExponentialModulation(OptimModule):
         self.register("deltas", deltas, lr=modulation_lr)
 
     def forward(self, t, x):
-        #pdb.set_trace()
+        pdb.set_trace()
         decay = torch.exp(-t * self.deltas.abs())
         x = x * (decay + self.shift)
         return x
