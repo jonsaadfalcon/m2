@@ -1290,9 +1290,14 @@ class BertForSequenceClassification(BertPreTrainedModel):
                 else:
                     loss = loss_fct(logits, labels)
             elif self.config.problem_type == 'single_label_classification':
-                loss_fct = nn.CrossEntropyLoss()
-                loss = loss_fct(logits.view(-1, self.num_labels),
-                                labels.view(-1))
+                if self.num_labels == 2: 
+                    loss_fct = nn.BCELoss()
+                    loss = loss_fct(logits.view(-1, self.num_labels),
+                                    labels.view(-1))
+                else:
+                    loss_fct = nn.CrossEntropyLoss()
+                    loss = loss_fct(logits.view(-1, self.num_labels),
+                                    labels.view(-1))
             elif self.config.problem_type == 'multi_label_classification':
                 loss_fct = nn.BCEWithLogitsLoss()
                 #loss_fct = nn.CrossEntropyLoss()
