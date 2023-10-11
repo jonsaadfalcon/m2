@@ -1253,7 +1253,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
         
         #pdb.set_trace()
 
-        expanding_contexts = True
+        expanding_contexts = self.config.expand_positional_embeddings
         if expanding_contexts:
             assert self.bert.embeddings.position_embeddings.weight.shape[0] == 512
             assert self.bert.embeddings.position_embeddings.weight.shape[1] in [768, 960, 1536, 1792]
