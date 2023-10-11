@@ -96,6 +96,5 @@ model:
   save_num_checkpoints_to_keep: 10
   model_config:
     num_labels: ${num_labels} # <-- Make sure to update these after you modify the starter script!
-    problem_type: single_label_classification #${problem_type}
-    max_position_embeddings: ${max_seq_len}
+    problem_type: ${problem_type}
 
