@@ -34,7 +34,7 @@ eval_loader:
   num_workers: 8
 
 # Optimization
-scheduler_name: linear_decay_with_warmu
+scheduler_name: linear_decay_with_warmup
 t_warmup: 0.1dur
 alpha_f: 0.02
 scheduler:
