@@ -326,7 +326,8 @@ def create_mosaic_bert_classification(
             ]
         elif config.problem_type == 'single_label_classification':
             metrics = [
-                F1Score(task='multiclass', num_classes=num_labels,  average='micro', threshold=0.)
+                F1Score(task='multiclass', num_classes=num_labels,  average='micro', threshold=0.),
+                AUROC(task='multiclass', num_classes=num_labels, num_labels=num_labels, average='micro'),
             ]
 
     hf_model = HuggingFaceModel(model=model,

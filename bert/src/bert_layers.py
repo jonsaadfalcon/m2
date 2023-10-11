@@ -1104,7 +1104,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         ########################################
 
-        expand_positional_embeddings = True
+        expand_positional_embeddings = config.expand_positional_embeddings
         if expand_positional_embeddings:
 
             original_embedding = state_dict['model.bert.embeddings.position_embeddings.weight']
@@ -1147,7 +1147,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
         missing_keys, unexpected_keys = model.load_state_dict(state_dict, 
                                                               strict=False)
         
-        print("Manipulated BERT model")
+        print("Initiliazed and loaded BERT model")
         print(model)
 
         ########################################

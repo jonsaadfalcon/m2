@@ -11,6 +11,7 @@ _task_column_names = {
     'contract_nli': ('input', None),
     'mimic': ('text', None),
     'ecthr': ('text', None),
+    'hyperpartisan': ('text', None),
 }
 
 def create_news20_dataset(split):
@@ -193,6 +194,32 @@ def create_contract_nli_dataset(split, max_retries=10):
         print(dataset)
 
         return dataset
+
+def create_hyper_partisan_dataset(split, max_retries=10):
+    download_config = datasets.DownloadConfig(max_retries=max_retries)
+    dataset = datasets.load_dataset(
+        "hyperpartisan_news_detection", "bypublisher",
+        download_config=download_config,
+    )[split]
+
+    dataset = dataset.rename_column('bias', 'label')
+    dataset = dataset.rename_column('text', 'article_text')
+
+    def map_text(example):
+        combined_text = example['title'] + " | " + example['article_text']
+        example['text'] = combined_text
+        return example
+    dataset = dataset.map(map_text)
+
+    def map_labels(example):
+        example['label'] = torch.tensor(example['label'], dtype=torch.long)
+        return example
+    dataset = dataset.map(map_labels)
+
+    print("Hyper Partisan Dataset")
+    print(dataset)
+
+    return dataset
 
 
 def create_long_context_dataset(task_name, split, tokenizer_name, max_seq_length, num_workers=8):

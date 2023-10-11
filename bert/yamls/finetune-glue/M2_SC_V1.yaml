@@ -78,6 +78,7 @@ task_name: ecthr
 #task_name: 'contract_nli'
 num_labels: 10
 problem_type: multi_label_classification #multi_label_classification
+expand_positional_embeddings: True
 
 ##########################################################
 
@@ -135,6 +136,7 @@ model:
     num_hidden_layers: 12 
     attention_probs_dropout_prob: 0.0 
     max_position_embeddings: ${max_seq_len}
+    expand_positional_embeddings: ${expand_positional_embeddings}
 
     #hidden_size: 768
     #intermediate_size: 3072
