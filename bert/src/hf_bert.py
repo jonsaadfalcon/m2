@@ -223,12 +223,14 @@ def create_hf_bert_classification(
         #if num_labels == 2:
         #    metrics.append(BinaryF1Score())
         if model_config['problem_type'] == "single_label_classification":
+            print("Adding metrics for single_label_classification!")
             metrics = [
                 MulticlassAccuracy(num_classes=num_labels, average='micro'),
                 F1Score(task='multiclass', num_classes=num_labels,  average='micro', threshold=0.),
                 MatthewsCorrCoef(task='multiclass', num_classes=model.config.num_labels)
             ]
         elif model_config['problem_type'] == "multi_label_classification":
+            print("Adding metrics for multi_label_classification!")
             metrics = [
                 MultilabelF1Score(num_labels=num_labels, average='micro', threshold=0.5),
                 F1Score(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro', threshold=0.5),
