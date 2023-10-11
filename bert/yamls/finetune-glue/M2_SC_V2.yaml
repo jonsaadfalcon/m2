@@ -34,10 +34,13 @@ eval_loader:
   num_workers: 8
 
 # Optimization
+scheduler_name: linear_decay_with_warmu
+t_warmup: 0.1dur
+alpha_f: 0.02
 scheduler:
-  name: linear_decay_with_warmup
-  t_warmup: 0.1dur #0.06dur #1ep # Warmup to the full LR for 6% of the training duration
-  alpha_f: 0.02 # Linearly decay to 0.02x the full LR by the end of the training duration
+  name: ${scheduler_name}
+  t_warmup: ${t_warmup} #0.06dur #1ep # Warmup to the full LR for 6% of the training duration
+  alpha_f: ${alpha_f} # Linearly decay to 0.02x the full LR by the end of the training duration
 
 learning_rate: 2.0e-5
 optimizer:
