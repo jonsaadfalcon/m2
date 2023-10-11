@@ -104,7 +104,7 @@ local_pretrain_checkpoint_folder: ./local-bert-checkpoints/
 # Saving
 save_finetune_checkpoint_prefix: ./local-finetune-checkpoints/M2-260M/ # (local)
 # save_finetune_checkpoint_prefix: s3://<bucket>/remote-finetune-checkpoints # (remote)
-save_finetune_checkpoint_folder: ${save_finetune_checkpoint_prefix}/${base_run_name}
+save_finetune_checkpoint_folder: ./local-finetune-checkpoints/${tokenizer_name}/${max_seq_len}/${task_name}/${max_duration}/${learning_rate}/${t_warmup}
 
 #################################################
 
