@@ -1098,8 +1098,9 @@ class BertForSequenceClassification(BertPreTrainedModel):
             #if "pos_emb.t" in key:
             if "delta" in key:
                 print(key)
+                print(state_dict[key].shape)
         
-        #pdb.set_trace()
+        pdb.set_trace()
 
         consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
         
