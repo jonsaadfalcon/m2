@@ -195,6 +195,8 @@ def create_hf_bert_classification(
         pretrained_model_name = 'bert-base-uncased'
 
     if use_pretrained:
+        print("Use_pretrained -- model_config")
+        print(model_config)
         assert transformers.AutoModelForSequenceClassification.from_pretrained is not None, 'AutoModelForSequenceClassification has from_pretrained method'
         model = transformers.AutoModelForSequenceClassification.from_pretrained(
             pretrained_model_name_or_path=pretrained_model_name, **model_config)
