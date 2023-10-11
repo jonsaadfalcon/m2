@@ -29,6 +29,8 @@ from omegaconf import DictConfig
 from omegaconf import OmegaConf as om
 from torch.utils.data import DataLoader
 
+from composer.callbacks.early_stopper import EarlyStopper
+
 import pdb
 
 
@@ -271,6 +273,7 @@ def main(cfg: DictConfig,
     if cfg.get('run_name') is None:
         cfg.run_name = os.environ.get('COMPOSER_RUN_NAME',
                                       'sequence-classification')
+
 
     # Build the Trainer
     trainer = Trainer(

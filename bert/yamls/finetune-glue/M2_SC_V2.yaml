@@ -40,7 +40,7 @@ scheduler:
 
 optimizer:
   name: decoupled_adamw
-  lr: 1.0e-5
+  lr: 5.0e-6
   betas:
   - 0.9
   - 0.98

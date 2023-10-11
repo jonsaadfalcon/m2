@@ -19,6 +19,8 @@ from torchmetrics.classification import MultilabelAccuracy, MultilabelF1Score
 from torchmetrics import F1Score
 from torchmetrics.classification import AUROC
 
+from composer.callbacks.early_stopper import EarlyStopper
+
 __all__ = ['create_hf_bert_mlm', 'create_hf_bert_classification']
 
 
