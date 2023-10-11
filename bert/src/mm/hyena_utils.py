@@ -68,6 +68,19 @@ class PositionalEmbedding(OptimModule):
         super().__init__()
 
         self.seq_len = seq_len
+        
+
+
+
+
+
+        self.seq_len = 512
+
+
+
+
+
+
 
         # The time embedding fed to the filteres is normalized so that t_f = 1
         t = torch.linspace(0, 1, self.seq_len)[None, :, None]  # 1, L, 1
@@ -163,6 +176,14 @@ class HyenaFilter(OptimModule):
         self.d_model=d_model
         self.emb_dim=emb_dim
         self.seq_len=seq_len
+
+
+
+        self.seq_len = 512
+
+
+
+
         self.modulate=modulate
         self.use_bias = bias
         self.bidirectional = bidirectional
