@@ -1140,6 +1140,9 @@ class BertForSequenceClassification(BertPreTrainedModel):
         ###################################################
 
         consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
+
+        print("position_ids in model")
+        print(model.bert.embeddings.position_ids)
         
         missing_keys, unexpected_keys = model.load_state_dict(state_dict, 
                                                               strict=False)
