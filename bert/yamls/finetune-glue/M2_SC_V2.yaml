@@ -96,5 +96,5 @@ model:
   model_config:
     num_labels: ${num_labels} # <-- Make sure to update these after you modify the starter script!
     problem_type: ${problem_type} #${problem_type}
-    max_seq_length: ${max_seq_len}
+    max_position_embeddings: ${max_seq_len}
 
