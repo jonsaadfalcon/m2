@@ -297,7 +297,7 @@ def main(cfg: DictConfig,
         loggers=loggers,
         #callbacks=[EarlyStopper('MulticlassAccuracy', 'eval', patience=5)],
         #callbacks=[EarlyStopper('MultilabelF1Score', 'eval', patience=5)],
-        callbacks=callbacks
+        callbacks=callbacks,
         precision=cfg.precision,
         device=cfg.get('device'),
         device_train_microbatch_size=cfg.get('device_train_microbatch_size',
