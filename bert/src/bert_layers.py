@@ -1291,7 +1291,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
                     loss = loss_fct(logits, labels)
             elif self.config.problem_type == 'single_label_classification':
                 if self.num_labels == 2:
-                    #pdb.set_trace()
+                    pdb.set_trace()
                     loss_fct = nn.BCELoss()
                     loss = loss_fct(logits.view(-1, self.num_labels), labels.view(-1))
                 else:
