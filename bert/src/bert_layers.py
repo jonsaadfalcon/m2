@@ -1138,6 +1138,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
                 #del state_dict["model.bert.encoder.layer." + str(i) + ".attention.filter_fn.pos_emb.t"]
                 #del state_dict["model.bert.encoder.layer." + str(i) + ".attention.filter_fn2.pos_emb.t"]
+
+                pdb.set_trace()
                 
                 state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'] = expand_parameter(state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'])
                 assert state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'].shape[1] == 512
