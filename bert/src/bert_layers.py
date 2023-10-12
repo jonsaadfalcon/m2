@@ -1290,7 +1290,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
                 else:
                     loss = loss_fct(logits, labels)
             elif self.config.problem_type == 'single_label_classification':
-                if self.num_labels == 2 and self.config.name != "mosaic_bert":
+                if self.num_labels == 2: #and self.config.name != "mosaic_bert":
                     loss = loss_fct(logits.view(-1, self.num_labels), labels.view(-1))
                 else:
                     loss_fct = nn.CrossEntropyLoss()
