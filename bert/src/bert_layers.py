@@ -1113,9 +1113,9 @@ class BertForSequenceClassification(BertPreTrainedModel):
             state_dict['model.bert.embeddings.position_embeddings.weight'] = torch.cat([original_embedding, original_embedding, original_embedding, original_embedding], axis=0)
             pdb.set_trace()
             import numpy as np
-            position_embeddings_randomized_1 = np.random.rand(original_embedding.shape[0], original_embedding.shape[1])
-            position_embeddings_randomized_2 = np.random.rand(original_embedding.shape[0], original_embedding.shape[1])
-            position_embeddings_randomized_3 = np.random.rand(original_embedding.shape[0], original_embedding.shape[1])
+            position_embeddings_randomized_1 = np.random.uniform(-1, 1, size=(original_embedding.shape[0], original_embedding.shape[1]))
+            position_embeddings_randomized_2 = np.random.uniform(-1, 1, size=(original_embedding.shape[0], original_embedding.shape[1]))
+            position_embeddings_randomized_3 = np.random.uniform(-1, 1, size=(original_embedding.shape[0], original_embedding.shape[1]))
             state_dict['model.bert.embeddings.position_embeddings.weight'] = torch.cat([original_embedding, position_embeddings_randomized_1, position_embeddings_randomized_2, position_embeddings_randomized_3], axis=0)
 
             assert state_dict['model.bert.embeddings.position_embeddings.weight'].shape[0] == 512
