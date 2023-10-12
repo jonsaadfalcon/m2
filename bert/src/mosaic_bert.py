@@ -319,7 +319,7 @@ def create_mosaic_bert_classification(
                 metrics.append(BinaryF1Score())
         elif config.problem_type == 'multi_label_classification':
             metrics = [
-                MultilabelF1Score(num_labels=num_labels, average='micro', threshold=0.0),
+                MultilabelF1Score(num_labels=num_labels, average='micro', threshold=0.5),
                 AUROC(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro'),
                 #F1Score(task='multilabel', num_classes=num_labels, num_labels=num_labels, average='micro', threshold=0.5),
                 #MultilabelAccuracy(num_labels=num_labels),

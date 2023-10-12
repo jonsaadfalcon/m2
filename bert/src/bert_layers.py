@@ -1147,10 +1147,10 @@ class BertForSequenceClassification(BertPreTrainedModel):
                     expanded_parameter.data[:, :current_param.shape[1], :] = current_param
                     return expanded_parameter
                 
-                state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'] = expand_parameter_v2(state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'])
+                state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'] = expand_parameter(state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'])
                 assert state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'].shape[1] == 512
                 
-                state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'] = expand_parameter_v2(state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'])
+                state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'] = expand_parameter(state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'])
                 assert state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'].shape[1] == 512
 
         ###################################################
