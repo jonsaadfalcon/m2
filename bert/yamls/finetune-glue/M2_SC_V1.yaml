@@ -72,11 +72,12 @@ progress_bar: false
 log_to_console: true
 console_log_interval: 50ba
 
-task_name: 'mimic'
+#task_name: 'mimic'
 #task_name: ecthr
 #task_name: 'contract_nli'
-num_labels: 50
-problem_type: multi_label_classification #multi_label_classification
+task_name: hyperpartisan
+num_labels: 2
+problem_type: single_label_classification #single_label_classification #multi_label_classification
 expand_positional_embeddings: False
 
 # (Optional) W&B logging
