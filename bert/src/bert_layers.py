@@ -1157,6 +1157,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
         
         print("Initiliazed and loaded BERT model")
         print(model)
+        print("model.bert.encoder.layer[10].attention.filter_fn2.pos_emb.t")
+        print(model.bert.encoder.layer[10].attention.filter_fn2.pos_emb.t)
 
         ########################################
 
