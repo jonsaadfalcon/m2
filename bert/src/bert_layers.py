@@ -1110,8 +1110,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
             print("Expanding positional embeddings")
 
             original_embedding = state_dict['model.bert.embeddings.position_embeddings.weight']
-            state_dict['model.bert.embeddings.position_embeddings.weight'] = torch.cat([original_embedding, original_embedding, original_embedding, original_embedding], axis=0)
-            pdb.set_trace()
+            #state_dict['model.bert.embeddings.position_embeddings.weight'] = torch.cat([original_embedding, original_embedding, original_embedding, original_embedding], axis=0)
+            #pdb.set_trace()
             import numpy as np
             position_embeddings_randomized_1 = np.random.uniform(-1, 1, size=(original_embedding.shape[0], original_embedding.shape[1]))
             position_embeddings_randomized_2 = np.random.uniform(-1, 1, size=(original_embedding.shape[0], original_embedding.shape[1]))
