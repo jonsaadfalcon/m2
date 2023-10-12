@@ -85,7 +85,7 @@ loggers:
   wandb: 
     project: attention
     entity: hazy-research
-    name: M2-BERT-troubleshooting-${tokenizer_name}-${max_seq_len}-${split_for_testing}-${max_duration}-${learning_rate}_LR-${scheduler_name}-${t_warmup}-${alpha_f}-${task_name}-${problem_type}-${expand_positional_embeddings}_expand_positional_embeddings
+    name: M2-BERT-${tokenizer_name}-${max_seq_len}-${split_for_testing}-${max_duration}-${learning_rate}_LR-${scheduler_name}-${t_warmup}-${alpha_f}-${task_name}-${problem_type}-${expand_positional_embeddings}_expand_positional_embeddings
 
 ##########################################################
 
