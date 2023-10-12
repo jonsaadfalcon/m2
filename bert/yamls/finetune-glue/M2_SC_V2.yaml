@@ -35,7 +35,7 @@ eval_loader:
 
 # Optimization
 scheduler_name: linear_decay_with_warmup
-t_warmup: 3ep #0.1dur
+t_warmup: 0.1dur
 alpha_f: 0.02
 scheduler:
   name: ${scheduler_name}
