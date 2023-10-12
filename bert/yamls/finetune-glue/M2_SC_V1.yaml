@@ -72,11 +72,11 @@ progress_bar: false
 log_to_console: true
 console_log_interval: 50ba
 
-task_name: 'mimic'
-#task_name: ecthr
+#task_name: 'mimic'
+task_name: ecthr
 #task_name: 'contract_nli'
 #task_name: hyperpartisan
-num_labels: 50
+num_labels: 10
 problem_type: multi_label_classification #single_label_classification #multi_label_classification
 expand_positional_embeddings: True
 
@@ -85,7 +85,7 @@ loggers:
   wandb: 
     project: attention
     entity: hazy-research
-    name: M2-BERT-${tokenizer_name}-${max_seq_len}-${split_for_testing}-${max_duration}-${learning_rate}_LR-${scheduler_name}-${t_warmup}-${alpha_f}-${task_name}-${problem_type}-${expand_positional_embeddings}_expand_positional_embeddings
+    name: M2-BERT-t_copied_4x-${tokenizer_name}-${max_seq_len}-${split_for_testing}-${max_duration}-${learning_rate}_LR-${scheduler_name}-${t_warmup}-${alpha_f}-${task_name}-${problem_type}-${expand_positional_embeddings}_expand_positional_embeddings
 
 ##########################################################
 
