@@ -263,8 +263,8 @@ def create_hyperpartisan_dataset(split):
         if True:
             example['label'] = mapping[example['label']]
             labels = [0 for i in range(2)]
-            labels[example['label']] = 1
-            example['label_ids'] = torch.tensor(labels, dtype=torch.long)
+            labels[example['label']] = 1.0
+            example['label_ids'] = torch.tensor(labels, dtype=torch.float)
             del example['label']
         else:
             example['label'] = mapping[example['label']]
