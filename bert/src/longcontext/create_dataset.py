@@ -260,7 +260,7 @@ def create_hyperpartisan_dataset(split):
         return example
 
     def map_labels(example):
-        if True:
+        if False:
             example['label'] = mapping[example['label']]
             labels = [0 for i in range(2)]
             labels[example['label']] = 1.0
