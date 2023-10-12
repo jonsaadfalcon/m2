@@ -84,7 +84,7 @@ def create_mimic_dataset(split):
         del example['labels']
         return example
     
-    dataset = dataset.map(map_labels, load_from_cache_file=False))
+    dataset = dataset.map(map_labels, load_from_cache_file=False)
 
     #print("Created Mimic Dataset!")
     #print(dataset)
