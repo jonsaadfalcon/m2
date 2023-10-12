@@ -1112,6 +1112,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
             original_embedding = state_dict['model.bert.embeddings.position_embeddings.weight']
             state_dict['model.bert.embeddings.position_embeddings.weight'] = torch.cat([original_embedding, original_embedding, original_embedding, original_embedding], axis=0)
 
+            pdb.set_trace()
+
             assert state_dict['model.bert.embeddings.position_embeddings.weight'].shape[0] == 512
             assert state_dict['model.bert.embeddings.position_embeddings.weight'].shape[1] in [768, 960, 1536, 1792]
 
