@@ -78,13 +78,13 @@ def create_mimic_dataset(split):
     def map_labels(example):
         labels = [0 for i in range(num_labels)]
         for label in example['labels']:
-            labels[label_map[label]] = 1
-        example['label_ids'] = torch.tensor(labels, dtype=torch.long)
+            labels[label_map[label]] = 1.0
+        example['label_ids'] = torch.tensor(labels, dtype=torch.float)
         #example['label'] = torch.tensor(labels, dtype=torch.long)
         del example['labels']
         return example
     
-    dataset = dataset.map(map_labels)
+    dataset = dataset.map(map_labels, load_from_cache_file=False))
 
     #print("Created Mimic Dataset!")
     #print(dataset)
