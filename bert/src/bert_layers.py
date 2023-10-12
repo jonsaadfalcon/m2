@@ -1139,12 +1139,18 @@ class BertForSequenceClassification(BertPreTrainedModel):
                 #del state_dict["model.bert.encoder.layer." + str(i) + ".attention.filter_fn.pos_emb.t"]
                 #del state_dict["model.bert.encoder.layer." + str(i) + ".attention.filter_fn2.pos_emb.t"]
 
-                pdb.set_trace()
+                #pdb.set_trace()
+
+                def expand_parameter_v2(current_param):
+                    #return torch.cat([current_param, current_param, current_param, current_param], axis=1)
+                    expanded_parameter = nn.Parameter(torch.ones(current_param.shape[0], 4 * current_param.shape[1], current_param.shape[2]))
+                    expanded_parameter.data[:, :current_param.shape[1], :] = current_param
+                    return expanded_parameter
                 
-                state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'] = expand_parameter(state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'])
+                state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'] = expand_parameter_v2(state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'])
                 assert state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'].shape[1] == 512
                 
-                state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'] = expand_parameter(state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'])
+                state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'] = expand_parameter_v2(state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'])
                 assert state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'].shape[1] == 512
 
         ###################################################
@@ -1160,6 +1166,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
         print("Initiliazed and loaded BERT model")
         print(model)
         print("model.bert.encoder.layer[10].attention.filter_fn2.pos_emb.t")
+        print(model.bert.encoder.layer[10].attention.filter_fn2.pos_emb.t.shape)
         print(model.bert.encoder.layer[10].attention.filter_fn2.pos_emb.t)
 
         ########################################
