@@ -1135,7 +1135,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
                     
                     #for k in range(2, 5):
                     for k in range(2, 17):
-                        expanded_parameter.data[:, (3 - k) * current_param.shape[1]: k * current_param.shape[1], :] = current_param
+                        expanded_parameter.data[:, (k - 1) * current_param.shape[1]: (k) * current_param.shape[1], :] = current_param
                         #expanded_parameter.data[:, :current_param.shape[1], :] = current_param
                         #expanded_parameter.data[:, current_param.shape[1]: 2 * current_param.shape[1], :] = current_param
                         #expanded_parameter.data[:, 2 * current_param.shape[1]: 3 * current_param.shape[1], :] = current_param
