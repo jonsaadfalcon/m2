@@ -1186,7 +1186,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         ########################################
 
-        pdb.set_trace()
+        #pdb.set_trace()
+        #del model.bert.pooler
 
         ########################################
 
@@ -1303,6 +1304,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
             #assert False
         
         pooled_output = outputs[1]
+
+        pdb.set_trace()
 
         pooled_output = self.dropout(pooled_output)
         logits = self.classifier(pooled_output)
