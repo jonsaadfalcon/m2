@@ -1113,12 +1113,13 @@ class BertForSequenceClassification(BertPreTrainedModel):
             #state_dict['model.bert.embeddings.position_embeddings.weight'] = torch.cat([original_embedding, original_embedding, original_embedding, original_embedding], axis=0)
             #pdb.set_trace()
             import numpy as np
-            position_embeddings_randomized_1 = torch.from_numpy(np.random.uniform(-1, 1, size=(original_embedding.shape[0], original_embedding.shape[1]))).to(torch.device("cuda:0"))
-            position_embeddings_randomized_2 = torch.from_numpy(np.random.uniform(-1, 1, size=(original_embedding.shape[0], original_embedding.shape[1]))).to(torch.device("cuda:0"))
-            position_embeddings_randomized_3 = torch.from_numpy(np.random.uniform(-1, 1, size=(original_embedding.shape[0], original_embedding.shape[1]))).to(torch.device("cuda:0"))
-            state_dict['model.bert.embeddings.position_embeddings.weight'] = torch.cat([original_embedding, position_embeddings_randomized_1, position_embeddings_randomized_2, position_embeddings_randomized_3], axis=0)
+            randomized_embeddings_list = [original_embedding]
+            #for j in range(3):
+            for j in range(17):
+                randomized_embeddings_list.append(torch.from_numpy(np.random.uniform(-1, 1, size=(original_embedding.shape[0], original_embedding.shape[1]))).to(torch.device("cuda:0")))
+            state_dict['model.bert.embeddings.position_embeddings.weight'] = torch.cat(randomized_embeddings_list, axis=0)
 
-            assert state_dict['model.bert.embeddings.position_embeddings.weight'].shape[0] == 512
+            assert state_dict['model.bert.embeddings.position_embeddings.weight'].shape[0] in [512, 2048, 4096, 8192]
             assert state_dict['model.bert.embeddings.position_embeddings.weight'].shape[1] in [768, 960, 1536, 1792]
 
             print("position_ids")
@@ -1130,17 +1131,21 @@ class BertForSequenceClassification(BertPreTrainedModel):
                 def expand_parameter(current_param):
                     #return torch.cat([current_param, current_param, current_param, current_param], axis=1)
                     expanded_parameter = nn.Parameter(torch.zeros(current_param.shape[0], 4 * current_param.shape[1], current_param.shape[2]))
-                    expanded_parameter.data[:, :current_param.shape[1], :] = current_param
-                    expanded_parameter.data[:, current_param.shape[1]: 2 * current_param.shape[1], :] = current_param
-                    expanded_parameter.data[:, 2 * current_param.shape[1]: 3 * current_param.shape[1], :] = current_param
-                    expanded_parameter.data[:, 3 * current_param.shape[1]: 4 * current_param.shape[1], :] = current_param
+                    #for k in range(2, 5):
+                    for k in range(2, 17):
+                        expanded_parameter.data[:, (3 - k) * current_param.shape[1]: k * current_param.shape[1], :] = current_param
+                        #expanded_parameter.data[:, :current_param.shape[1], :] = current_param
+                        #expanded_parameter.data[:, current_param.shape[1]: 2 * current_param.shape[1], :] = current_param
+                        #expanded_parameter.data[:, 2 * current_param.shape[1]: 3 * current_param.shape[1], :] = current_param
+                        #expanded_parameter.data[:, 3 * current_param.shape[1]: 4 * current_param.shape[1], :] = current_param
+                    
                     return expanded_parameter
 
                 state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.z'] = expand_parameter(state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.z'])
-                assert state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.z'].shape[1] == 512
+                assert state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.z'].shape[1] in [512, 2048, 4096, 8192]
                 
                 state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.z'] = expand_parameter(state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.z'])
-                assert state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.z'].shape[1] == 512
+                assert state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.z'].shape[1] in [512, 2048, 4096, 8192]
 
                 #del state_dict["model.bert.encoder.layer." + str(i) + ".attention.filter_fn.pos_emb.t"]
                 #del state_dict["model.bert.encoder.layer." + str(i) + ".attention.filter_fn2.pos_emb.t"]
@@ -1148,16 +1153,16 @@ class BertForSequenceClassification(BertPreTrainedModel):
                 #pdb.set_trace()
 
                 def expand_parameter_v2(current_param):
-                    #return torch.cat([current_param, current_param, current_param, current_param], axis=1)
-                    expanded_parameter = nn.Parameter(torch.ones(current_param.shape[0], 4 * current_param.shape[1], current_param.shape[2]))
+                    #expanded_parameter = nn.Parameter(torch.ones(current_param.shape[0], 4 * current_param.shape[1], current_param.shape[2]))
+                    expanded_parameter = nn.Parameter(torch.ones(current_param.shape[0], 16 * current_param.shape[1], current_param.shape[2]))
                     expanded_parameter.data[:, :current_param.shape[1], :] = current_param
                     return expanded_parameter
                 
                 state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'] = expand_parameter_v2(state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'])
-                assert state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'].shape[1] == 512
+                assert state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn.pos_emb.t'].shape[1] in [512, 2048, 4096, 8192]
                 
                 state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'] = expand_parameter_v2(state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'])
-                assert state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'].shape[1] == 512
+                assert state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'].shape[1] in [512, 2048, 4096, 8192]
 
         ###################################################
 
@@ -1278,15 +1283,15 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
         expanding_contexts = self.config.expand_positional_embeddings
         if expanding_contexts:
-            assert self.bert.embeddings.position_embeddings.weight.shape[0] == 512
+            assert self.bert.embeddings.position_embeddings.weight.shape[0] in [512, 2048, 4096, 8192]
             assert self.bert.embeddings.position_embeddings.weight.shape[1] in [768, 960, 1536, 1792]
             assert self.bert.embeddings.position_ids.shape[0] == 1
-            assert self.bert.embeddings.position_ids.shape[1] == 512
+            assert self.bert.embeddings.position_ids.shape[1] in [512, 2048, 4096, 8192]
 
-            assert self.bert.encoder.layer[0].attention.filter_fn.pos_emb.z.shape[1] == 512
-            assert self.bert.encoder.layer[0].attention.filter_fn2.pos_emb.z.shape[1] == 512
-            assert self.bert.encoder.layer[11].attention.filter_fn.pos_emb.z.shape[1] == 512
-            assert self.bert.encoder.layer[11].attention.filter_fn2.pos_emb.z.shape[1] == 512
+            assert self.bert.encoder.layer[0].attention.filter_fn.pos_emb.z.shape[1] in [512, 2048, 4096, 8192]
+            assert self.bert.encoder.layer[0].attention.filter_fn2.pos_emb.z.shape[1] in [512, 2048, 4096, 8192]
+            assert self.bert.encoder.layer[11].attention.filter_fn.pos_emb.z.shape[1] in [512, 2048, 4096, 8192]
+            assert self.bert.encoder.layer[11].attention.filter_fn2.pos_emb.z.shape[1] == 2048
             #assert False
         
         pooled_output = outputs[1]
