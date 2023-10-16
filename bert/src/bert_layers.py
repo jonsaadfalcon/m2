@@ -1115,7 +1115,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
             import numpy as np
             randomized_embeddings_list = [original_embedding]
             #for j in range(3):
-            for j in range(17):
+            for j in range(15):
                 randomized_embeddings_list.append(torch.from_numpy(np.random.uniform(-1, 1, size=(original_embedding.shape[0], original_embedding.shape[1]))).to(torch.device("cuda:0")))
             state_dict['model.bert.embeddings.position_embeddings.weight'] = torch.cat(randomized_embeddings_list, axis=0)
 
@@ -1129,8 +1129,10 @@ class BertForSequenceClassification(BertPreTrainedModel):
             for i in range(0, 12):
 
                 def expand_parameter(current_param):
-                    #return torch.cat([current_param, current_param, current_param, current_param], axis=1)
-                    expanded_parameter = nn.Parameter(torch.zeros(current_param.shape[0], 4 * current_param.shape[1], current_param.shape[2]))
+
+                    #expanded_parameter = nn.Parameter(torch.zeros(current_param.shape[0], 4 * current_param.shape[1], current_param.shape[2]))
+                    expanded_parameter = nn.Parameter(torch.zeros(current_param.shape[0], 16 * current_param.shape[1], current_param.shape[2]))
+                    
                     #for k in range(2, 5):
                     for k in range(2, 17):
                         expanded_parameter.data[:, (3 - k) * current_param.shape[1]: k * current_param.shape[1], :] = current_param
