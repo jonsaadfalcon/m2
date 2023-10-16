@@ -1183,7 +1183,10 @@ class BertForSequenceClassification(BertPreTrainedModel):
         print("model.bert.encoder.layer[10].attention.filter_fn2.pos_emb.t")
         print(model.bert.encoder.layer[10].attention.filter_fn2.pos_emb.t.shape)
         print(model.bert.encoder.layer[10].attention.filter_fn2.pos_emb.t)
-        assert False
+
+        ########################################
+
+        pdb.set_trace()
 
         ########################################
 
