@@ -1114,8 +1114,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
             #pdb.set_trace()
             import numpy as np
             randomized_embeddings_list = [original_embedding]
-            #for j in range(3):
-            for j in range(15):
+            for j in range(3):
+            #for j in range(15):
                 #randomized_embeddings_list.append(torch.from_numpy(np.random.uniform(-1, 1, size=(original_embedding.shape[0], original_embedding.shape[1]))).to(torch.device("cuda:0")))
                 randomized_embeddings_list.append(original_embedding)
             state_dict['model.bert.embeddings.position_embeddings.weight'] = torch.cat(randomized_embeddings_list, axis=0)
@@ -1134,8 +1134,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
                     #expanded_parameter = nn.Parameter(torch.zeros(current_param.shape[0], 4 * current_param.shape[1], current_param.shape[2]))
                     expanded_parameter = nn.Parameter(torch.zeros(current_param.shape[0], 16 * current_param.shape[1], current_param.shape[2]))
                     
-                    #for k in range(2, 5):
-                    for k in range(2, 17):
+                    for k in range(2, 5):
+                    #for k in range(2, 17):
                         expanded_parameter.data[:, (k - 1) * current_param.shape[1]: (k) * current_param.shape[1], :] = current_param
                         #expanded_parameter.data[:, :current_param.shape[1], :] = current_param
                         #expanded_parameter.data[:, current_param.shape[1]: 2 * current_param.shape[1], :] = current_param
@@ -1155,7 +1155,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
 
                 #pdb.set_trace()
 
-                def expand_parameter_v2(current_param):
+                """def expand_parameter_v2(current_param):
                     #expanded_parameter = nn.Parameter(torch.ones(current_param.shape[0], 4 * current_param.shape[1], current_param.shape[2]))
                     expanded_parameter = nn.Parameter(torch.ones(current_param.shape[0], 16 * current_param.shape[1], current_param.shape[2]))
                     expanded_parameter.data[:, :current_param.shape[1], :] = current_param
@@ -1166,7 +1166,8 @@ class BertForSequenceClassification(BertPreTrainedModel):
                 
                 state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'] = expand_parameter_v2(state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'])
                 assert state_dict['model.bert.encoder.layer.' + str(i) + '.attention.filter_fn2.pos_emb.t'].shape[1] in [512, 2048, 4096, 8192]
-
+                """
+                
         ###################################################
 
         consume_prefix_in_state_dict_if_present(state_dict, prefix='model.')
