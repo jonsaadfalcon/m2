@@ -573,28 +573,14 @@ class BertLayer(nn.Module):
         """
 
         if self.monarch_mixer_sequence_mixing:
-            with torch.autograd.set_detect_anomaly(True):
-                attention_output = self.attention(hidden_states)
-                if type(attention_output) == tuple:
-                    attention_output, _ = attention_output
+            attention_output = self.attention(hidden_states)
+            if type(attention_output) == tuple:
+                attention_output, _ = attention_output
         else:
-            with torch.autograd.set_detect_anomaly(True):
-                attention_output = self.attention(hidden_states, cu_seqlens, seqlen,
-                                                  subset_idx, indices, attn_mask, bias)
-            
-        #print("Attention Layer Output")
-        #print(attention_output)
-            
-        if torch.isnan(attention_output).any():
-            print("NaNs in attention_output.")
-            raise ValueError()
+            attention_output = self.attention(hidden_states, cu_seqlens, seqlen,
+                                              subset_idx, indices, attn_mask, bias)
 
-        with torch.autograd.set_detect_anomaly(True):
-            layer_output = self.mlp(attention_output)
-
-        if torch.isnan(layer_output).any():
-            print("NaNs in layer_output.")
-            raise ValueError()
+        layer_output = self.mlp(attention_output)
 
         return layer_output
 
@@ -608,9 +594,8 @@ class BertEncoder(nn.Module):
 
     def __init__(self, config):
         super().__init__()
-        layer = BertLayer(config)
         self.layer = nn.ModuleList(
-            [copy.deepcopy(layer) for _ in range(config.num_hidden_layers)])
+            [BertLayer(config) for _ in range(config.num_hidden_layers)])
         
         #config.use_flash_fft = False
         if config.use_flash_fft:
